@@ -1,5 +1,7 @@
+import { Outlet } from "react-router-dom";
+
 function App() {
-	return <div>Bitu</div>;
+	return <Outlet />;
 }
 
 export default App;

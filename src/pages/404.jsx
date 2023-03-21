@@ -1,14 +1,6 @@
 function ErrorPage() {
 	return (
-		<div
-			style={{
-				width: "100%",
-				height: "100vh",
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
-			}}
-		>
+		<div className="w-full h-screen flex justify-center items-center">
 			<h1>Página inexistente!</h1>
 		</div>
 	);

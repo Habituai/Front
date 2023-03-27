@@ -1,7 +1,28 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 function Dashboard() {
+	const pokeUrl = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+
+	const [pokemon, setPokemon] = useState([]);
+
+	useEffect(() => {
+		axios.get(pokeUrl).then(function (response) {
+			setPokemon(response.data.results);
+		});
+	}, []);
+
 	return (
 		<div className="w-full h-screen flex justify-center items-center">
 			<h1>Dashboard</h1>
+
+			{pokemon.length > 0 && (
+				<div className="w-full flex flex-wrap gap-2">
+					{pokemon.map(({ name }) => {
+						return <p key={name}>{name}</p>;
+					})}
+				</div>
+			)}
 		</div>
 	);
 }

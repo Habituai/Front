@@ -2,14 +2,21 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 function Dashboard() {
-	const pokeUrl = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+	const pokeUrl = "https://pokeapi.co/api/v2/pokemon";
 
 	const [pokemon, setPokemon] = useState([]);
 
 	useEffect(() => {
-		axios.get(pokeUrl).then(function (response) {
-			setPokemon(response.data.results);
-		});
+		axios
+			.get(pokeUrl, {
+				params: {
+					limit: 100000,
+					offset: 0,
+				},
+			})
+			.then(function (response) {
+				setPokemon(response.data.results);
+			});
 	}, []);
 
 	return (

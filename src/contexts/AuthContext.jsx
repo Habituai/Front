@@ -3,13 +3,17 @@ import { createContext, useState } from "react";
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-	const [auth, setAuth] = useState(false);
+    //consultar cookies e validar autenticidade
+    const token = localStorage.getItem("token");
 
-	return (
-		<AuthContext.Provider value={{ auth, setAuth }}>
-			{children}
-		</AuthContext.Provider>
-	);
+    const haveValidCookies = !!token;
+    const [auth, setAuth] = useState(haveValidCookies);
+
+    return (
+        <AuthContext.Provider value={{ auth, setAuth }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
 export default AuthProvider;

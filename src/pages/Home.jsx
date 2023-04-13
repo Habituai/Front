@@ -1,17 +1,29 @@
-import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
 function Home() {
-	return (
-		<div className="w-full h-screen flex justify-center items-center flex-col">
-			<Button component={Link} to="/sign-up">
-				Cadastrar
-			</Button>
-			<Button component={Link} to="/sign-in">
-				Login
-			</Button>
-		</div>
-	);
+    return (
+        <header className="w-full py-5 flex justify-center ">
+            <nav className="w-3/4 flex justify-between items-center">
+                <span className="text-6xl text-blue-900 font-bold">
+                    Habituaí
+                </span>
+                <div className="flex justify-between items-center gap-8">
+                    <Link
+                        className="text-2xl text-blue-700 font-semibold"
+                        to="/sign-up"
+                    >
+                        Cadastrar
+                    </Link>
+                    <Link
+                        className="text-2xl text-blue-700 font-semibold"
+                        to="/sign-in"
+                    >
+                        Login
+                    </Link>
+                </div>
+            </nav>
+        </header>
+    );
 }
 
 export default Home;

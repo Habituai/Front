@@ -1,37 +1,37 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import makeRequest from "../services/axios";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-	const pokeUrl = "https://pokeapi.co/api/v2/pokemon";
+    const navigate = useNavigate();
+    const host = import.meta.env.VITE_HABITS_PATH;
 
-	const [pokemon, setPokemon] = useState([]);
+    const { auth } = useAuth();
+    const [habits, setHabits] = useState([]);
 
-	useEffect(() => {
-		axios
-			.get(pokeUrl, {
-				params: {
-					limit: 100000,
-					offset: 0,
-				},
-			})
-			.then(function (response) {
-				setPokemon(response.data.results);
-			});
-	}, []);
+    useEffect(() => {
+        if (!auth) {
+            navigate("/sign-in");
+        }
+    }, [auth]);
 
-	return (
-		<div className="w-full h-screen flex justify-center items-center">
-			<h1>Dashboard</h1>
+    useEffect(() => {
+        const getHabitsData = async () => {
+            const data = await makeRequest("GET", host);
+            setHabits(data);
+        };
 
-			{pokemon.length > 0 && (
-				<div className="w-full flex flex-wrap gap-2">
-					{pokemon.map(({ name }) => {
-						return <p key={name}>{name}</p>;
-					})}
-				</div>
-			)}
-		</div>
-	);
+        getHabitsData().catch(() => console.log("erro"));
+    }, []);
+
+    return (
+        <div className="w-full h-screen flex flex-col justify-center items-center">
+            {habits.map((habit) => {
+                return <h1 key={habit.id}>{habit.name}</h1>;
+            })}
+        </div>
+    );
 }
 
 export default Dashboard;

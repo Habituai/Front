@@ -32,9 +32,9 @@ function SignIn() {
         setSubmitting(true);
         try {
             const data = await makeRequest("POST", host, { data: values });
-            localStorage.setItem("token", data.token);
+            sessionStorage.setItem("token", data.token);
             setAuth(true);
-            navigate("/dashboard");
+            navigate("/");
         } catch (error) {
             toast.error("Email ou senha incorretos");
         } finally {

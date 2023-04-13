@@ -4,7 +4,7 @@ export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
     //consultar cookies e validar autenticidade
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const haveValidCookies = !!token;
     const [auth, setAuth] = useState(haveValidCookies);

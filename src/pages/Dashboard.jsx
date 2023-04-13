@@ -1,20 +1,11 @@
 import { useEffect, useState } from "react";
 import makeRequest from "../services/axios";
-import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 function Dashboard() {
-    const navigate = useNavigate();
     const host = import.meta.env.VITE_HABITS_PATH;
 
-    const { auth } = useAuth();
     const [habits, setHabits] = useState([]);
-
-    useEffect(() => {
-        if (!auth) {
-            navigate("/sign-in");
-        }
-    }, [auth]);
 
     useEffect(() => {
         const getHabitsData = async () => {
@@ -25,8 +16,16 @@ function Dashboard() {
         getHabitsData().catch(() => console.log("erro"));
     }, []);
 
+    const handleLogout = () => {
+        sessionStorage.removeItem("token");
+        window.location.href = "/";
+    };
+
     return (
         <div className="w-full h-screen flex flex-col justify-center items-center">
+            <Button type="button" variant="contained" onClick={handleLogout}>
+                Deslogar
+            </Button>
             {habits.map((habit) => {
                 return <h1 key={habit.id}>{habit.name}</h1>;
             })}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import makeRequest from "../services/axios";
 import { Button } from "@mui/material";
+import Cookies from "js-cookie";
 
 function Dashboard() {
     const host = import.meta.env.VITE_HABITS_PATH;
@@ -17,7 +18,7 @@ function Dashboard() {
     }, []);
 
     const handleLogout = () => {
-        sessionStorage.removeItem("token");
+        Cookies.remove("token");
         window.location.href = "/";
     };
 

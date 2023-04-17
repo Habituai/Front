@@ -7,7 +7,8 @@ import { useAuth } from "../hooks/useAuth";
 import toast, { Toaster } from "react-hot-toast";
 import EmailField from "../components/field/email";
 import PasswordField from "../components/field/password";
-import StudyImage from "../components/layout/study";
+import StudyImage from "../components/image/study";
+import Cookies from "js-cookie";
 
 function SignIn() {
     const navigate = useNavigate();
@@ -32,7 +33,10 @@ function SignIn() {
         setSubmitting(true);
         try {
             const data = await makeRequest("POST", host, { data: values });
-            sessionStorage.setItem("token", data.token);
+            Cookies.set("token", data.token, {
+                expires: 7,
+                secure: true,
+            });
             setAuth(true);
             navigate("/");
         } catch (error) {

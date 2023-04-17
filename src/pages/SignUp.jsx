@@ -7,7 +7,7 @@ import EmailField from "../components/field/email";
 import PasswordField from "../components/field/password";
 import { Link, useNavigate } from "react-router-dom";
 import makeRequest from "../services/axios";
-import HealthImage from "../components/layout/health";
+import HealthImage from "../components/image/health";
 
 function SignUp() {
     const navigate = useNavigate();

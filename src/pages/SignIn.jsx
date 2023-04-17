@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import { Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import makeRequest from "../services/axios";
@@ -7,8 +7,10 @@ import { useAuth } from "../hooks/useAuth";
 import toast, { Toaster } from "react-hot-toast";
 import EmailField from "../components/field/email";
 import PasswordField from "../components/field/password";
-import StudyImage from "../components/image/study";
+import studyImage from "../assets/images/study.svg";
 import Cookies from "js-cookie";
+import SignHeaderLayout from "../components/layout/signHeader";
+import FieldInput from "../components/layout/field";
 
 function SignIn() {
     const navigate = useNavigate();
@@ -29,7 +31,6 @@ function SignIn() {
     });
 
     const handleFormSubmit = async (values, { setSubmitting }) => {
-        //Armazenar informações - porém com cookies
         setSubmitting(true);
         try {
             const data = await makeRequest("POST", host, { data: values });
@@ -58,63 +59,54 @@ function SignIn() {
                 validateOnBlur={false}
             >
                 {({ errors, isSubmitting }) => (
-                    <div className="w-full h-screen flex flex-col lg:flex-row justify-center items-center gap-32">
-                        <Form>
-                            <div className="min-w-[480px] flex justify-center items-center flex-col gap-8 p-10 bg-white rounded-lg shadow-lg">
-                                <div className="w-full mb-4">
-                                    <h4 className="text-3xl font-bold text-blue-900">
+                    <div className="w-full h-full lg:h-screen flex flex-col-reverse lg:flex-row justify-center items-center lg:gap-32">
+                        <div className="h-full w-full flex flex-1 justify-center lg:justify-end items-center py-5 lg:p-0">
+                            <div className="max-w-3/4 lg:min-w-[480px] bg-white rounded-lg shadow-lg">
+                                <Form className="flex justify-center items-center flex-col gap-3 lg:gap-8 p-10">
+                                    <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">
                                         Faça seu login
                                     </h4>
-                                </div>
 
-                                <div className="w-full flex flex-col">
-                                    <Field
-                                        as={EmailField}
+                                    <FieldInput
                                         name="email"
                                         type="email"
-                                        error={!!errors.email}
+                                        fieldComponent={EmailField}
+                                        hasError={!!errors.email}
                                     />
-                                    <span className="text-red-600">
-                                        <ErrorMessage name="email" />
-                                    </span>
-                                </div>
 
-                                <div className="w-full flex flex-col">
-                                    <Field
-                                        as={PasswordField}
+                                    <FieldInput
                                         name="password"
                                         type="password"
-                                        error={!!errors.password}
+                                        fieldComponent={PasswordField}
+                                        hasError={!!errors.password}
                                     />
-                                    <span className="text-red-600">
-                                        <ErrorMessage name="password" />
-                                    </span>
-                                </div>
 
-                                <div className="w-full flex gap-2 flex-col">
-                                    <span>
-                                        {`Não possui conta? `}
-                                        <Link
-                                            className="text-blue-800 hover:text-blue-600 font-semibold"
-                                            to="/sign-up"
+                                    <div className="w-full flex gap-2 flex-col">
+                                        <span>
+                                            {`Não possui conta? `}
+                                            <Link
+                                                className="text-primaryMedium hover:text-primaryExtraLight font-semibold underline"
+                                                to="/sign-up"
+                                            >
+                                                Cadastrar
+                                            </Link>
+                                        </span>
+
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            disabled={isSubmitting}
+                                            sx={{ width: "100%" }}
                                         >
-                                            Cadastrar
-                                        </Link>
-                                    </span>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        disabled={isSubmitting}
-                                        sx={{ width: "100%" }}
-                                    >
-                                        Entrar
-                                    </Button>
-                                </div>
+                                            Entrar
+                                        </Button>
+                                    </div>
+                                </Form>
                             </div>
-                        </Form>
+                        </div>
 
-                        <div className="min-w-[480px] flex flex-col justify-center items-center gap-10">
-                            <StudyImage />
+                        <div className="h-full w-full flex flex-1 justify-center lg:justify-start items-center py-5 lg:p-0">
+                            <SignHeaderLayout imageSrc={studyImage} />
                         </div>
                     </div>
                 )}

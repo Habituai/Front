@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import { Button } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import NameField from "../components/field/name";
@@ -7,7 +7,9 @@ import EmailField from "../components/field/email";
 import PasswordField from "../components/field/password";
 import { Link, useNavigate } from "react-router-dom";
 import makeRequest from "../services/axios";
-import HealthImage from "../components/image/health";
+import healthImage from "../assets/images/health.svg";
+import SignHeaderLayout from "../components/layout/signHeader";
+import FieldInput from "../components/layout/field";
 
 function SignUp() {
     const navigate = useNavigate();
@@ -22,11 +24,13 @@ function SignUp() {
         name: Yup.string()
             .min(2, "Nome inválido")
             .max(15, "Must be 15 characters or less")
-            .required("Campo obrigatório"),
+            .required("Campo obrigatório")
+            .trim("Nome inválido"),
         password: Yup.string()
             .min(2, "Senha inválida")
             .max(20, "Must be 20 characters or less")
-            .required("Campo obrigatório"),
+            .required("Campo obrigatório")
+            .trim("Senha inválida"),
     });
 
     const handleFormSubmit = async (values, { setSubmitting }) => {
@@ -53,76 +57,62 @@ function SignUp() {
                 validateOnBlur={false}
             >
                 {({ errors, isSubmitting }) => (
-                    <div className="w-full h-screen flex flex-col lg:flex-row justify-center items-center gap-32">
-                        <div className="min-w-[480px] flex flex-col justify-center items-center gap-10">
-                            <HealthImage />
+                    <div className="w-full h-full lg:h-screen flex flex-col lg:flex-row justify-center items-center lg:gap-32">
+                        <div className="h-full w-full flex flex-1 justify-center lg:justify-end items-center py-5 lg:p-0">
+                            <SignHeaderLayout imageSrc={healthImage} />
                         </div>
 
-                        <Form>
-                            <div className="min-w-[480px] flex justify-center items-center flex-col gap-8 p-10 bg-white rounded-lg shadow-lg">
-                                <div className="w-full mb-4">
-                                    <h4 className="text-3xl font-bold text-blue-900">
+                        <div className="h-full w-full flex flex-1 justify-center lg:justify-start items-center py-5 lg:p-0">
+                            <div className="max-w-3/4 lg:min-w-[480px] bg-white rounded-lg shadow-lg">
+                                <Form className="flex justify-center items-center flex-col gap-3 lg:gap-8 p-10">
+                                    <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">
                                         Crie sua conta
                                     </h4>
-                                </div>
 
-                                <div className="w-full flex flex-col">
-                                    <Field
-                                        as={NameField}
+                                    <FieldInput
                                         name="name"
                                         type="text"
-                                        error={!!errors.name}
+                                        fieldComponent={NameField}
+                                        hasError={!!errors.name}
                                     />
-                                    <span className="text-red-600">
-                                        <ErrorMessage name="name" />
-                                    </span>
-                                </div>
 
-                                <div className="w-full flex flex-col">
-                                    <Field
-                                        as={EmailField}
+                                    <FieldInput
                                         name="email"
                                         type="email"
-                                        error={!!errors.email}
+                                        fieldComponent={EmailField}
+                                        hasError={!!errors.email}
                                     />
-                                    <span className="text-red-600">
-                                        <ErrorMessage name="email" />
-                                    </span>
-                                </div>
 
-                                <div className="w-full flex flex-col">
-                                    <Field
-                                        as={PasswordField}
+                                    <FieldInput
                                         name="password"
                                         type="password"
-                                        error={!!errors.password}
+                                        fieldComponent={PasswordField}
+                                        hasError={!!errors.password}
                                     />
-                                    <span className="text-red-600">
-                                        <ErrorMessage name="password" />
-                                    </span>
-                                </div>
 
-                                <div className="w-full flex gap-2 flex-col">
-                                    <span>
-                                        {`Já possui conta? `}
-                                        <Link
-                                            className="text-blue-800 hover:text-blue-600 font-semibold"
-                                            to="/sign-in"
+                                    <div className="w-full flex gap-2 flex-col">
+                                        <span>
+                                            {`Já possui conta? `}
+                                            <Link
+                                                className="text-primaryMedium hover:text-primaryExtraLight font-semibold underline"
+                                                to="/sign-in"
+                                            >
+                                                Logar
+                                            </Link>
+                                        </span>
+
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            disabled={isSubmitting}
+                                            sx={{ width: "100%" }}
                                         >
-                                            Logar
-                                        </Link>
-                                    </span>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        disabled={isSubmitting}
-                                        sx={{ width: "100%" }}
-                                    >
-                                        Criar
-                                    </Button>
-                                </div>
+                                            Criar
+                                        </Button>
+                                    </div>
+                                </Form>
                             </div>
-                        </Form>
+                        </div>
                     </div>
                 )}
             </Formik>

@@ -59,7 +59,7 @@ function SignIn() {
                 validateOnBlur={false}
             >
                 {({ errors, isSubmitting }) => (
-                    <div className="w-full h-full lg:h-screen flex flex-col-reverse lg:flex-row justify-center items-center lg:gap-32">
+                    <div className="w-full h-full lg:h-screen flex flex-col-reverse lg:flex-row justify-center items-center lg:gap-28">
                         <div className="h-full w-full flex flex-1 justify-center lg:justify-end items-center py-5 lg:p-0">
                             <div className="max-w-3/4 lg:min-w-[480px] bg-white rounded-lg shadow-lg">
                                 <Form className="flex justify-center items-center flex-col gap-3 lg:gap-8 p-10">

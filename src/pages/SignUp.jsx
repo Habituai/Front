@@ -39,7 +39,11 @@ function SignUp() {
             await makeRequest("POST", host, { data: values });
             navigate("/sign-in");
         } catch (error) {
-            toast.error("Não foi possível criar a conta");
+            if (error.response.status === 422) {
+                toast.error("Email já cadastrado");
+            } else {
+                toast.error("Não foi possível criar a conta");
+            }
         } finally {
             setSubmitting(false);
         }
@@ -57,7 +61,7 @@ function SignUp() {
                 validateOnBlur={false}
             >
                 {({ errors, isSubmitting }) => (
-                    <div className="w-full h-full lg:h-screen flex flex-col lg:flex-row justify-center items-center lg:gap-32">
+                    <div className="w-full h-full lg:h-screen flex flex-col lg:flex-row justify-center items-center lg:gap-28">
                         <div className="h-full w-full flex flex-1 justify-center lg:justify-end items-center py-5 lg:p-0">
                             <SignHeaderLayout imageSrc={healthImage} />
                         </div>

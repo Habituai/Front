@@ -10,6 +10,21 @@ const theme = createTheme({
         primary: {
             main: "#183695",
         },
+        good: {
+            main: "#0ca31f",
+        },
+        bad: {
+            main: "#ff0000",
+        },
+        health: {
+            main: "#007d00",
+        },
+        study: {
+            main: "purple",
+        },
+        other: {
+            main: "#222",
+        },
     },
 });
 

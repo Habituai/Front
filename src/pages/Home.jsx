@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
     return (
-        <header className="w-full py-5 flex justify-center ">
+        <header className="w-full py-5 flex justify-center">
             <nav className="w-3/4 flex justify-between items-center">
                 <span className="text-6xl text-blue-900 font-bold">
                     Habituaí

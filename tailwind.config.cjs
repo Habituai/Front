@@ -14,6 +14,9 @@ module.exports = {
                 secondaryLight: "#0ca31f",
                 secondaryExtraLight: "#12b52f",
             },
+            fontFamily: {
+                poppins: ["Poppins", "sans-serif"],
+            },
         },
     },
     plugins: [],

@@ -24,10 +24,7 @@ function SignIn() {
         email: Yup.string()
             .email("Email inválido")
             .required("Campo obrigatório"),
-        password: Yup.string()
-            .min(2, "Senha inválida")
-            .max(20, "Must be 20 characters or less")
-            .required("Campo obrigatório"),
+        password: Yup.string().required("Campo obrigatório"),
     });
 
     const handleFormSubmit = async (values, { setSubmitting }) => {

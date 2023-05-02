@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import { Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import makeRequest from "../services/axios";
+import { makeRequest } from "../services/axios";
 import { useAuth } from "../hooks/useAuth";
 import toast, { Toaster } from "react-hot-toast";
 import EmailField from "../components/field/email";
@@ -31,10 +31,7 @@ function SignIn() {
         setSubmitting(true);
         try {
             const data = await makeRequest("POST", host, { data: values });
-            Cookies.set("token", data.token, {
-                expires: 7,
-                secure: true,
-            });
+            Cookies.set("token", data.token);
             setAuth(true);
             navigate("/");
         } catch (error) {

@@ -4,7 +4,7 @@ import error404Image from "../assets/images/404.svg";
 function Error404() {
     return (
         <div className="w-full h-screen flex flex-col justify-center items-center gap-10">
-            <h1 className="text-primaryDark font-bold text-3xl lg:text-5xl">
+            <h1 className="text-primaryDark font-bold text-3xl lg:text-5xl text-center">
                 Ué? Não existe essa página!
             </h1>
             <img

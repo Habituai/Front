@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import makeRequest from "../services/axios";
+import { makeRequestWithAuthorization } from "../services/axios";
 import { Button, Grid } from "@mui/material";
 import HabitCard from "../components/habitCard";
 import DayHabitTableLayout from "../components/layout/dayHabitTable";
@@ -32,7 +32,6 @@ function Dashboard() {
     };
 
     const [habits, setHabits] = useState([]);
-    console.log(habits);
 
     useEffect(() => {
         //ajustar lógica no duturo de acordo com o contrato com o back
@@ -57,7 +56,7 @@ function Dashboard() {
         }
 
         const getHabitsData = async () => {
-            const data = await makeRequest("GET", host);
+            const data = await makeRequestWithAuthorization("GET", host);
             setHabits(groupByDate(data));
         };
 

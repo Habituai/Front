@@ -6,7 +6,7 @@ import NameField from "../components/field/name";
 import EmailField from "../components/field/email";
 import PasswordField from "../components/field/password";
 import { Link, useNavigate } from "react-router-dom";
-import makeRequest from "../services/axios";
+import { makeRequest } from "../services/axios";
 import healthImage from "../assets/images/health.svg";
 import SignHeaderLayout from "../components/layout/signHeader";
 import FieldInput from "../components/layout/field";

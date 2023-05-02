@@ -4,13 +4,12 @@ import Cookies from "js-cookie";
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-    //consultar cookies e validar autenticidade
     const token = Cookies.get("token");
 
     const [auth, setAuth] = useState(!!token);
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth }}>
+        <AuthContext.Provider value={{ auth, setAuth, token }}>
             {children}
         </AuthContext.Provider>
     );

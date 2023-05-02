@@ -1,12 +1,13 @@
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
-export default async function makeRequest(
+const baseURL = import.meta.env.VITE_HOST_BACKEND;
+
+export async function makeRequest(
     method,
     url,
     { params = {}, data = {}, headers = {} } = {}
 ) {
-    const baseURL = import.meta.env.VITE_HOST_BACKEND;
-
     const response = await axios({
         method,
         baseURL,
@@ -20,4 +21,21 @@ export default async function makeRequest(
     });
 
     return response.data;
+}
+
+export async function makeRequestWithAuthorization(
+    method,
+    url,
+    { params = {}, data = {}, headers = {} } = {}
+) {
+    const { token } = useAuth();
+
+    return await makeRequest(method, url, {
+        params,
+        data,
+        headers: {
+            Authorization: token,
+            ...headers,
+        },
+    });
 }

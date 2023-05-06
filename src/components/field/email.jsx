@@ -1,3 +1,4 @@
+import * as Yup from "yup";
 import { TextField } from "@mui/material";
 
 export default function EmailField(props) {
@@ -11,3 +12,11 @@ export default function EmailField(props) {
         />
     );
 }
+
+export const emailYupValidations = () => {
+    return {
+        email: Yup.string()
+            .email("Email inválido")
+            .required("Campo obrigatório"),
+    };
+};

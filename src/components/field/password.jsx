@@ -11,3 +11,13 @@ export default function PasswordField(props) {
         />
     );
 }
+
+export const passwordYupValidations = () => {
+    return {
+        password: Yup.string()
+            .min(2, "Senha inválida")
+            .max(20, "Senha inválida")
+            .required("Campo obrigatório")
+            .trim("Senha inválida"),
+    };
+};

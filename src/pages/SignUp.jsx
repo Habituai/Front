@@ -2,9 +2,11 @@ import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import { Button } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
-import NameField from "../components/field/name";
-import EmailField from "../components/field/email";
-import PasswordField from "../components/field/password";
+import NameField, { nameYupValidations } from "../components/field/name";
+import EmailField, { emailYupValidations } from "../components/field/email";
+import PasswordField, {
+    passwordYupValidations,
+} from "../components/field/password";
 import { Link, useNavigate } from "react-router-dom";
 import { makeRequest } from "../services/axios";
 import healthImage from "../assets/images/health.svg";
@@ -18,19 +20,9 @@ function SignUp() {
     const formInitialValues = { name: "", password: "", email: "" };
 
     const handleValidationSchema = Yup.object().shape({
-        email: Yup.string()
-            .email("Email inválido")
-            .required("Campo obrigatório"),
-        name: Yup.string()
-            .min(2, "Nome inválido")
-            .max(15, "Must be 15 characters or less")
-            .required("Campo obrigatório")
-            .trim("Nome inválido"),
-        password: Yup.string()
-            .min(2, "Senha inválida")
-            .max(20, "Must be 20 characters or less")
-            .required("Campo obrigatório")
-            .trim("Senha inválida"),
+        ...emailYupValidations,
+        ...nameYupValidations,
+        ...passwordYupValidations,
     });
 
     const handleFormSubmit = async (values, { setSubmitting }) => {

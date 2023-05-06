@@ -5,8 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { makeRequest } from "../services/axios";
 import { useAuth } from "../hooks/useAuth";
 import toast, { Toaster } from "react-hot-toast";
-import EmailField from "../components/field/email";
-import PasswordField from "../components/field/password";
+import EmailField, { emailYupValidations } from "../components/field/email";
+import PasswordField, {
+    passwordYupValidations,
+} from "../components/field/password";
 import studyImage from "../assets/images/study.svg";
 import Cookies from "js-cookie";
 import SignHeaderLayout from "../components/layout/signHeader";
@@ -21,10 +23,8 @@ function SignIn() {
     const formInitialValues = { email: "", password: "" };
 
     const handleValidationSchema = Yup.object().shape({
-        email: Yup.string()
-            .email("Email inválido")
-            .required("Campo obrigatório"),
-        password: Yup.string().required("Campo obrigatório"),
+        ...emailYupValidations,
+        ...passwordYupValidations,
     });
 
     const handleFormSubmit = async (values, { setSubmitting }) => {

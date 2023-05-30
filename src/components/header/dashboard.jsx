@@ -1,7 +1,7 @@
-import { Menu, MenuItem } from "@mui/material";
-import { useState } from "react";
-import Cookies from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { Menu, MenuItem } from "@mui/material";
+import Cookies from "js-cookie";
+import { useState } from "react";
 
 export default function DashboardHeader({ name, xp }) {
     const [anchorEl, setAnchorEl] = useState(null);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useAuth } from "../hooks/useAuth";
+import Cookies from "js-cookie";
 
 const baseURL = import.meta.env.VITE_HOST_BACKEND;
 
@@ -28,7 +28,7 @@ export async function makeRequestWithAuthorization(
     url,
     { params = {}, data = {}, headers = {} } = {}
 ) {
-    const { token } = useAuth();
+    const token = Cookies.get("token");
 
     return await makeRequest(method, url, {
         params,

@@ -1,17 +1,17 @@
-import * as Yup from "yup";
-import { Form, Formik } from "formik";
 import { Button } from "@mui/material";
+import { Form, Formik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
-import NameField, { nameYupValidations } from "../components/field/name";
+import { Link, useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import healthImage from "../assets/images/health.svg";
 import EmailField, { emailYupValidations } from "../components/field/email";
+import NameField, { nameYupValidations } from "../components/field/name";
 import PasswordField, {
     passwordYupValidations,
 } from "../components/field/password";
-import { Link, useNavigate } from "react-router-dom";
-import { makeRequest } from "../services/axios";
-import healthImage from "../assets/images/health.svg";
-import SignHeaderLayout from "../components/layout/signHeader";
 import FieldInput from "../components/layout/field";
+import SignHeaderLayout from "../components/layout/signHeader";
+import { makeRequest } from "../services/makeRequest";
 
 function SignUp() {
     const navigate = useNavigate();

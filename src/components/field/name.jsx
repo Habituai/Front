@@ -1,4 +1,5 @@
 import { TextField } from "@mui/material";
+import * as Yup from "yup";
 
 export default function NameField(props) {
     return (

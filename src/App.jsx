@@ -1,11 +1,11 @@
-import "./styles/global.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
-import Home from "./pages/Home";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
-import Dashboard from "./pages/Dashboard";
 import Error404 from "./pages/404";
+import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import "./styles/global.css";
 
 function App() {
     const { auth } = useAuth();

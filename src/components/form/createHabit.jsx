@@ -34,22 +34,23 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
         name: "",
         classification: "",
         category: "",
-        dateCreation: new Date().toISOString().split("T")[0],
-        weightExperience: "10", // feature futura
+        dateCreation: new Date().toISOString(),
+        //weightExperience: "10"  feature futura
     });
 
     const handleWeekDays = (event) => {
         const { value, checked } = event.target;
+        const formatValue = Number(value);
 
         if (!checked) {
             const newWeekDayList = weekDays.filter(
-                (number) => number !== value
+                (number) => number !== formatValue
             );
             setWeekDays(newWeekDayList);
             return;
         }
 
-        setWeekDays([...weekDays, value]);
+        setWeekDays([...weekDays, formatValue]);
     };
 
     const handleChangeValues = (event) => {
@@ -99,11 +100,18 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
                 return;
             }
 
-            await makeRequestWithAuthorization("POST", host, {
-                data: { ...formValues, weekDays },
-            });
+            const data = {
+                habit: {
+                    ...formValues,
+                    category: { id: formValues.category },
+                },
+                dayWeekList: weekDays,
+            };
 
-            setOpenCreateHabitModal(false);
+            await makeRequestWithAuthorization("POST", host, { data });
+
+            console.log(data);
+            // setOpenCreateHabitModal(false);
             toast.success("Hábito criado!");
         } catch (error) {
             toast.error("Não foi possível criar o hábito");
@@ -148,12 +156,12 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
                             onChange={handleChangeValues}
                         >
                             <FormControlLabel
-                                value="good"
+                                value="bom"
                                 label="Bom"
                                 control={<Radio />}
                             />
                             <FormControlLabel
-                                value="bad"
+                                value="ruim"
                                 label="Ruim"
                                 control={<Radio />}
                             />
@@ -173,22 +181,22 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
                             onChange={handleChangeValues}
                         >
                             <FormControlLabel
-                                value="health"
+                                value={1}
                                 label="Saúde"
                                 control={<Radio />}
                             />
                             <FormControlLabel
-                                value="study"
-                                label="Estudo"
+                                value={2}
+                                label="Educação"
                                 control={<Radio />}
                             />
                             <FormControlLabel
-                                value="leisure"
+                                value={3}
                                 label="Lazer"
                                 control={<Radio />}
                             />
                             <FormControlLabel
-                                value="other"
+                                value={4}
                                 label="Outro"
                                 control={<Radio />}
                             />

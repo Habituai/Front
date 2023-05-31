@@ -110,8 +110,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
 
             await makeRequestWithAuthorization("POST", host, { data });
 
-            console.log(data);
-            // setOpenCreateHabitModal(false);
+            setOpenCreateHabitModal(false);
             toast.success("Hábito criado!");
         } catch (error) {
             toast.error("Não foi possível criar o hábito");

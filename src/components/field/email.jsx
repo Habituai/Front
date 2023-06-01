@@ -13,10 +13,6 @@ export default function EmailField(props) {
     );
 }
 
-export const emailYupValidations = () => {
-    return {
-        email: Yup.string()
-            .email("Email inválido")
-            .required("Campo obrigatório"),
-    };
+export const emailYupValidations = {
+    email: Yup.string().email("Email inválido").required("Campo obrigatório"),
 };

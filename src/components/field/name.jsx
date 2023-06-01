@@ -12,12 +12,10 @@ export default function NameField(props) {
     );
 }
 
-export const nameYupValidations = () => {
-    return {
-        name: Yup.string()
-            .min(2, "Nome inválido")
-            .max(15, "Nome inválido")
-            .required("Campo obrigatório")
-            .trim("Nome inválido"),
-    };
+export const nameYupValidations = {
+    name: Yup.string()
+        .min(2, "Nome inválido")
+        .max(15, "Nome inválido")
+        .required("Campo obrigatório")
+        .trim("Nome inválido"),
 };

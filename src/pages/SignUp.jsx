@@ -15,7 +15,7 @@ import { makeRequest } from "../services/makeRequest";
 
 function SignUp() {
     const navigate = useNavigate();
-    const host = import.meta.env.VITE_SIGN_UP_PATH;
+    const host = import.meta.env.VITE_USER_PATH;
 
     const formInitialValues = { name: "", password: "", email: "" };
 

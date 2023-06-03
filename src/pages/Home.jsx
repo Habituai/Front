@@ -22,12 +22,12 @@ function Home() {
 
                 <nav className="flex justify-between items-center gap-8">
                     <Link to="/sign-up">
-                        <Button variant="contained" color="good" size="large">
+                        <Button variant="contained" color="bom" size="large">
                             Crie sua conta
                         </Button>
                     </Link>
                     <Link to="/sign-in">
-                        <Button variant="outlined" color="good" size="large">
+                        <Button variant="outlined" color="bom" size="large">
                             Já possuo conta
                         </Button>
                     </Link>
@@ -42,7 +42,11 @@ function Home() {
 
                     <p className="text-gray-300 text-xl">
                         Com o Habituaí você pode gerenciar e organizar uma
-                        semana completa de hábitos
+                        semana completa de hábitos. Garantindo:
+                        <ul>
+                            <li>- Organização em um único ponto</li>
+                            <li>- Histórico de progresso</li>
+                        </ul>
                     </p>
                 </div>
 

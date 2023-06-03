@@ -1,9 +1,18 @@
+import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
+import { format, parseISO } from "date-fns";
 import Cookies from "js-cookie";
 import { useState } from "react";
 
-export default function DashboardHeader({ name, xp, setOpenEditUserModal }) {
+export default function DashboardHeader({
+    name,
+    xp,
+    weekDaysList,
+    setOpenCreateHabitModal,
+    setOpenEditUserModal,
+}) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -24,15 +33,45 @@ export default function DashboardHeader({ name, xp, setOpenEditUserModal }) {
     };
 
     return (
-        <header className="w-full py-5 flex justify-center bg-primaryDark">
-            <nav className="w-full flex items-center px-8">
-                <span className="flex flex-1 text-4xl text-secondaryExtraLight font-bold">
+        <header className="w-full py-6 px-32 flex justify-center bg-primaryDark shadow-xl">
+            <nav className="w-full flex items-center">
+                <span className="flex flex-1 text-5xl text-secondaryExtraLight font-bold">
                     Habituaí
                 </span>
 
-                <span className="flex-none text-5xl font-bold text-white">
-                    Semana de Hábitos
-                </span>
+                <div className="flex flex-none justify-center items-center gap-8">
+                    <div className="flex items-center justify-center gap-2 text-white">
+                        <ArrowCircleLeftIcon
+                            color="secondary"
+                            fontSize="large"
+                            className="cursor-pointer"
+                        />
+                        <span className="text-xl">
+                            {`${format(
+                                parseISO(weekDaysList[0]),
+                                "dd/MM"
+                            )} - ${format(
+                                parseISO(weekDaysList[weekDaysList.length - 1]),
+                                "dd/MM"
+                            )}`}
+                        </span>
+
+                        <ArrowCircleRightIcon
+                            color="secondary"
+                            fontSize="large"
+                            className="cursor-pointer"
+                        />
+                    </div>
+
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        size="large"
+                        onClick={() => setOpenCreateHabitModal(true)}
+                    >
+                        CRIAR NOVO HÁBITO
+                    </Button>
+                </div>
 
                 <div className="flex flex-1 justify-end items-center gap-6 text-white text-xl">
                     <span>

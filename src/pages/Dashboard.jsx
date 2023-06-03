@@ -1,7 +1,5 @@
-import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import { Button, Grid } from "@mui/material";
-import { addDays, format, formatISO, parseISO, startOfWeek } from "date-fns";
+import { Grid } from "@mui/material";
+import { addDays, formatISO, startOfWeek } from "date-fns";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import HabitCard from "../components/card/habit";
@@ -97,42 +95,15 @@ function Dashboard() {
             <DashboardHeader
                 name={userData.name}
                 xp={userData.xp}
+                weekDaysList={weekDaysList}
+                setOpenCreateHabitModal={setOpenCreateHabitModal}
                 setOpenEditUserModal={setOpenEditUserModal}
             />
 
-            <div className="w-full pt-8 pb-6 flex justify-center bg-primaryDark shadow-xl">
-                <div className="w-full flex justify-end items-center gap-10 px-8">
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        size="large"
-                        onClick={() => setOpenCreateHabitModal(true)}
-                    >
-                        CRIAR NOVO HÁBITO
-                    </Button>
-                    <div className="flex items-center justify-center gap-2 text-white">
-                        <ArrowCircleLeftIcon
-                            color="secondary"
-                            fontSize="large"
-                            className="cursor-pointer"
-                        />
-                        <span className="text-xl">
-                            {`${format(
-                                parseISO(weekDaysList[0]),
-                                "dd/MM"
-                            )} - ${format(
-                                parseISO(weekDaysList[weekDaysList.length - 1]),
-                                "dd/MM"
-                            )}`}
-                        </span>
-
-                        <ArrowCircleRightIcon
-                            color="secondary"
-                            fontSize="large"
-                            className="cursor-pointer"
-                        />
-                    </div>
-                </div>
+            <div className="w-full pt-8 pb-6 flex justify-center">
+                <h1 className="flex-none text-5xl font-bold text-primaryDark">
+                    Semana de Hábitos
+                </h1>
             </div>
 
             <div className="w-full h-full pt-4 px-4">

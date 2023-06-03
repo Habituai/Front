@@ -73,7 +73,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
             setFieldError(isEmpty);
             return isEmpty;
         };
-        console.log(weekDays);
+
         if (validateEmptyField("name", setNameHasError)) hasError = true;
 
         if (validateEmptyField("classification", setClassificationHasError))
@@ -225,26 +225,26 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
                 </div>
             </div>
 
-            <div className="w-full mt-8 flex gap-10">
-                <Button
-                    variant="outlined"
-                    color="bad"
-                    disabled={isLoading}
-                    sx={{ width: "40%" }}
-                    size="large"
-                    onClick={() => setOpenCreateHabitModal(false)}
-                >
-                    Voltar
-                </Button>
-
+            <div className="w-full mt-8 flex lg:gap-10 gap-4 lg:flex-row flex-col">
                 <Button
                     variant="contained"
                     disabled={isLoading}
-                    sx={{ width: "60%" }}
+                    sx={{ width: "100%" }}
                     size="large"
                     type="submit"
                 >
                     Criar
+                </Button>
+
+                <Button
+                    variant="outlined"
+                    color="ruim"
+                    disabled={isLoading}
+                    sx={{ width: "100%" }}
+                    size="large"
+                    onClick={() => setOpenCreateHabitModal(false)}
+                >
+                    Voltar
                 </Button>
             </div>
         </form>

@@ -29,8 +29,7 @@ export default function EditUserForm({ setOpenEditUserModal, userData }) {
         setSubmitting(true);
         try {
             await makeRequestWithAuthorization("POST", host, { data: values });
-            setOpenEditUserModal(false);
-            toast.success("Hábito criado!");
+            toast.success("Seus dados foram editados com sucesso!");
         } catch (error) {
             toast.error("Não foi possível editar seus dados");
             console.error(error);

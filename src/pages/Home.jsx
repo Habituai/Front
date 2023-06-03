@@ -35,19 +35,20 @@ function Home() {
             </header>
 
             <div className="w-full h-full flex justify-center items-center">
-                <div className="w-full flex flex-1 flex-col gap-12">
-                    <h3 className="text-secondaryExtraLight font-bold text-7xl">
+                <div className="w-full flex flex-1 flex-col">
+                    <h3 className="text-secondaryExtraLight font-bold text-7xl mb-12">
                         QUER CRIAR NOVOS HÁBITOS?
                     </h3>
 
                     <p className="text-gray-300 text-xl">
                         Com o Habituaí você pode gerenciar e organizar uma
                         semana completa de hábitos. Garantindo:
-                        <ul>
-                            <li>- Organização em um único ponto</li>
-                            <li>- Histórico de progresso</li>
-                        </ul>
                     </p>
+
+                    <ul className="text-gray-300 text-xl">
+                        <li>- Organização em um único ponto</li>
+                        <li>- Histórico de progresso</li>
+                    </ul>
                 </div>
 
                 <div className="w-full flex flex-1 flex-col">

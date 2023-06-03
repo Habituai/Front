@@ -8,6 +8,7 @@ import HabitCard from "../components/card/habit";
 import DashboardHeader from "../components/header/dashboard";
 import DayHabitTableLayout from "../components/layout/dayHabitTable";
 import CreateHabitModal from "../components/modal/createHabit";
+import DeleteHabitModal from "../components/modal/deleteHabit";
 import EditUserModal from "../components/modal/editUser";
 import { useAuth } from "../hooks/useAuth";
 import {
@@ -15,8 +16,8 @@ import {
     makeRequestWithAuthorization,
 } from "../services/makeRequest";
 
-const getWeekDaysList = (today) => {
-    const firstDayOfWeek = startOfWeek(today, { weekStartsOn: 1 });
+const getWeekDaysList = (referenceDay) => {
+    const firstDayOfWeek = startOfWeek(referenceDay, { weekStartsOn: 1 });
 
     const list = [];
     list.push(firstDayOfWeek);
@@ -46,6 +47,7 @@ function Dashboard() {
 
     const [openCreateHabitModal, setOpenCreateHabitModal] = useState(false);
     const [openEditUserModal, setOpenEditUserModal] = useState(false);
+    const [habitToBeDeleted, setHabitToBeDeleted] = useState(false);
 
     const handleGetUserData = async () => {
         const data = await makeRequest("POST", userHost, {
@@ -78,14 +80,18 @@ function Dashboard() {
         <>
             <Toaster position="top-center" reverseOrder={false} />
 
-            <CreateHabitModal
-                openModal={openCreateHabitModal}
-                setOpenModal={setOpenCreateHabitModal}
-            />
             <EditUserModal
                 openModal={openEditUserModal}
                 setOpenModal={setOpenEditUserModal}
                 userData={userData}
+            />
+            <CreateHabitModal
+                openModal={openCreateHabitModal}
+                setOpenModal={setOpenCreateHabitModal}
+            />
+            <DeleteHabitModal
+                openModal={habitToBeDeleted}
+                setOpenModal={setHabitToBeDeleted}
             />
 
             <DashboardHeader
@@ -170,6 +176,9 @@ function Dashboard() {
                                                           conclusionDate
                                                       }
                                                       weekDay={index + 1}
+                                                      setHabitToBeDeleted={
+                                                          setHabitToBeDeleted
+                                                      }
                                                   />
                                               )
                                           )

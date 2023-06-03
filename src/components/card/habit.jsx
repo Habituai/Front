@@ -14,6 +14,7 @@ export default function HabitCard({
     date,
     conclusionDate = "",
     weekDay,
+    setHabitToBeDeleted,
 }) {
     const habitsHost = import.meta.env.VITE_HABITS_PATH;
 
@@ -24,6 +25,11 @@ export default function HabitCard({
 
     const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
     const handleCloseMenu = () => setAnchorEl(null);
+
+    const handleDeleteHabit = () => {
+        setHabitToBeDeleted({ id, name });
+        handleCloseMenu();
+    };
 
     const styleMap = (category) => {
         const categories = {
@@ -91,7 +97,7 @@ export default function HabitCard({
                             Editar
                         </MenuItem>
                         <MenuItem
-                            onClick={handleCloseMenu}
+                            onClick={handleDeleteHabit}
                             className="flex items-center gap-2"
                         >
                             <DeleteIcon color={category} />

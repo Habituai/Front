@@ -3,7 +3,7 @@ import { Menu, MenuItem } from "@mui/material";
 import Cookies from "js-cookie";
 import { useState } from "react";
 
-export default function DashboardHeader({ name, xp }) {
+export default function DashboardHeader({ name, xp, setOpenEditUserModal }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -18,18 +18,33 @@ export default function DashboardHeader({ name, xp }) {
 
     const getLevelByXP = (xp) => Math.ceil(xp / 100);
 
+    const handleAccountData = () => {
+        setOpenEditUserModal(true);
+        handleCloseMenu();
+    };
+
     return (
-        <header className="w-full py-5 flex justify-center">
-            <nav className="w-3/4 flex justify-between items-center">
-                <span className="text-6xl text-blue-900 font-bold">
-                    Habituaí - Semana de Hábitos
+        <header className="w-full py-5 flex justify-center bg-primaryDark">
+            <nav className="w-full flex items-center px-8">
+                <span className="flex flex-1 text-4xl text-secondaryExtraLight font-bold">
+                    Habituaí
                 </span>
-                <div className="flex justify-between items-center gap-8">
-                    <span>{`${xp}xp`}</span>
+
+                <span className="flex-none text-5xl font-bold text-white">
+                    Semana de Hábitos
+                </span>
+
+                <div className="flex flex-1 justify-end items-center gap-6 text-white text-xl">
+                    <span>
+                        {`${xp} `}
+                        <span className="text-yellow-400 font-bold">xp</span>
+                    </span>
+                    <span className="text-secondaryExtraLight font-bold">{`-`}</span>
                     <span>{`Nível ${getLevelByXP(xp)}`}</span>
+                    <span className="text-secondaryExtraLight font-bold">{`|`}</span>
                     <button
                         onClick={handleOpenMenu}
-                        className="flex items-center"
+                        className="flex items-center font-bold"
                     >
                         {name.toUpperCase()} <ArrowDropDownIcon />
                     </button>
@@ -41,10 +56,10 @@ export default function DashboardHeader({ name, xp }) {
                         <MenuItem onClick={handleCloseMenu}>
                             Gerar relatório de progresso
                         </MenuItem>
-                        <MenuItem onClick={handleCloseMenu}>
+                        <MenuItem onClick={handleAccountData}>
                             Meu perfil
                         </MenuItem>
-                        <MenuItem onClick={handleLogout}>Deslogar</MenuItem>
+                        <MenuItem onClick={handleLogout}>Sair</MenuItem>
                     </Menu>
                 </div>
             </nav>

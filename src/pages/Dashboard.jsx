@@ -1,16 +1,19 @@
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { Button, Grid } from "@mui/material";
-import { addDays, format, parseISO, startOfWeek } from "date-fns";
-import pt from "date-fns/locale/pt";
+import { addDays, format, formatISO, parseISO, startOfWeek } from "date-fns";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import CreateHabitForm from "../components/form/createHabit";
-import HabitCard from "../components/habitCard";
+import HabitCard from "../components/card/habit";
 import DashboardHeader from "../components/header/dashboard";
 import DayHabitTableLayout from "../components/layout/dayHabitTable";
-import BaseModal from "../components/layout/modal";
-import { makeRequestWithAuthorization } from "../services/makeRequest";
+import CreateHabitModal from "../components/modal/createHabit";
+import EditUserModal from "../components/modal/editUser";
+import { useAuth } from "../hooks/useAuth";
+import {
+    makeRequest,
+    makeRequestWithAuthorization,
+} from "../services/makeRequest";
 
 const getWeekDaysList = (today) => {
     const firstDayOfWeek = startOfWeek(today, { weekStartsOn: 1 });
@@ -22,42 +25,48 @@ const getWeekDaysList = (today) => {
         list.push(addDays(firstDayOfWeek, i));
     }
 
-    return list.map((day) => format(day, "yyyy-MM-dd"));
+    //TODO: arrumar as datas no mock
+    return list.map((day) => formatISO(day).split("-03:00")[0]);
 };
 
 function Dashboard() {
-    const host = import.meta.env.VITE_HABITS_PATH;
+    const userHost = import.meta.env.VITE_USER_AUTHENTICATION_PATH;
+    const habitsHost = import.meta.env.VITE_HABITS_PATH;
+    const { token } = useAuth();
 
     const weekDaysBaseList = getWeekDaysList(new Date());
     const [weekDaysList, setWeekDaysList] = useState(weekDaysBaseList);
 
-    const [userData, setUserData] = useState({ name: "Bruno", xp: 123 });
+    const [userData, setUserData] = useState({
+        name: "",
+        email: "",
+        xp: 0,
+    });
     const [habitList, setHabitList] = useState([]);
 
     const [openCreateHabitModal, setOpenCreateHabitModal] = useState(false);
+    const [openEditUserModal, setOpenEditUserModal] = useState(false);
 
-    //Sempre buscar os dados do usuário ao entrar
+    const handleGetUserData = async () => {
+        const data = await makeRequest("POST", userHost, {
+            data: { token },
+        });
+        setUserData(data);
+    };
+
+    const getHabitsData = async () => {
+        const data = await makeRequestWithAuthorization("GET", habitsHost, {
+            data: weekDaysList,
+        });
+        setHabitList(data.dayList);
+    };
+
+    // Sempre buscar os dados do usuário ao entrar e ao atualizar hábitos
     useEffect(() => {
-        // const handleGetUserData = async () => {
-        //     const host = import.meta.env.VITE_USER_AUTHENTICATION_PATH;
-        //     const response = await makeRequest("POST", host, {
-        //         data: { token },
-        //     });
-        //     console.log(response.data);
-        //     setUserData(response.data);
-        // };
-        // handleGetUserData().catch((error) => {
-        //     console.log(error);
-        //     console.error("Não foi possível pegar os dados do usuário.");
-        // });
-    }, []);
-
-    useEffect(() => {
-        const getHabitsData = async () => {
-            const data = await makeRequestWithAuthorization("GET", host);
-
-            setHabitList(data);
-        };
+        handleGetUserData().catch((error) => {
+            console.log(error);
+            console.error("Não foi possível pegar os dados do usuário.");
+        });
 
         getHabitsData().catch((error) => {
             console.error(error);
@@ -69,62 +78,77 @@ function Dashboard() {
         <>
             <Toaster position="top-center" reverseOrder={false} />
 
-            <BaseModal
-                open={openCreateHabitModal}
-                setOpen={setOpenCreateHabitModal}
-            >
-                <CreateHabitForm
-                    setOpenCreateHabitModal={setOpenCreateHabitModal}
-                />
-            </BaseModal>
+            <CreateHabitModal
+                openModal={openCreateHabitModal}
+                setOpenModal={setOpenCreateHabitModal}
+            />
+            <EditUserModal
+                openModal={openEditUserModal}
+                setOpenModal={setOpenEditUserModal}
+                userData={userData}
+            />
 
-            <DashboardHeader name={userData.name} xp={userData.xp} />
+            <DashboardHeader
+                name={userData.name}
+                xp={userData.xp}
+                setOpenEditUserModal={setOpenEditUserModal}
+            />
 
-            <div className="w-full py-5 flex justify-center">
-                <div className="w-3/4 flex justify-between items-center">
+            <div className="w-full pt-8 pb-6 flex justify-center bg-primaryDark shadow-xl">
+                <div className="w-full flex justify-end items-center gap-10 px-8">
                     <Button
                         variant="contained"
+                        color="secondary"
+                        size="large"
                         onClick={() => setOpenCreateHabitModal(true)}
                     >
                         CRIAR NOVO HÁBITO
                     </Button>
-                    <div className="flex items-center justify-center gap-2">
-                        <ArrowCircleLeftIcon color="primary" />
-                        {`${format(
-                            parseISO(weekDaysList[0]),
-                            "dd/MM"
-                        )} - ${format(
-                            parseISO(weekDaysList[weekDaysList.length - 1]),
-                            "dd/MM"
-                        )}`}
-                        <ArrowCircleRightIcon color="primary" />
+                    <div className="flex items-center justify-center gap-2 text-white">
+                        <ArrowCircleLeftIcon
+                            color="secondary"
+                            fontSize="large"
+                            className="cursor-pointer"
+                        />
+                        <span className="text-xl">
+                            {`${format(
+                                parseISO(weekDaysList[0]),
+                                "dd/MM"
+                            )} - ${format(
+                                parseISO(weekDaysList[weekDaysList.length - 1]),
+                                "dd/MM"
+                            )}`}
+                        </span>
+
+                        <ArrowCircleRightIcon
+                            color="secondary"
+                            fontSize="large"
+                            className="cursor-pointer"
+                        />
                     </div>
                 </div>
             </div>
 
-            <div className="w-full pt-12 px-4">
+            <div className="w-full h-full pt-4 px-4">
                 <Grid
                     container
-                    className="flex flex-wrap justify-end items-start"
+                    className="w-full h-full flex flex-wrap justify-end items-start"
                 >
                     {weekDaysList?.length > 0 &&
                         !!habitList &&
-                        weekDaysList.map((date) => {
-                            const habits = habitList[date];
+                        weekDaysList.map((date, index) => {
+                            const habits =
+                                habitList.find(
+                                    (dayHabit) => dayHabit.date === date
+                                )?.habit ?? [];
+
                             return (
-                                <DayHabitTableLayout
-                                    key={date}
-                                    date={format(parseISO(date), "dd/MM/yyyy")}
-                                    dateName={format(parseISO(date), "EEE", {
-                                        locale: pt,
-                                    })}
-                                >
+                                <DayHabitTableLayout key={date} date={date}>
                                     {habits?.length > 0
                                         ? habits?.map(
                                               ({
                                                   id,
                                                   name,
-                                                  done,
                                                   category,
                                                   classification,
                                                   weightExperience,
@@ -133,8 +157,7 @@ function Dashboard() {
                                                   <HabitCard
                                                       key={id}
                                                       id={id}
-                                                      title={name}
-                                                      done={done}
+                                                      name={name}
                                                       category={category}
                                                       classification={
                                                           classification
@@ -146,6 +169,7 @@ function Dashboard() {
                                                       conclusionDate={
                                                           conclusionDate
                                                       }
+                                                      weekDay={index + 1}
                                                   />
                                               )
                                           )

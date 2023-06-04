@@ -15,19 +15,29 @@ export default function DayHabitTableLayout({ children, date }) {
             xs={12}
             sm={6}
             lg={2}
-            className={`p-8 ${today ? "bg-blue-100" : ""}`}
+            className={`p-8 ${today ? "bg-green-50" : ""}`}
         >
             <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between">
-                    <span className={`text-primaryDark text-2xl font-bold`}>
+                    <span
+                        className={`${
+                            today ? "text-secondaryDark" : "text-primaryDark"
+                        } text-2xl font-bold`}
+                    >
                         {today ? "Hoje" : formattedDay}
                     </span>
-                    <span className={`text-primaryDark text-lg font-semibold`}>
+                    <span
+                        className={`${
+                            today ? "text-secondaryDark" : "text-primaryDark"
+                        } text-lg font-semibold`}
+                    >
                         {dateName}
                     </span>
                 </div>
                 <div
-                    className={`w-full bg-primaryDark h-1 rounded-full mb-3`}
+                    className={`w-full ${
+                        today ? "bg-secondaryDark" : "bg-primaryDark"
+                    }  h-1 rounded-full mb-3`}
                 />
                 <div className="flex flex-col items-center gap-1">
                     {children}

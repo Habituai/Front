@@ -9,7 +9,7 @@ module.exports = {
                 primaryMedium: "#183695",
                 primaryLight: "#3046a7",
                 primaryExtraLight: "#4855ba",
-                secondaryDark: "#007d00",
+                secondaryDark: "#006d00",
                 secondaryMedium: "#069010",
                 secondaryLight: "#0ca31f",
                 secondaryExtraLight: "#12b52f",

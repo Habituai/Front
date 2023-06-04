@@ -5,8 +5,7 @@ export default function SignHeaderLayout({ imageSrc }) {
         "Não perca tempo e comece a ser uma pessoa melhor",
         "Não deixe para amanhã o que você pode fazer hoje",
         "Seja hoje melhor que ontem, e amanhã supere quem foi hoje",
-        "Você só vai vencer amanhã, se não desistir hoje",
-        "Você só vai vencer amanhã, se não desistir hoje",
+        "Você só vai vencer amanhã se não desistir hoje",
         "Não tenha medo de crescer devagar, tenha medo somente de ficar parado",
         "Já pensou que você já superou muitas dificuldades até aqui?",
         "Mesmo que a jornada seja lenta, abrir mão não acelera",
@@ -19,7 +18,7 @@ export default function SignHeaderLayout({ imageSrc }) {
 
     return (
         <div className="w-3/4 flex flex-col justify-center items-center gap-6 lg:gap-10">
-            <h1 className="text-5xl text-primaryDark font-bold">Habituaí</h1>
+            <h1 className="text-5xl text-secondaryDark font-bold">Habituaí</h1>
 
             <img
                 src={imageSrc}

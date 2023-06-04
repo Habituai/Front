@@ -1,6 +1,10 @@
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
 import EditIcon from "@mui/icons-material/Edit";
+import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import WeekendIcon from "@mui/icons-material/Weekend";
 import { Checkbox, IconButton, Menu, MenuItem } from "@mui/material";
 import { isToday, parseISO } from "date-fns";
 import { useState } from "react";
@@ -34,15 +38,29 @@ export default function HabitCard({
         handleCloseMenu();
     };
 
-    const styleMap = (category) => {
+    const styleMap = () => {
+        if (classification === "ruim") return "border-red-600";
+
         const categories = {
-            saude: "border-green-900",
+            saude: "border-green-700",
             estudo: "border-purple-900",
-            ruim: "border-red-900",
-            outro: "border-gray-800",
+            lazer: "border-blue-700",
         };
 
-        return categories[category] || "";
+        return categories[category] || "border-gray-800";
+    };
+
+    const handleIcon = () => {
+        if (classification === "ruim")
+            return <DoDisturbAltIcon color={classification} />;
+
+        const categories = {
+            saude: <HealthAndSafetyIcon color={category} />,
+            estudo: <MenuBookIcon color={category} />,
+            lazer: <WeekendIcon color={category} />,
+        };
+
+        return categories[category] || null;
     };
 
     const handleUpdateCheck = async () => {
@@ -67,23 +85,29 @@ export default function HabitCard({
 
     return (
         <div
-            className={`w-full rounded-sm p-2 border-2 bg-white ${styleMap(
+            className={`w-full rounded-lg p-2 border-2 bg-white shadow-md ${styleMap(
                 category
             )} `}
         >
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1">
+            <div className="flex items-center justify-between gap-1">
+                <div className="flex items-center gap-2">
                     <Checkbox
                         defaultChecked={!!conclusionDate}
                         disabled={!isToday(parseISO(date)) || isLoading}
                         size="medium"
                         onChange={changeCheckbox}
-                        color={classification}
+                        color={
+                            classification === "ruim"
+                                ? classification
+                                : category
+                        }
                     />
                     <span>{name}</span>
                 </div>
 
-                <div className="flex items-center justify-end gap-1">
+                <div className="flex items-center gap-1">
+                    {handleIcon()}
+
                     <IconButton onClick={handleOpenMenu} size="small">
                         <MoreVertIcon className="text-black" />
                     </IconButton>
@@ -97,14 +121,14 @@ export default function HabitCard({
                             onClick={handleCloseMenu}
                             className="flex items-center gap-2"
                         >
-                            <EditIcon color={category} />
+                            <EditIcon />
                             Editar
                         </MenuItem>
                         <MenuItem
                             onClick={handleDeleteHabit}
                             className="flex items-center gap-2"
                         >
-                            <DeleteIcon color={category} />
+                            <DeleteIcon />
                             Excluir
                         </MenuItem>
                     </Menu>

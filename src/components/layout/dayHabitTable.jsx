@@ -15,7 +15,7 @@ export default function DayHabitTableLayout({ children, date }) {
             xs={12}
             sm={6}
             lg={2}
-            className={`p-8 ${today ? "bg-green-50" : ""}`}
+            className={`p-6 rounded-3xl ${today ? "bg-green-50" : ""}`}
         >
             <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between">
@@ -39,7 +39,7 @@ export default function DayHabitTableLayout({ children, date }) {
                         today ? "bg-secondaryDark" : "bg-primaryDark"
                     }  h-1 rounded-full mb-3`}
                 />
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-4">
                     {children}
                 </div>
             </div>

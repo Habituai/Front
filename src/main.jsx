@@ -18,6 +18,7 @@ const theme = createTheme({
         ruim: createColor("#ff0000"),
         saude: createColor("#007d00"),
         estudo: createColor("#430054"),
+        lazer: createColor("#081fca"),
         outro: createColor("#222"),
     },
 });

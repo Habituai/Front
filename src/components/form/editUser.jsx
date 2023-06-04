@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { Form, Formik } from "formik";
 import { toast } from "react-hot-toast";
 import * as Yup from "yup";
+import { useUpdateUser } from "../../hooks/useUpdateUser";
 import EmailField, { emailYupValidations } from "../field/email";
 import NameField, { nameYupValidations } from "../field/name";
 import PasswordField from "../field/password";
@@ -9,6 +10,8 @@ import FieldInput from "../layout/field";
 
 export default function EditUserForm({ setOpenEditUserModal, userData }) {
     const host = import.meta.env.VITE_USER_PATH;
+
+    const { setUserHasUpdate } = useUpdateUser();
 
     const formInitialValues = {
         name: userData.name,
@@ -30,6 +33,7 @@ export default function EditUserForm({ setOpenEditUserModal, userData }) {
         try {
             await makeRequestWithAuthorization("POST", host, { data: values });
             toast.success("Seus dados foram editados com sucesso!");
+            setUserHasUpdate(true);
         } catch (error) {
             toast.error("Não foi possível editar seus dados");
             console.error(error);

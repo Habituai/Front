@@ -4,6 +4,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import AuthProvider from "./contexts/AuthContext";
+import HabitsProvider from "./contexts/HabitsContext";
+import UserProvider from "./contexts/UserContext";
 
 const { palette } = createTheme();
 const { augmentColor } = palette;
@@ -23,9 +25,13 @@ const theme = createTheme({
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <AuthProvider>
-            <ThemeProvider theme={theme}>
-                <App />
-            </ThemeProvider>
+            <HabitsProvider>
+                <UserProvider>
+                    <ThemeProvider theme={theme}>
+                        <App />
+                    </ThemeProvider>
+                </UserProvider>
+            </HabitsProvider>
         </AuthProvider>
     </React.StrictMode>
 );

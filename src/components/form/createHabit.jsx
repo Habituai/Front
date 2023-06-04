@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useUpdateHabits } from "../../hooks/useUpdateHabits";
 import { makeRequestWithAuthorization } from "../../services/makeRequest";
 
 const weekDaysLabels = [
@@ -23,6 +24,8 @@ const weekDaysLabels = [
 
 export default function CreateHabitForm({ setOpenCreateHabitModal }) {
     const host = import.meta.env.VITE_HABITS_PATH;
+
+    const { setHabitsHasUpdate } = useUpdateHabits();
 
     const [isLoading, setIsLoading] = useState(false);
     const [nameHasError, setNameHasError] = useState(false);
@@ -112,6 +115,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
 
             setOpenCreateHabitModal(false);
             toast.success("Hábito criado!");
+            setHabitsHasUpdate(true);
         } catch (error) {
             toast.error("Não foi possível criar o hábito");
             console.error(error);

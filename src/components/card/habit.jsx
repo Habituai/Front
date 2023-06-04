@@ -4,6 +4,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Checkbox, IconButton, Menu, MenuItem } from "@mui/material";
 import { isToday, parseISO } from "date-fns";
 import { useState } from "react";
+import { useUpdateUser } from "../../hooks/useUpdateUser";
 import { makeRequestWithAuthorization } from "../../services/makeRequest";
 
 export default function HabitCard({
@@ -17,6 +18,8 @@ export default function HabitCard({
     setHabitToBeDeleted,
 }) {
     const habitsHost = import.meta.env.VITE_HABITS_PATH;
+
+    const { setUserHasUpdate } = useUpdateUser();
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -55,6 +58,7 @@ export default function HabitCard({
         try {
             await handleUpdateCheck();
             setIsLoading(false);
+            setUserHasUpdate(true);
         } catch (error) {
             console.error(`Erro ao alterar checkbox "${name}"`);
             changeCheckbox();

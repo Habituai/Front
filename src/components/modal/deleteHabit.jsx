@@ -1,10 +1,12 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useUpdateHabits } from "../../hooks/useUpdateHabits";
 import { makeRequestWithAuthorization } from "../../services/makeRequest";
 import BaseModal from "../layout/modal";
 
 export default function DeleteHabitModal({ openModal, setOpenModal }) {
+    const { setHabitsHasUpdate } = useUpdateHabits();
     const { id, name } = openModal;
     const [isLoading, setIsLoading] = useState(false);
 
@@ -15,6 +17,7 @@ export default function DeleteHabitModal({ openModal, setOpenModal }) {
             await makeRequestWithAuthorization("DELETE", `${habitsHost}/${id}`);
             setOpenModal(false);
             toast.success("Hábito excluído com sucesso!");
+            setHabitsHasUpdate(true);
         } catch (error) {
             toast.error("Não foi possível excluir o hábito");
             console.error(`Não foi possível deletar o hábito ${name}`);

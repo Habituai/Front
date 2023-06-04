@@ -9,6 +9,8 @@ import CreateHabitModal from "../components/modal/createHabit";
 import DeleteHabitModal from "../components/modal/deleteHabit";
 import EditUserModal from "../components/modal/editUser";
 import { useAuth } from "../hooks/useAuth";
+import { useUpdateHabits } from "../hooks/useUpdateHabits";
+import { useUpdateUser } from "../hooks/useUpdateUser";
 import {
     makeRequest,
     makeRequestWithAuthorization,
@@ -24,7 +26,6 @@ const getWeekDaysList = (referenceDay) => {
         list.push(addDays(firstDayOfWeek, i));
     }
 
-    //TODO: arrumar as datas no mock
     return list.map((day) => formatISO(day).split("-03:00")[0]);
 };
 
@@ -32,6 +33,9 @@ function Dashboard() {
     const userHost = import.meta.env.VITE_USER_AUTHENTICATION_PATH;
     const habitsHost = import.meta.env.VITE_HABITS_PATH;
     const { token } = useAuth();
+
+    const { habitsHasUpdate, setHabitsHasUpdate } = useUpdateHabits();
+    const { userHasUpdate, setUserHasUpdate } = useUpdateUser();
 
     const weekDaysBaseList = getWeekDaysList(new Date());
     const [weekDaysList, setWeekDaysList] = useState(weekDaysBaseList);
@@ -61,7 +65,6 @@ function Dashboard() {
         setHabitList(data.dayList);
     };
 
-    // Sempre buscar os dados do usuário ao entrar e ao atualizar hábitos
     useEffect(() => {
         handleGetUserData().catch((error) => {
             console.log(error);
@@ -73,6 +76,28 @@ function Dashboard() {
             console.error("Erro em buscar os hábitos");
         });
     }, []);
+
+    useEffect(() => {
+        if (userHasUpdate) {
+            handleGetUserData().catch((error) => {
+                console.log(error);
+                console.error("Não foi possível pegar os dados do usuário.");
+            });
+
+            setUserHasUpdate(false);
+        }
+    }, [userHasUpdate]);
+
+    useEffect(() => {
+        if (habitsHasUpdate) {
+            getHabitsData().catch((error) => {
+                console.error(error);
+                console.error("Erro em buscar os hábitos");
+            });
+
+            setHabitsHasUpdate(false);
+        }
+    }, [habitsHasUpdate]);
 
     return (
         <>

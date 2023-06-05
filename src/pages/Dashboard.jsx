@@ -26,7 +26,7 @@ const getWeekDaysList = (referenceDay) => {
         list.push(addDays(firstDayOfWeek, i));
     }
 
-    return list.map((day) => formatISO(day).split("-03:00")[0]);
+    return list.map((day) => formatISO(day));
 };
 
 function Dashboard() {
@@ -52,14 +52,14 @@ function Dashboard() {
     const [habitToBeDeleted, setHabitToBeDeleted] = useState(false);
 
     const handleGetUserData = async () => {
-        const data = await makeRequest("POST", userHost, {
+        const data = await makeRequestWithAuthorization("POST", userHost, {
             data: { token },
         });
         setUserData(data);
     };
 
     const getHabitsData = async () => {
-        const data = await makeRequestWithAuthorization("GET", habitsHost, {
+        const data = await makeRequestWithAuthorization("POST", habitsHost, {
             data: weekDaysList,
         });
         setHabitList(data.dayList);
@@ -141,7 +141,7 @@ function Dashboard() {
                         weekDaysList.map((date, index) => {
                             const habits =
                                 habitList.find(
-                                    (dayHabit) => dayHabit.date === date
+                                    (dayHabit) => dayHabit.date === date.split('T')[0]
                                 )?.habit ?? [];
 
                             return (
@@ -160,7 +160,7 @@ function Dashboard() {
                                                       key={id}
                                                       id={id}
                                                       name={name}
-                                                      category={category}
+                                                      category={category.description}
                                                       classification={
                                                           classification
                                                       }

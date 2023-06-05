@@ -59,7 +59,7 @@ function Dashboard() {
     };
 
     const handleGetHabitsData = async () => {
-        const data = await makeRequestWithAuthorization("GET", habitsHost, {
+        const data = await makeRequestWithAuthorization("POST", habitsHost, {
             data: weekDaysList,
         });
         setHabitList(data.dayList);

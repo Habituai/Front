@@ -53,9 +53,10 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
 
             const data = {
                 habit: {
+                    dateCreation: values.dateCreation,
                     name: values.name,
                     classification: values.classification,
-                    category: { id: values.category },
+                    category: { id: Number(values.category) },
                 },
                 dayWeekList,
             };

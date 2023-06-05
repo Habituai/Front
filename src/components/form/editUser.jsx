@@ -3,6 +3,7 @@ import { Form, Formik } from "formik";
 import { toast } from "react-hot-toast";
 import * as Yup from "yup";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
+import { makeRequestWithAuthorization } from "../../services/makeRequest";
 import EmailField, { emailYupValidations } from "../field/email";
 import NameField, { nameYupValidations } from "../field/name";
 import PasswordField from "../field/password";
@@ -14,6 +15,7 @@ export default function EditUserForm({ setOpenEditUserModal, userData }) {
     const { setUserHasUpdate } = useUpdateUser();
 
     const formInitialValues = {
+        id: -1,
         name: userData.name,
         email: userData.email,
         password: "",
@@ -31,7 +33,24 @@ export default function EditUserForm({ setOpenEditUserModal, userData }) {
     const handleFormSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
         try {
-            await makeRequestWithAuthorization("POST", host, { data: values });
+            const data = {
+                email:
+                    values.email !== formInitialValues.email
+                        ? values.email
+                        : undefined,
+                name:
+                    values.name !== formInitialValues.name
+                        ? values.name
+                        : undefined,
+                password: !!values.password ? values.password : undefined,
+            };
+            console.log(data);
+
+            await makeRequestWithAuthorization(
+                "PUT",
+                `${host}/${userData.id}`,
+                { data }
+            );
             toast.success("Seus dados foram editados com sucesso!");
             setUserHasUpdate(true);
         } catch (error) {

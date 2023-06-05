@@ -8,8 +8,8 @@ import WeekendIcon from "@mui/icons-material/Weekend";
 import { Checkbox, IconButton, Menu, MenuItem } from "@mui/material";
 import { isToday, parseISO } from "date-fns";
 import { useState } from "react";
+import { useUpdateHabits } from "../../hooks/useUpdateHabits";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
-import { makeRequestWithAuthorization } from "../../services/makeRequest";
 
 export default function HabitCard({
     id,
@@ -21,9 +21,10 @@ export default function HabitCard({
     weekDay,
     setHabitToBeDeleted,
 }) {
-    const habitsHost = import.meta.env.VITE_HABITS_PATH;
+    const host = import.meta.env.VITE_PROGRESS_PATH;
 
     const { setUserHasUpdate } = useUpdateUser();
+    const { setHabitsHasUpdate } = useUpdateHabits();
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -43,7 +44,7 @@ export default function HabitCard({
 
         const categories = {
             saude: "border-green-700",
-            estudo: "border-purple-900",
+            educacao: "border-purple-900",
             lazer: "border-blue-700",
         };
 
@@ -56,30 +57,36 @@ export default function HabitCard({
 
         const categories = {
             saude: <HealthAndSafetyIcon color={category} />,
-            estudo: <MenuBookIcon color={category} />,
+            educacao: <MenuBookIcon color={category} />,
             lazer: <WeekendIcon color={category} />,
         };
 
         return categories[category] || null;
     };
 
-    const handleUpdateCheck = async () => {
-        const data = { id, weekDay, date };
+    const handleCheck = async () => {
+        // const data = { id, weekDay, conclusionDate: date };
+        // await makeRequestWithAuthorization("POST", host, { data });
+    };
 
-        await makeRequestWithAuthorization("POST", `${habitsHost}/${id}`, {
-            data,
-        });
+    const handleUncheck = async () => {
+        // await makeRequestWithAuthorization("DELETE", `${host}/${id}/${date}`);
     };
 
     const changeCheckbox = async () => {
         setIsLoading(true);
         try {
-            await handleUpdateCheck();
+            if (conclusionDate) {
+                await handleUncheck();
+            } else {
+                await handleCheck();
+            }
+
             setIsLoading(false);
             setUserHasUpdate(true);
+            setHabitsHasUpdate(true);
         } catch (error) {
             console.error(`Erro ao alterar checkbox "${name}"`);
-            changeCheckbox();
         }
     };
 

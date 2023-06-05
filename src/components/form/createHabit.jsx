@@ -26,7 +26,7 @@ const weekDaysLabels = [
 ];
 
 export default function CreateHabitForm({ setOpenCreateHabitModal }) {
-    const host = import.meta.env.VITE_HABITS_PATH;
+    const host = import.meta.env.VITE_HABIT_PATH;
 
     const { setHabitsHasUpdate } = useUpdateHabits();
 

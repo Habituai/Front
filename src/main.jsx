@@ -17,22 +17,20 @@ const theme = createTheme({
         bom: createColor("#0ca31f"),
         ruim: createColor("#ff0000"),
         saude: createColor("#007d00"),
-        estudo: createColor("#430054"),
+        educacao: createColor("#430054"),
         lazer: createColor("#081fca"),
         outro: createColor("#222"),
     },
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <AuthProvider>
-            <HabitsProvider>
-                <UserProvider>
-                    <ThemeProvider theme={theme}>
-                        <App />
-                    </ThemeProvider>
-                </UserProvider>
-            </HabitsProvider>
-        </AuthProvider>
-    </React.StrictMode>
+    <AuthProvider>
+        <HabitsProvider>
+            <UserProvider>
+                <ThemeProvider theme={theme}>
+                    <App />
+                </ThemeProvider>
+            </UserProvider>
+        </HabitsProvider>
+    </AuthProvider>
 );

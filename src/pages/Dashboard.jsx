@@ -11,10 +11,7 @@ import EditUserModal from "../components/modal/editUser";
 import { useAuth } from "../hooks/useAuth";
 import { useUpdateHabits } from "../hooks/useUpdateHabits";
 import { useUpdateUser } from "../hooks/useUpdateUser";
-import {
-    makeRequest,
-    makeRequestWithAuthorization,
-} from "../services/makeRequest";
+import { makeRequestWithAuthorization } from "../services/makeRequest";
 
 const getWeekDaysList = (referenceDay) => {
     const firstDayOfWeek = startOfWeek(referenceDay, { weekStartsOn: 1 });
@@ -31,7 +28,7 @@ const getWeekDaysList = (referenceDay) => {
 
 function Dashboard() {
     const userHost = import.meta.env.VITE_USER_AUTHENTICATION_PATH;
-    const habitsHost = import.meta.env.VITE_HABITS_PATH;
+    const habitsHost = import.meta.env.VITE_HABIT_WEEK_PATH;
     const { token } = useAuth();
 
     const { habitsHasUpdate, setHabitsHasUpdate } = useUpdateHabits();
@@ -41,6 +38,7 @@ function Dashboard() {
     const [weekDaysList, setWeekDaysList] = useState(weekDaysBaseList);
 
     const [userData, setUserData] = useState({
+        id: -1,
         name: "",
         email: "",
         xp: 0,
@@ -58,8 +56,8 @@ function Dashboard() {
         setUserData(data);
     };
 
-    const getHabitsData = async () => {
-        const data = await makeRequestWithAuthorization("POST", habitsHost, {
+    const handleGetHabitsData = async () => {
+        const data = await makeRequestWithAuthorization("GET", habitsHost, {
             data: weekDaysList,
         });
         setHabitList(data.dayList);
@@ -71,7 +69,7 @@ function Dashboard() {
             console.error("Não foi possível pegar os dados do usuário.");
         });
 
-        getHabitsData().catch((error) => {
+        handleGetHabitsData().catch((error) => {
             console.error(error);
             console.error("Erro em buscar os hábitos");
         });
@@ -90,7 +88,7 @@ function Dashboard() {
 
     useEffect(() => {
         if (habitsHasUpdate) {
-            getHabitsData().catch((error) => {
+            handleGetHabitsData().catch((error) => {
                 console.error(error);
                 console.error("Erro em buscar os hábitos");
             });
@@ -141,7 +139,8 @@ function Dashboard() {
                         weekDaysList.map((date, index) => {
                             const habits =
                                 habitList.find(
-                                    (dayHabit) => dayHabit.date === date.split('T')[0]
+                                    (dayHabit) =>
+                                        dayHabit.date === date.split("T")[0]
                                 )?.habit ?? [];
 
                             return (
@@ -160,7 +159,9 @@ function Dashboard() {
                                                       key={id}
                                                       id={id}
                                                       name={name}
-                                                      category={category.description}
+                                                      category={
+                                                          category.description
+                                                      }
                                                       classification={
                                                           classification
                                                       }

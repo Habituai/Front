@@ -13,7 +13,7 @@ export default function DeleteHabitModal({ openModal, setOpenModal }) {
     const handleDeleteHabit = async () => {
         setIsLoading(true);
         try {
-            const habitsHost = import.meta.env.VITE_HABITS_PATH;
+            const habitsHost = import.meta.env.VITE_HABIT_PATH;
             await makeRequestWithAuthorization("DELETE", `${habitsHost}/${id}`);
             setOpenModal(false);
             toast.success("Hábito excluído com sucesso!");

@@ -5,12 +5,15 @@ import {
     FormControlLabel,
     Radio,
     RadioGroup,
-    TextField,
 } from "@mui/material";
+import { ErrorMessage, Form, Formik } from "formik";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import * as Yup from "yup";
 import { useUpdateHabits } from "../../hooks/useUpdateHabits";
 import { makeRequestWithAuthorization } from "../../services/makeRequest";
+import HabitNameField, { habitNameYupValidations } from "../field/habitName";
+import FieldInput from "../layout/field";
 
 const weekDaysLabels = [
     "Segunda-feira",
@@ -27,88 +30,34 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
 
     const { setHabitsHasUpdate } = useUpdateHabits();
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [nameHasError, setNameHasError] = useState(false);
-    const [classificationHasError, setClassificationHasError] = useState(false);
-    const [categoryHasError, setCategoryHasError] = useState(false);
     const [weekDaysHasError, setWeekDaysHasError] = useState(false);
-    const [weekDays, setWeekDays] = useState([]);
-    const [formValues, setFormValues] = useState({
-        name: "",
-        classification: "",
-        category: "",
-        dateCreation: new Date().toISOString(),
-        //weightExperience: "10"  feature futura
-    });
 
-    const handleWeekDays = (event) => {
-        const { value, checked } = event.target;
-        const formatValue = Number(value);
-
-        if (!checked) {
-            const newWeekDayList = weekDays.filter(
-                (number) => number !== formatValue
-            );
-            setWeekDays(newWeekDayList);
-            return;
-        }
-
-        setWeekDays([...weekDays, formatValue]);
-    };
-
-    const handleChangeValues = (event) => {
-        const fieldName = event.target.name;
-        const fieldValue = event.target.value;
-
-        setFormValues((current) => {
-            return {
-                ...current,
-                [fieldName]: fieldValue,
-            };
-        });
-    };
-
-    const validateAllFields = () => {
-        let hasError = false;
-        const validateEmptyField = (field, setFieldError) => {
-            const isEmpty = !formValues[field].trim();
-
-            setFieldError(isEmpty);
-            return isEmpty;
-        };
-
-        if (validateEmptyField("name", setNameHasError)) hasError = true;
-
-        if (validateEmptyField("classification", setClassificationHasError))
-            hasError = true;
-
-        if (validateEmptyField("category", setCategoryHasError))
-            hasError = true;
-
-        if (weekDays.length === 0) {
-            setWeekDaysHasError(true);
-            hasError = true;
-        } else {
-            setWeekDaysHasError(false);
-        }
-
-        return hasError;
-    };
-
-    const handleFormSubmit = async (event) => {
-        event.preventDefault();
-        setIsLoading(true);
+    const handleFormSubmit = async (values, { setSubmitting }) => {
+        setWeekDaysHasError(false);
+        setSubmitting(true);
         try {
-            if (validateAllFields()) {
+            const dayWeekList = weekDaysLabels.reduce(
+                (list, weekDayLabel, index) => {
+                    if (values[weekDayLabel]) {
+                        list.push(index + 1);
+                    }
+                    return list;
+                },
+                []
+            );
+
+            if (dayWeekList.length === 0) {
+                setWeekDaysHasError(true);
                 return;
             }
 
             const data = {
                 habit: {
-                    ...formValues,
-                    category: { id: formValues.category },
+                    name: values.name,
+                    classification: values.classification,
+                    category: { id: values.category },
                 },
-                dayWeekList: weekDays,
+                dayWeekList,
             };
 
             await makeRequestWithAuthorization("POST", host, { data });
@@ -119,138 +68,191 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
         } catch (error) {
             toast.error("Não foi possível criar o hábito");
             console.error(error);
-        } finally {
-            setIsLoading(false);
         }
     };
 
+    const formInitialValues = {
+        name: "",
+        classification: "",
+        category: "",
+        dateCreation: new Date().toISOString(),
+        "Segunda-feira": false,
+        "Terça-feira": false,
+        "Quarta-feira": false,
+        "Quinta-feira": false,
+        "Sexta-feira": false,
+        Sábado: false,
+        Domingo: false,
+        //weightExperience: "10"  feature futura
+    };
+
+    const handleValidationSchema = Yup.object().shape({
+        ...habitNameYupValidations,
+        classification: Yup.string().required("*Obrigatório*"),
+        category: Yup.number().required("*Obrigatório*"),
+    });
+
     return (
-        <form
+        <Formik
+            initialValues={formInitialValues}
+            validationSchema={handleValidationSchema}
             onSubmit={handleFormSubmit}
-            className="w-full h-full flex justify-center items-center flex-col"
+            validateOnChange={false}
+            validateOnBlur={false}
         >
-            <h4 className="w-full mb-8 text-4xl font-bold text-primaryDark">
-                Criar novo hábito
-            </h4>
+            {({
+                values,
+                errors,
+                isSubmitting,
+                setFieldValue,
+                handleChange,
+            }) => (
+                <Form className="w-full h-full flex justify-center items-center flex-col">
+                    <h4 className="w-full mb-8 text-4xl font-bold text-primaryDark">
+                        Criar novo hábito
+                    </h4>
 
-            <div className="w-full h-full flex justify-center items-center flex-col lg:flex-row gap-10 lg:gap-32">
-                <div className="w-full h-full flex flex-1 flex-col justify-center gap-10">
-                    <TextField
-                        id="name"
-                        name="name"
-                        type="text"
-                        label="Nome do hábito*"
-                        variant="outlined"
-                        error={nameHasError}
-                        onChange={handleChangeValues}
-                    />
+                    <div className="w-full h-full flex justify-center items-center flex-col lg:flex-row gap-10 lg:gap-32">
+                        <div className="w-full h-full flex flex-1 flex-col justify-center gap-10">
+                            <FieldInput
+                                name="name"
+                                type="text"
+                                fieldComponent={HabitNameField}
+                                hasError={!!errors.name}
+                            />
 
-                    <div className="w-full flex gap-2 flex-col">
-                        <div className="flex gap-4">
-                            <label className="font-bold">Classificação*:</label>
-                            {classificationHasError && (
-                                <p className="text-red-600">*Obrigatório*</p>
-                            )}
+                            <div className="w-full flex gap-2 flex-col">
+                                <div className="flex gap-4">
+                                    <label className="font-bold">
+                                        Classificação*:
+                                    </label>
+
+                                    <span className="text-red-600">
+                                        <ErrorMessage name="classification" />
+                                    </span>
+                                </div>
+
+                                <RadioGroup
+                                    row
+                                    name="classification"
+                                    value={values.classification}
+                                    onChange={(event) => {
+                                        setFieldValue(
+                                            "classification",
+                                            event.currentTarget.value
+                                        );
+                                    }}
+                                >
+                                    <FormControlLabel
+                                        value="bom"
+                                        label="Bom"
+                                        control={<Radio />}
+                                    />
+                                    <FormControlLabel
+                                        value="ruim"
+                                        label="Ruim"
+                                        control={<Radio />}
+                                    />
+                                </RadioGroup>
+                            </div>
+
+                            <div className="w-full flex gap-2 flex-col">
+                                <div className="flex gap-4">
+                                    <label className="font-bold">
+                                        Categoria*:
+                                    </label>
+
+                                    <span className="text-red-600">
+                                        <ErrorMessage name="category" />
+                                    </span>
+                                </div>
+                                <RadioGroup
+                                    row
+                                    value={values.category}
+                                    onChange={(event) => {
+                                        setFieldValue(
+                                            "category",
+                                            event.currentTarget.value
+                                        );
+                                    }}
+                                >
+                                    <FormControlLabel
+                                        value={1}
+                                        label="Saúde"
+                                        control={<Radio />}
+                                    />
+                                    <FormControlLabel
+                                        value={2}
+                                        label="Educação"
+                                        control={<Radio />}
+                                    />
+                                    <FormControlLabel
+                                        value={3}
+                                        label="Lazer"
+                                        control={<Radio />}
+                                    />
+                                    <FormControlLabel
+                                        value={4}
+                                        label="Outro"
+                                        control={<Radio />}
+                                    />
+                                </RadioGroup>
+                            </div>
                         </div>
 
-                        <RadioGroup
-                            row
-                            name="classification"
-                            onChange={handleChangeValues}
-                        >
-                            <FormControlLabel
-                                value="bom"
-                                label="Bom"
-                                control={<Radio />}
-                            />
-                            <FormControlLabel
-                                value="ruim"
-                                label="Ruim"
-                                control={<Radio />}
-                            />
-                        </RadioGroup>
-                    </div>
-
-                    <div className="w-full flex gap-2 flex-col">
-                        <div className="flex gap-4">
-                            <label className="font-bold">Categoria*:</label>
-                            {categoryHasError && (
-                                <p className="text-red-600">*Obrigatório*</p>
-                            )}
+                        <div className="w-full flex flex-1 flex-col">
+                            <div className="flex gap-4 flex-wrap">
+                                <label className="font-bold">
+                                    Dias da semana que serão feitos*:
+                                </label>
+                                {weekDaysHasError && (
+                                    <p className="text-red-600">
+                                        *Obrigatório*
+                                    </p>
+                                )}
+                            </div>
+                            <FormControl>
+                                {weekDaysLabels.map((weekDay) => (
+                                    <FormControlLabel
+                                        key={weekDay}
+                                        name={weekDay}
+                                        label={weekDay}
+                                        onChange={handleChange}
+                                        control={
+                                            <Checkbox
+                                                checked={values.isAdmin}
+                                            />
+                                        }
+                                    />
+                                ))}
+                            </FormControl>
                         </div>
-                        <RadioGroup
-                            row
-                            name="category"
-                            onChange={handleChangeValues}
+                    </div>
+
+                    <div className="w-full mt-8 flex lg:gap-10 gap-4 lg:flex-row flex-col">
+                        <Button
+                            variant="contained"
+                            disabled={isSubmitting}
+                            sx={{ width: "100%" }}
+                            size="large"
+                            type="submit"
                         >
-                            <FormControlLabel
-                                value={1}
-                                label="Saúde"
-                                control={<Radio />}
-                            />
-                            <FormControlLabel
-                                value={2}
-                                label="Educação"
-                                control={<Radio />}
-                            />
-                            <FormControlLabel
-                                value={3}
-                                label="Lazer"
-                                control={<Radio />}
-                            />
-                            <FormControlLabel
-                                value={4}
-                                label="Outro"
-                                control={<Radio />}
-                            />
-                        </RadioGroup>
+                            Criar
+                        </Button>
+
+                        <Button
+                            variant="outlined"
+                            color="ruim"
+                            disabled={isSubmitting}
+                            sx={{ width: "100%" }}
+                            size="large"
+                            onClick={() => setOpenCreateHabitModal(false)}
+                        >
+                            Voltar
+                        </Button>
                     </div>
-                </div>
-
-                <div className="w-full flex flex-1 flex-col">
-                    <div className="flex gap-4 flex-wrap">
-                        <label className="font-bold">
-                            Dias da semana que serão feitos*:
-                        </label>
-                        {weekDaysHasError && (
-                            <p className="text-red-600">*Obrigatório*</p>
-                        )}
-                    </div>
-                    <FormControl>
-                        {weekDaysLabels.map((weekDay, index) => (
-                            <FormControlLabel
-                                key={index}
-                                value={index + 1}
-                                label={weekDay}
-                                control={<Checkbox onChange={handleWeekDays} />}
-                            />
-                        ))}
-                    </FormControl>
-                </div>
-            </div>
-
-            <div className="w-full mt-8 flex lg:gap-10 gap-4 lg:flex-row flex-col">
-                <Button
-                    variant="contained"
-                    disabled={isLoading}
-                    sx={{ width: "100%" }}
-                    size="large"
-                    type="submit"
-                >
-                    Criar
-                </Button>
-
-                <Button
-                    variant="outlined"
-                    color="ruim"
-                    disabled={isLoading}
-                    sx={{ width: "100%" }}
-                    size="large"
-                    onClick={() => setOpenCreateHabitModal(false)}
-                >
-                    Voltar
-                </Button>
-            </div>
-        </form>
+                </Form>
+            )}
+        </Formik>
     );
 }

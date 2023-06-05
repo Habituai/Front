@@ -5,9 +5,9 @@ import { useUpdateHabits } from "../../hooks/useUpdateHabits";
 import { makeRequestWithAuthorization } from "../../services/makeRequest";
 import BaseModal from "../layout/modal";
 
-export default function DeleteHabitModal({ openModal, setOpenModal }) {
+export default function DeleteHabitModal({ habit, setHabit }) {
     const { setHabitsHasUpdate } = useUpdateHabits();
-    const { id, name } = openModal;
+    const { id, name } = habit;
     const [isLoading, setIsLoading] = useState(false);
 
     const handleDeleteHabit = async () => {
@@ -15,7 +15,7 @@ export default function DeleteHabitModal({ openModal, setOpenModal }) {
         try {
             const habitsHost = import.meta.env.VITE_HABIT_PATH;
             await makeRequestWithAuthorization("DELETE", `${habitsHost}/${id}`);
-            setOpenModal(false);
+            setHabit(false);
             toast.success("Hábito excluído com sucesso!");
             setHabitsHasUpdate(true);
         } catch (error) {
@@ -28,7 +28,7 @@ export default function DeleteHabitModal({ openModal, setOpenModal }) {
     };
 
     return (
-        <BaseModal open={!!openModal} setOpen={setOpenModal}>
+        <BaseModal open={!!habit} setOpen={setHabit}>
             <div className="w-full h-full flex flex-col gap-24 justify-center items-center">
                 <div className="text-3xl lg:text-5xl leading-relaxed font-bold text-center">
                     <h1>
@@ -56,7 +56,7 @@ export default function DeleteHabitModal({ openModal, setOpenModal }) {
                         disabled={isLoading}
                         sx={{ width: "100%" }}
                         size="large"
-                        onClick={() => setOpenModal(false)}
+                        onClick={() => setHabit(false)}
                     >
                         Voltar
                     </Button>

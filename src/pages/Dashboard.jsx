@@ -7,6 +7,7 @@ import DashboardHeader from "../components/header/dashboard";
 import DayHabitTableLayout from "../components/layout/dayHabitTable";
 import CreateHabitModal from "../components/modal/createHabit";
 import DeleteHabitModal from "../components/modal/deleteHabit";
+import EditHabitModal from "../components/modal/editHabit";
 import EditUserModal from "../components/modal/editUser";
 import { useAuth } from "../hooks/useAuth";
 import { useUpdateHabits } from "../hooks/useUpdateHabits";
@@ -47,6 +48,7 @@ function Dashboard() {
 
     const [openCreateHabitModal, setOpenCreateHabitModal] = useState(false);
     const [openEditUserModal, setOpenEditUserModal] = useState(false);
+    const [habitIdToBeUpdated, setHabitIdToBeUpdated] = useState(false);
     const [habitToBeDeleted, setHabitToBeDeleted] = useState(false);
 
     const handleGetUserData = async () => {
@@ -110,9 +112,13 @@ function Dashboard() {
                 openModal={openCreateHabitModal}
                 setOpenModal={setOpenCreateHabitModal}
             />
+            <EditHabitModal
+                habit={habitIdToBeUpdated}
+                setHabit={setHabitIdToBeUpdated}
+            />
             <DeleteHabitModal
-                openModal={habitToBeDeleted}
-                setOpenModal={setHabitToBeDeleted}
+                habit={habitToBeDeleted}
+                setHabit={setHabitToBeDeleted}
             />
 
             <DashboardHeader
@@ -129,7 +135,7 @@ function Dashboard() {
                 </h1>
             </div>
 
-            <div className="w-full h-full pt-4 px-4">
+            <div className="w-full h-full pt-4 px-3">
                 <Grid
                     container
                     className="w-full h-full flex flex-wrap justify-end items-start"
@@ -159,9 +165,7 @@ function Dashboard() {
                                                       key={id}
                                                       id={id}
                                                       name={name}
-                                                      category={
-                                                          category.description
-                                                      }
+                                                      category={category}
                                                       classification={
                                                           classification
                                                       }
@@ -175,6 +179,9 @@ function Dashboard() {
                                                       weekDay={index + 1}
                                                       setHabitToBeDeleted={
                                                           setHabitToBeDeleted
+                                                      }
+                                                      setHabitIdToBeUpdated={
+                                                          setHabitIdToBeUpdated
                                                       }
                                                   />
                                               )

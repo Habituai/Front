@@ -220,7 +220,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
                                         onChange={handleChange}
                                         control={
                                             <Checkbox
-                                                checked={values.isAdmin}
+                                                checked={values[weekDay]}
                                             />
                                         }
                                     />

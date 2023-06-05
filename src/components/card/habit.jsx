@@ -20,8 +20,11 @@ export default function HabitCard({
     conclusionDate = "",
     weekDay,
     setHabitToBeDeleted,
+    setHabitIdToBeUpdated,
 }) {
     const host = import.meta.env.VITE_PROGRESS_PATH;
+
+    const { description: categoryDescription } = category;
 
     const { setUserHasUpdate } = useUpdateUser();
     const { setHabitsHasUpdate } = useUpdateHabits();
@@ -39,6 +42,11 @@ export default function HabitCard({
         handleCloseMenu();
     };
 
+    const handleUpdatedHabit = () => {
+        setHabitIdToBeUpdated(id);
+        handleCloseMenu();
+    };
+
     const styleMap = () => {
         if (classification === "ruim") return "border-red-600";
 
@@ -48,7 +56,7 @@ export default function HabitCard({
             lazer: "border-blue-700",
         };
 
-        return categories[category] || "border-gray-800";
+        return categories[categoryDescription] || "border-gray-800";
     };
 
     const handleIcon = () => {
@@ -56,12 +64,12 @@ export default function HabitCard({
             return <DoDisturbAltIcon color={classification} />;
 
         const categories = {
-            saude: <HealthAndSafetyIcon color={category} />,
-            educacao: <MenuBookIcon color={category} />,
-            lazer: <WeekendIcon color={category} />,
+            saude: <HealthAndSafetyIcon color={categoryDescription} />,
+            educacao: <MenuBookIcon color={categoryDescription} />,
+            lazer: <WeekendIcon color={categoryDescription} />,
         };
 
-        return categories[category] || null;
+        return categories[categoryDescription] || null;
     };
 
     const handleCheck = async () => {
@@ -93,11 +101,11 @@ export default function HabitCard({
     return (
         <div
             className={`w-full rounded-lg p-2 border-2 bg-white shadow-md ${styleMap(
-                category
+                categoryDescription
             )} `}
         >
             <div className="flex items-center justify-between gap-1">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center">
                     <Checkbox
                         defaultChecked={!!conclusionDate}
                         disabled={!isToday(parseISO(date)) || isLoading}
@@ -106,13 +114,13 @@ export default function HabitCard({
                         color={
                             classification === "ruim"
                                 ? classification
-                                : category
+                                : categoryDescription
                         }
                     />
                     <span>{name}</span>
                 </div>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center">
                     {handleIcon()}
 
                     <IconButton onClick={handleOpenMenu} size="small">
@@ -125,11 +133,11 @@ export default function HabitCard({
                         onClose={handleCloseMenu}
                     >
                         <MenuItem
-                            onClick={handleCloseMenu}
+                            onClick={handleUpdatedHabit}
                             className="flex items-center gap-2"
                         >
                             <EditIcon />
-                            Editar
+                            Atualizar
                         </MenuItem>
                         <MenuItem
                             onClick={handleDeleteHabit}

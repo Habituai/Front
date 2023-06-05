@@ -33,8 +33,8 @@ export default function DashboardHeader({
     };
 
     return (
-        <header className="w-full py-6 px-32 flex justify-center bg-primaryDark shadow-xl">
-            <nav className="w-full flex items-center">
+        <header className="w-full py-6 lg:px-32 flex justify-center bg-primaryDark shadow-xl">
+            <nav className="w-full flex flex-col lg:flex-row items-center">
                 <span className="flex flex-1 text-5xl text-secondaryExtraLight font-bold">
                     Habituaí
                 </span>

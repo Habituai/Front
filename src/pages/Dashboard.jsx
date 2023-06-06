@@ -42,7 +42,7 @@ function Dashboard() {
         id: -1,
         name: "",
         email: "",
-        xp: 0,
+        experience: 0,
     });
     const [habitList, setHabitList] = useState([]);
 
@@ -52,9 +52,7 @@ function Dashboard() {
     const [habitToBeDeleted, setHabitToBeDeleted] = useState(false);
 
     const handleGetUserData = async () => {
-        const data = await makeRequestWithAuthorization("POST", userHost, {
-            data: { token },
-        });
+        const data = await makeRequestWithAuthorization("GET", userHost);
         setUserData(data);
     };
 
@@ -123,7 +121,7 @@ function Dashboard() {
 
             <DashboardHeader
                 name={userData.name}
-                xp={userData.xp}
+                experience={userData.experience}
                 weekDaysList={weekDaysList}
                 setOpenCreateHabitModal={setOpenCreateHabitModal}
                 setOpenEditUserModal={setOpenEditUserModal}

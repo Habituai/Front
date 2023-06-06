@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function DashboardHeader({
     name,
-    xp,
+    experience,
     weekDaysList,
     setOpenCreateHabitModal,
     setOpenEditUserModal,
@@ -75,11 +75,11 @@ export default function DashboardHeader({
 
                 <div className="flex flex-1 justify-end items-center gap-6 text-white text-xl">
                     <span>
-                        {`${xp} `}
+                        {`${experience} `}
                         <span className="text-yellow-400 font-bold">xp</span>
                     </span>
                     <span className="text-secondaryExtraLight font-bold">{`-`}</span>
-                    <span>{`Nível ${getLevelByXP(xp)}`}</span>
+                    <span>{`Nível ${getLevelByXP(experience)}`}</span>
                     <span className="text-secondaryExtraLight font-bold">{`|`}</span>
                     <button
                         onClick={handleOpenMenu}

@@ -100,11 +100,27 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }) {
 
             const data = {
                 habit: {
-                    name: values.name,
-                    classification: values.classification,
-                    category: { id: values.category },
+                    name:
+                        values.name !== formInitialValues.name
+                            ? values.name
+                            : undefined,
+                    classification:
+                        values.classification !==
+                        formInitialValues.classification
+                            ? values.classification
+                            : undefined,
+                    category: {
+                        id:
+                            values.category !== formInitialValues.category
+                                ? values.category
+                                : undefined,
+                    },
                 },
-                dayWeekList,
+                dayWeekList:
+                    JSON.stringify(dayWeekList) !==
+                    JSON.stringify(habitData.dayWeekList)
+                        ? dayWeekList
+                        : undefined,
             };
 
             await makeRequestWithAuthorization(

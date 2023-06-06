@@ -28,7 +28,7 @@ const getWeekDaysList = (referenceDay) => {
 };
 
 function Dashboard() {
-    const userHost = import.meta.env.VITE_USER_AUTHENTICATION_PATH;
+    const userHost = import.meta.env.VITE_USER_ACCOUNT_PATH;
     const habitsHost = import.meta.env.VITE_HABIT_WEEK_PATH;
     const { token } = useAuth();
 

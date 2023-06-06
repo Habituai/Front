@@ -61,12 +61,19 @@ export default function HabitCard({
 
     const handleIcon = () => {
         if (classification === "ruim")
-            return <DoDisturbAltIcon color={classification} />;
+            return <DoDisturbAltIcon fontSize="small" color={classification} />;
 
         const categories = {
-            saude: <HealthAndSafetyIcon color={categoryDescription} />,
-            educacao: <MenuBookIcon color={categoryDescription} />,
-            lazer: <WeekendIcon color={categoryDescription} />,
+            saude: (
+                <HealthAndSafetyIcon
+                    fontSize="small"
+                    color={categoryDescription}
+                />
+            ),
+            educacao: (
+                <MenuBookIcon fontSize="small" color={categoryDescription} />
+            ),
+            lazer: <WeekendIcon fontSize="small" color={categoryDescription} />,
         };
 
         return categories[categoryDescription] || null;
@@ -109,7 +116,7 @@ export default function HabitCard({
                     <Checkbox
                         defaultChecked={!!conclusionDate}
                         disabled={!isToday(parseISO(date)) || isLoading}
-                        size="medium"
+                        size="small"
                         onChange={changeCheckbox}
                         color={
                             classification === "ruim"
@@ -117,14 +124,14 @@ export default function HabitCard({
                                 : categoryDescription
                         }
                     />
-                    <span>{name}</span>
+                    <span className="text-sm">{name}</span>
                 </div>
 
                 <div className="flex items-center">
                     {handleIcon()}
 
                     <IconButton onClick={handleOpenMenu} size="small">
-                        <MoreVertIcon className="text-black" />
+                        <MoreVertIcon fontSize="small" className="text-black" />
                     </IconButton>
 
                     <Menu

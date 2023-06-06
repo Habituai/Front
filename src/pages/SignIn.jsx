@@ -15,10 +15,9 @@ import { useAuth } from "../hooks/useAuth";
 import { makeRequest } from "../services/makeRequest";
 
 function SignIn() {
+    const host = import.meta.env.VITE_LOGIN_PATH;
     const navigate = useNavigate();
     const { setAuth } = useAuth();
-
-    const host = import.meta.env.VITE_LOGIN_PATH;
 
     const formInitialValues = { email: "", password: "" };
 
@@ -53,8 +52,12 @@ function SignIn() {
                 validateOnBlur={false}
             >
                 {({ errors, isSubmitting }) => (
-                    <div className="w-full h-full lg:h-screen flex flex-col-reverse lg:flex-row justify-center items-center lg:gap-28">
+                    <div className="w-full h-full lg:h-screen flex flex-col lg:flex-row justify-center items-center lg:gap-28">
                         <div className="h-full w-full flex flex-1 justify-center lg:justify-end items-center py-5 lg:p-0">
+                            <SignHeaderLayout imageSrc={studyImage} />
+                        </div>
+
+                        <div className="h-full w-full flex flex-1 justify-center lg:justify-start items-center py-5 lg:p-0">
                             <div className="max-w-3/4 lg:min-w-[480px] bg-white rounded-lg shadow-lg">
                                 <Form className="flex justify-center items-center flex-col gap-3 lg:gap-8 p-10">
                                     <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">
@@ -75,7 +78,17 @@ function SignIn() {
                                         hasError={!!errors.password}
                                     />
 
-                                    <div className="w-full flex gap-2 flex-col">
+                                    <div className="w-full flex gap-4 items-center flex-col">
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            size="large"
+                                            disabled={isSubmitting}
+                                            sx={{ width: "100%" }}
+                                        >
+                                            Entrar
+                                        </Button>
+
                                         <span>
                                             {`Não possui conta? `}
                                             <Link
@@ -85,22 +98,9 @@ function SignIn() {
                                                 Cadastrar
                                             </Link>
                                         </span>
-
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            disabled={isSubmitting}
-                                            sx={{ width: "100%" }}
-                                        >
-                                            Entrar
-                                        </Button>
                                     </div>
                                 </Form>
                             </div>
-                        </div>
-
-                        <div className="h-full w-full flex flex-1 justify-center lg:justify-start items-center py-5 lg:p-0">
-                            <SignHeaderLayout imageSrc={studyImage} />
                         </div>
                     </div>
                 )}

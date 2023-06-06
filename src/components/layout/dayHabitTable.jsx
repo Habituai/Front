@@ -22,7 +22,7 @@ export default function DayHabitTableLayout({ children, date }) {
                     <span
                         className={`${
                             today ? "text-secondaryDark" : "text-primaryDark"
-                        } text-2xl font-bold`}
+                        } text-xl font-bold`}
                     >
                         {today ? "Hoje" : formattedDay}
                     </span>

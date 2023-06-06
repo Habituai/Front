@@ -18,11 +18,13 @@ export default function SignHeaderLayout({ imageSrc }) {
 
     return (
         <div className="w-3/4 flex flex-col justify-center items-center gap-6 lg:gap-10">
-            <h1 className="text-5xl text-secondaryDark font-bold">Habituaí</h1>
+            <h1 className="text-6xl text-secondaryLight font-bold drop-shadow-md">
+                Habituaí
+            </h1>
 
             <img
                 src={imageSrc}
-                className="w-3/4 max-w-[400px] lg:max-w-[400px]"
+                className="w-3/4 drop-shadow-xl max-w-[400px] lg:max-w-[400px]"
             />
 
             <span className="text-gray-900 text-lg lg:text-2xl text-center">

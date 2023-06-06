@@ -6,7 +6,9 @@ import { useUpdateUser } from "../../hooks/useUpdateUser";
 import { makeRequestWithAuthorization } from "../../services/makeRequest";
 import EmailField, { emailYupValidations } from "../field/email";
 import NameField, { nameYupValidations } from "../field/name";
-import PasswordField from "../field/password";
+import NewPasswordField, {
+    newPasswordYupValidations,
+} from "../field/newPassword";
 import FieldInput from "../layout/field";
 
 export default function EditUserForm({ setOpenEditUserModal, userData }) {
@@ -24,10 +26,7 @@ export default function EditUserForm({ setOpenEditUserModal, userData }) {
     const handleValidationSchema = Yup.object().shape({
         ...emailYupValidations,
         ...nameYupValidations,
-        password: Yup.string()
-            .min(2, "Senha inválida")
-            .max(20, "Senha inválida")
-            .trim("Senha inválida"),
+        ...newPasswordYupValidations,
     });
 
     const handleFormSubmit = async (values, { setSubmitting }) => {
@@ -51,10 +50,13 @@ export default function EditUserForm({ setOpenEditUserModal, userData }) {
                 `${host}/${userData.id}`,
                 { data }
             );
-            toast.success("Seus dados foram editados com sucesso!");
+
+            toast.success("Seus dados foram atualizados!");
             setUserHasUpdate(true);
+
+            values.password = ""; //Reseta a senha no formulário
         } catch (error) {
-            toast.error("Não foi possível editar seus dados");
+            toast.error("Não foi possível alterar");
             console.error(error);
         } finally {
             setSubmitting(false);
@@ -70,30 +72,32 @@ export default function EditUserForm({ setOpenEditUserModal, userData }) {
             validateOnBlur={false}
         >
             {({ values, errors, isSubmitting }) => (
-                <Form className="flex justify-center items-center flex-col gap-3 lg:gap-8 p-10">
+                <Form className="h-full w-full flex justify-center items-center flex-col gap-3 lg:gap-8 p-10">
                     <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">
-                        Seus dados de perfil
+                        Dados de perfil
                     </h4>
 
-                    <FieldInput
-                        name="name"
-                        type="text"
-                        label="Nome/Apelido"
-                        fieldComponent={NameField}
-                        hasError={!!errors.name}
-                    />
+                    <div className="w-full flex flex-col lg:flex-row gap-3 lg:gap-8">
+                        <FieldInput
+                            name="name"
+                            type="text"
+                            label="Nome/Apelido"
+                            fieldComponent={NameField}
+                            hasError={!!errors.name}
+                        />
 
-                    <FieldInput
-                        name="email"
-                        type="email"
-                        fieldComponent={EmailField}
-                        hasError={!!errors.email}
-                    />
+                        <FieldInput
+                            name="email"
+                            type="email"
+                            fieldComponent={EmailField}
+                            hasError={!!errors.email}
+                        />
+                    </div>
 
                     <FieldInput
                         name="password"
                         type="password"
-                        fieldComponent={PasswordField}
+                        fieldComponent={NewPasswordField}
                         hasError={!!errors.password}
                     />
 
@@ -109,7 +113,7 @@ export default function EditUserForm({ setOpenEditUserModal, userData }) {
                             }
                             sx={{ width: "100%" }}
                         >
-                            Editar dados
+                            Atualizar dados
                         </Button>
 
                         <Button

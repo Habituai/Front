@@ -6,6 +6,7 @@ import {
     Radio,
     RadioGroup,
 } from "@mui/material";
+import { formatISO } from "date-fns";
 import { ErrorMessage, Form, Formik } from "formik";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -76,7 +77,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }) {
         name: "",
         classification: "",
         category: "",
-        dateCreation: new Date().toISOString(),
+        dateCreation: formatISO(new Date()),
         "Segunda-feira": false,
         "Terça-feira": false,
         "Quarta-feira": false,

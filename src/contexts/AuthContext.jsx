@@ -9,7 +9,7 @@ function AuthProvider({ children }) {
     const [auth, setAuth] = useState(!!token);
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth, token }}>
+        <AuthContext.Provider value={{ auth, setAuth }}>
             {children}
         </AuthContext.Provider>
     );

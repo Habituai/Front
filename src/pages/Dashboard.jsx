@@ -9,7 +9,6 @@ import CreateHabitModal from "../components/modal/createHabit";
 import DeleteHabitModal from "../components/modal/deleteHabit";
 import EditHabitModal from "../components/modal/editHabit";
 import EditUserModal from "../components/modal/editUser";
-import { useAuth } from "../hooks/useAuth";
 import { useUpdateHabits } from "../hooks/useUpdateHabits";
 import { useUpdateUser } from "../hooks/useUpdateUser";
 import { makeRequestWithAuthorization } from "../services/makeRequest";
@@ -30,7 +29,6 @@ const getWeekDaysList = (referenceDay) => {
 function Dashboard() {
     const userHost = import.meta.env.VITE_USER_ACCOUNT_PATH;
     const habitsHost = import.meta.env.VITE_HABIT_WEEK_PATH;
-    const { token } = useAuth();
 
     const { habitsHasUpdate, setHabitsHasUpdate } = useUpdateHabits();
     const { userHasUpdate, setUserHasUpdate } = useUpdateUser();

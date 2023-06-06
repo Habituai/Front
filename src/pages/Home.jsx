@@ -7,7 +7,7 @@ function Home() {
     return (
         <section className="w-full h-screen flex flex-col">
             <header className="w-full flex justify-between py-4 px-32 bg-primaryDark shadow-md">
-                <h1 className="flex items-center gap-2 text-5xl text-secondaryLight font-bold">
+                <h1 className="flex items-center gap-2 text-5xl text-secondaryExtraLight font-bold">
                     <img src={checkBoxIcon} alt="logo" className="w-10 h-10" />
                     Habituaí
                 </h1>

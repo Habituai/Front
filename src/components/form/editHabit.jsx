@@ -109,12 +109,12 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }) {
                         formInitialValues.classification
                             ? values.classification
                             : undefined,
-                    category: {
-                        id:
-                            values.category !== formInitialValues.category
-                                ? values.category
-                                : undefined,
-                    },
+                    category:
+                        values.category !== formInitialValues.category
+                            ? {
+                                  id: values.category,
+                              }
+                            : undefined,
                 },
                 dayWeekList:
                     JSON.stringify(dayWeekList) !==

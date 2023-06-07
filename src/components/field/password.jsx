@@ -15,8 +15,8 @@ export default function PasswordField(props) {
 
 export const passwordYupValidations = {
     password: Yup.string()
-        .min(2, "Senha inválida")
-        .max(20, "Senha inválida")
+        .min(2, "Senha muito curta")
+        .max(30, "Senha muito grande")
         .required("Campo obrigatório")
         .trim("Senha inválida"),
 };

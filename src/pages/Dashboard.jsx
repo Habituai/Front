@@ -139,40 +139,31 @@ function Dashboard() {
                     {weekDaysList?.length > 0 &&
                         !!habitList &&
                         weekDaysList.map((date, index) => {
-                            const habits =
+                            const dayData =
                                 habitList.find(
                                     (dayHabit) =>
                                         dayHabit.date === date.split("T")[0]
-                                )?.habit ?? [];
+                                )?.listHabit ?? [];
 
                             return (
                                 <DayHabitTableLayout key={date} date={date}>
-                                    {habits?.length > 0
-                                        ? habits?.map(
-                                              ({
-                                                  id,
-                                                  name,
-                                                  category,
-                                                  classification,
-                                                  weightExperience,
-                                                  conclusionDate,
-                                              }) => (
+                                    {dayData?.length > 0
+                                        ? dayData?.map(
+                                              ({ habit, concluded }) => (
                                                   <HabitCard
-                                                      key={id}
-                                                      id={id}
-                                                      name={name}
-                                                      category={category}
+                                                      key={habit.id}
+                                                      id={habit.id}
+                                                      name={habit.name}
+                                                      category={habit.category}
                                                       classification={
-                                                          classification
+                                                          habit.classification
                                                       }
                                                       date={date}
                                                       weightExperience={
-                                                          weightExperience
-                                                      }
-                                                      conclusionDate={
-                                                          conclusionDate
+                                                          habit.weightExperience
                                                       }
                                                       weekDay={index + 1}
+                                                      concluded={concluded}
                                                       setHabitToBeDeleted={
                                                           setHabitToBeDeleted
                                                       }

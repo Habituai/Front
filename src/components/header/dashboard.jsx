@@ -38,7 +38,7 @@ export default function DashboardHeader({
     };
 
     return (
-        <header className="w-full py-6 lg:px-20 flex justify-center bg-primaryDark shadow-xl">
+        <header className="w-full py-4 lg:px-9 flex justify-center bg-primaryDark shadow-xl">
             <nav className="w-full flex flex-col lg:flex-row items-center gap-4 lg:gap-0">
                 <span className="flex flex-1 items-center gap-2 text-4xl text-secondaryExtraLight font-bold">
                     <img src={checkBoxIcon} alt="logo" className="w-8 h-8" />

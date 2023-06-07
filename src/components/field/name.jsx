@@ -14,8 +14,7 @@ export default function NameField(props) {
 
 export const nameYupValidations = {
     name: Yup.string()
-        .min(2, "Nome inválido")
-        .max(15, "Nome inválido")
+        .max(10, "Nome muito grande")
         .required("Campo obrigatório")
         .trim("Nome inválido"),
 };

@@ -15,7 +15,7 @@ export default function NewPasswordField(props) {
 
 export const newPasswordYupValidations = {
     password: Yup.string()
-        .min(2, "Senha inválida")
-        .max(20, "Senha inválida")
+        .min(2, "Senha muito curta")
+        .max(30, "Senha muito grande")
         .trim("Senha inválida"),
 };

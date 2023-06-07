@@ -10,6 +10,7 @@ import { isToday, parseISO } from "date-fns";
 import { useState } from "react";
 import { useUpdateHabits } from "../../hooks/useUpdateHabits";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
+import { makeRequestWithAuthorization } from "../../services/makeRequest";
 
 export default function HabitCard({
     id,
@@ -17,8 +18,8 @@ export default function HabitCard({
     classification,
     category,
     date,
-    conclusionDate = "",
     weekDay,
+    concluded,
     setHabitToBeDeleted,
     setHabitIdToBeUpdated,
 }) {
@@ -80,18 +81,18 @@ export default function HabitCard({
     };
 
     const handleCheck = async () => {
-        // const data = { id, weekDay, conclusionDate: date };
-        // await makeRequestWithAuthorization("POST", host, { data });
+        const data = { habit: { id }, dayWeek: weekDay };
+        await makeRequestWithAuthorization("POST", host, { data });
     };
 
     const handleUncheck = async () => {
-        // await makeRequestWithAuthorization("DELETE", `${host}/${id}/${date}`);
+        await makeRequestWithAuthorization("DELETE", `${host}/${id}`);
     };
 
     const changeCheckbox = async () => {
         setIsLoading(true);
         try {
-            if (conclusionDate) {
+            if (concluded) {
                 await handleUncheck();
             } else {
                 await handleCheck();
@@ -114,7 +115,7 @@ export default function HabitCard({
             <div className="flex items-center justify-between gap-1">
                 <div className="flex items-center">
                     <Checkbox
-                        defaultChecked={!!conclusionDate}
+                        defaultChecked={concluded}
                         disabled={!isToday(parseISO(date)) || isLoading}
                         size="small"
                         onChange={changeCheckbox}

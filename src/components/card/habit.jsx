@@ -98,11 +98,12 @@ export default function HabitCard({
                 await handleCheck();
             }
 
-            setIsLoading(false);
             setUserHasUpdate(true);
             setHabitsHasUpdate(true);
         } catch (error) {
             console.error(`Erro ao alterar checkbox "${name}"`);
+        } finally {
+            setIsLoading(false);
         }
     };
 

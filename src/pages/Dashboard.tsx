@@ -9,9 +9,10 @@ import CreateHabitModal from '../components/modal/createHabit';
 import DeleteHabitModal from '../components/modal/deleteHabit';
 import EditHabitModal from '../components/modal/editHabit';
 import EditUserModal from '../components/modal/editUser';
+import { envs } from '../config';
 import { useUpdateHabits } from '../hooks/useUpdateHabits';
 import { useUpdateUser } from '../hooks/useUpdateUser';
-import { makeRequestWithAuthorization } from '../services/makeRequest';
+import { makeRequestWithAuthorization } from '../services/makeRequestWithAuthorization';
 
 const getWeekDaysList = (referenceDay: Date) => {
     const firstDayOfWeek = startOfWeek(referenceDay, { weekStartsOn: 1 });
@@ -66,8 +67,8 @@ interface DayList {
 }
 
 function Dashboard() {
-    const userHost = import.meta.env.VITE_USER_ACCOUNT_PATH;
-    const habitsHost = import.meta.env.VITE_HABIT_WEEK_PATH;
+    const userHost = envs.userAccountPath;
+    const habitsHost = envs.habitWeekPath;
 
     const { habitsHasUpdate, setHabitsHasUpdate } = useUpdateHabits();
     const { userHasUpdate, setUserHasUpdate } = useUpdateUser();

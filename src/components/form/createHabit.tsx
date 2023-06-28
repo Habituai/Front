@@ -4,8 +4,9 @@ import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
+import { envs } from '../../config';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
-import { makeRequestWithAuthorization } from '../../services/makeRequest';
+import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 import HabitNameField, { habitNameYupValidations } from '../field/habitName';
 import FieldInput from '../layout/field';
 
@@ -58,7 +59,7 @@ interface CreateHabitFormProps {
 }
 
 export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabitFormProps) {
-    const host = import.meta.env.VITE_HABIT_PATH;
+    const host = envs.habitPath;
 
     const { setHabitsHasUpdate } = useUpdateHabits();
 

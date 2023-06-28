@@ -8,10 +8,11 @@ import WeekendIcon from '@mui/icons-material/Weekend';
 import { Checkbox, IconButton, Menu, MenuItem } from '@mui/material';
 import { isToday, parseISO } from 'date-fns';
 import { ReactElement, useState } from 'react';
+import { envs } from '../../config';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { useUpdateUser } from '../../hooks/useUpdateUser';
 import { HabitCategory } from '../../pages/Dashboard';
-import { makeRequestWithAuthorization } from '../../services/makeRequest';
+import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 
 type Color = 'saude' | 'educacao' | 'lazer' | 'ruim' | 'outro';
 
@@ -48,7 +49,7 @@ export default function HabitCard({
 }: HabitCardProps) {
     //avoid eslint
     console.log(weightExperience);
-    const host = import.meta.env.VITE_PROGRESS_PATH;
+    const host = envs.progressPath;
 
     const { description: categoryDescription } = category;
 

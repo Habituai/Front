@@ -1,9 +1,10 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { envs } from '../../config';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { Habit } from '../../pages/Dashboard';
-import { makeRequestWithAuthorization } from '../../services/makeRequest';
+import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 import BaseModal from '../layout/modal';
 
 interface DeleteHabitModalProps {
@@ -20,7 +21,7 @@ export default function DeleteHabitModal({ habitId, setHabitIdToBeDeleted }: Del
     useEffect(() => {
         if (habitId) {
             const handleGetHabitByIdData = async () => {
-                const habitHost = import.meta.env.VITE_HABIT_PATH;
+                const habitHost = envs.habitPath;
                 const data = await makeRequestWithAuthorization('GET', `${habitHost}/${habitId}`);
 
                 setHabitData(data.habit as Habit);
@@ -36,7 +37,7 @@ export default function DeleteHabitModal({ habitId, setHabitIdToBeDeleted }: Del
     const handleDeleteHabit = async () => {
         setIsLoading(true);
         try {
-            const habitsHost = import.meta.env.VITE_HABIT_PATH;
+            const habitsHost = envs.habitPath;
             await makeRequestWithAuthorization('DELETE', `${habitsHost}/${habitId}`);
             setHabitIdToBeDeleted(null);
             toast.success('Hábito excluído com sucesso!');

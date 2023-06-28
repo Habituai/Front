@@ -3,9 +3,10 @@ import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
+import { envs } from '../../config';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { Habit } from '../../pages/Dashboard';
-import { makeRequestWithAuthorization } from '../../services/makeRequest';
+import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 import HabitNameField, { habitNameYupValidations } from '../field/habitName';
 import FieldInput from '../layout/field';
 
@@ -63,14 +64,14 @@ interface EditHabitFormProps {
 }
 
 export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHabitFormProps) {
-    const host = import.meta.env.VITE_HABIT_PATH;
+    const host = envs.habitPath;
 
     const [habitData, setHabitData] = useState<HabitsWithDayWeekList | null>(null);
 
     useEffect(() => {
         if (habitId) {
             const handleGetHabitByIdData = async () => {
-                const habitHost = import.meta.env.VITE_HABIT_PATH;
+                const habitHost = envs.habitPath;
                 const data = await makeRequestWithAuthorization('GET', `${habitHost}/${habitId}`);
 
                 setHabitData({

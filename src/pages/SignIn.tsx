@@ -9,6 +9,7 @@ import EmailField, { emailYupValidations } from '../components/field/email';
 import PasswordField, { passwordYupValidations } from '../components/field/password';
 import FieldInput from '../components/layout/field';
 import SignHeaderLayout from '../components/layout/signHeader';
+import { envs } from '../config';
 import { useAuth } from '../hooks/useAuth';
 import { makeRequest } from '../services/makeRequest';
 
@@ -18,7 +19,7 @@ interface Values {
 }
 
 function SignIn() {
-    const host = import.meta.env.VITE_LOGIN_PATH;
+    const host = envs.loginPath;
     const navigate = useNavigate();
     const { setAuth } = useAuth();
 

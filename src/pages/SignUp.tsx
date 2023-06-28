@@ -6,11 +6,10 @@ import * as Yup from 'yup';
 import healthImage from '../assets/images/health.svg';
 import EmailField, { emailYupValidations } from '../components/field/email';
 import NameField, { nameYupValidations } from '../components/field/name';
-import PasswordField, {
-    passwordYupValidations,
-} from '../components/field/password';
+import PasswordField, { passwordYupValidations } from '../components/field/password';
 import FieldInput from '../components/layout/field';
 import SignHeaderLayout from '../components/layout/signHeader';
+import { envs } from '../config';
 import { makeRequest } from '../services/makeRequest';
 
 interface Values {
@@ -21,7 +20,7 @@ interface Values {
 
 function SignUp() {
     const navigate = useNavigate();
-    const host = import.meta.env.VITE_USER_PATH;
+    const host = envs.userPath;
 
     const formInitialValues: Values = { name: '', password: '', email: '' };
 
@@ -31,10 +30,7 @@ function SignUp() {
         ...passwordYupValidations,
     });
 
-    const handleFormSubmit = async (
-        values: Values,
-        { setSubmitting }: FormikHelpers<Values>,
-    ) => {
+    const handleFormSubmit = async (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
         setSubmitting(true);
         try {
             await makeRequest('POST', host, { data: values });
@@ -66,9 +62,7 @@ function SignUp() {
                         <div className="h-full w-full flex flex-1 justify-center lg:justify-end items-center py-5 lg:p-0">
                             <div className="max-w-3/4 lg:min-w-[480px] bg-white rounded-lg shadow-lg">
                                 <Form className="flex justify-center items-center flex-col gap-3 lg:gap-8 p-10">
-                                    <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">
-                                        Crie sua conta
-                                    </h4>
+                                    <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">Crie sua conta</h4>
 
                                     <FieldInput
                                         name="name"

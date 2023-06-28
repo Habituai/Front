@@ -1,7 +1,7 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { envs } from '../config';
 
-const baseURL = import.meta.env.VITE_HOST_BACKEND;
+const baseURL = envs.baseURL;
 
 export async function makeRequest(method: string, url: string, { params = {}, data = {}, headers = {} } = {}) {
     const response = await axios({
@@ -17,17 +17,4 @@ export async function makeRequest(method: string, url: string, { params = {}, da
     });
 
     return response.data;
-}
-
-export async function makeRequestWithAuthorization(method: string, url: string, { params = {}, data = {}, headers = {} } = {}) {
-    const token = Cookies.get('token');
-
-    return await makeRequest(method, url, {
-        params,
-        data,
-        headers: {
-            Authorization: token,
-            ...headers,
-        },
-    });
 }

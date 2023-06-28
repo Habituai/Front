@@ -2,9 +2,10 @@ import { Button } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
+import { envs } from '../../config';
 import { useUpdateUser } from '../../hooks/useUpdateUser';
 import { User } from '../../pages/Dashboard';
-import { makeRequestWithAuthorization } from '../../services/makeRequest';
+import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 import EmailField, { emailYupValidations } from '../field/email';
 import NameField, { nameYupValidations } from '../field/name';
 import NewPasswordField, { newPasswordYupValidations } from '../field/newPassword';
@@ -22,7 +23,7 @@ interface EditUserFormProps {
 }
 
 export default function EditUserForm({ setOpenEditUserModal, userData }: EditUserFormProps) {
-    const host = import.meta.env.VITE_USER_PATH;
+    const host = envs.userPath;
 
     const { setUserHasUpdate } = useUpdateUser();
 

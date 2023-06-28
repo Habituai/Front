@@ -9,6 +9,19 @@
 -   Rodar o comando `npm run dev` para rodar localmente a aplicação (_localhost:3000_)
 -   Lembrar de subir o back-end ou mockserver
 
-### Gamificação:
+### Features:
 
--
+-   Mudar semana
+-   Separar área de habitos ruins
+-   Responsivo
+-   Dark mode
+-   Gamificação
+    -   perfil
+
+### Não-funcionais:
+
+-   Mudar as rotas (colocar em portugues, fazer dashboard e botões de voltar pra Home)
+-   Remodelar design dos formulários de criação e edição de hábitos
+-   Mudar a proporção dos dias da semana
+-   Teste unitário
+-   Teste E2E Cypress

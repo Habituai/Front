@@ -10,6 +10,7 @@ import { format, parseISO } from 'date-fns';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import checkBoxIcon from '../../assets/images/checkbox.svg';
+import { paths } from '../../paths';
 
 interface DashboardHeaderProps {
     name: string;
@@ -34,7 +35,7 @@ export default function DashboardHeader({
 
     const handleLogout = () => {
         Cookies.remove('token');
-        window.location.href = '/';
+        window.location.href = paths.home;
     };
 
     const getLevelByXP = () => (experience ? Math.ceil(experience / 100) : 1);

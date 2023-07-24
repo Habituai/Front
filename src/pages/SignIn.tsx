@@ -11,6 +11,7 @@ import FieldInput from '../components/layout/field';
 import SignHeaderLayout from '../components/layout/signHeader';
 import { envs } from '../config';
 import { useAuth } from '../hooks/useAuth';
+import { paths } from '../paths';
 import { makeRequest } from '../services/makeRequest';
 
 interface Values {
@@ -36,7 +37,7 @@ function SignIn() {
             const data = await makeRequest('POST', host, { data: values });
             Cookies.set('token', data.token);
             setAuth(true);
-            navigate('/');
+            navigate(paths.dashboard);
         } catch (error) {
             toast.error('Email ou senha incorretos');
         } finally {
@@ -95,7 +96,7 @@ function SignIn() {
                                             {`Não possui conta? `}
                                             <Link
                                                 className="text-primaryMedium hover:text-primaryExtraLight font-semibold underline"
-                                                to="/sign-up"
+                                                to={paths.signUp}
                                             >
                                                 Cadastrar
                                             </Link>

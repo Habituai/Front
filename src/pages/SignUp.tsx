@@ -10,6 +10,7 @@ import PasswordField, { passwordYupValidations } from '../components/field/passw
 import FieldInput from '../components/layout/field';
 import SignHeaderLayout from '../components/layout/signHeader';
 import { envs } from '../config';
+import { paths } from '../paths';
 import { makeRequest } from '../services/makeRequest';
 
 interface Values {
@@ -34,7 +35,7 @@ function SignUp() {
         setSubmitting(true);
         try {
             await makeRequest('POST', host, { data: values });
-            navigate('/sign-in');
+            navigate(paths.signIn);
         } catch (error: any) {
             if (error?.response?.status === 422) {
                 toast.error('Email já cadastrado');
@@ -100,7 +101,7 @@ function SignUp() {
                                             {`Já possui conta? `}
                                             <Link
                                                 className="text-primaryMedium hover:text-primaryExtraLight font-semibold underline"
-                                                to="/sign-in"
+                                                to={paths.signIn}
                                             >
                                                 Entrar
                                             </Link>

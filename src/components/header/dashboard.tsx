@@ -6,10 +6,11 @@ import ArticleIcon from '@mui/icons-material/Article';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PersonIcon from '@mui/icons-material/Person';
 import { Button, Menu, MenuItem } from '@mui/material';
-import { format, parseISO } from 'date-fns';
+import { addDays, format, parseISO, subDays } from 'date-fns';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import checkBoxIcon from '../../assets/images/checkbox.svg';
+import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { paths } from '../../paths';
 
 interface DashboardHeaderProps {
@@ -18,6 +19,8 @@ interface DashboardHeaderProps {
     weekDaysList: string[];
     setOpenCreateHabitModal: React.Dispatch<React.SetStateAction<boolean>>;
     setOpenEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+    referenceDay: Date;
+    setReferenceDay: React.Dispatch<React.SetStateAction<Date>>;
 }
 
 export default function DashboardHeader({
@@ -26,7 +29,11 @@ export default function DashboardHeader({
     weekDaysList,
     setOpenCreateHabitModal,
     setOpenEditUserModal,
+    referenceDay,
+    setReferenceDay,
 }: DashboardHeaderProps) {
+    const { setHabitsHasUpdate } = useUpdateHabits();
+
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
     const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => setAnchorEl(event.currentTarget);
@@ -45,6 +52,18 @@ export default function DashboardHeader({
         handleCloseMenu();
     };
 
+    const handleSubWeek = () => {
+        const newReferenceDay = subDays(referenceDay, 7);
+        setReferenceDay(newReferenceDay);
+        setHabitsHasUpdate(true);
+    };
+
+    const handleAddWeek = () => {
+        const newReferenceDay = addDays(referenceDay, 7);
+        setReferenceDay(newReferenceDay);
+        setHabitsHasUpdate(true);
+    };
+
     return (
         <header className="w-full py-4 lg:px-9 flex justify-center bg-primaryDark shadow-xl">
             <nav className="w-full flex flex-col lg:flex-row items-center gap-4 lg:gap-0">
@@ -55,7 +74,13 @@ export default function DashboardHeader({
 
                 <div className="flex flex-none justify-center items-center gap-8">
                     <div className="flex items-center justify-center gap-2 text-white py-2 px-4 bg-primaryExtraLight rounded-xl shadow-md">
-                        <ArrowCircleLeftIcon color="bom" fontSize="large" className="cursor-pointer drop-shadow-sm" />
+                        <button onClick={handleSubWeek}>
+                            <ArrowCircleLeftIcon
+                                color="bom"
+                                fontSize="large"
+                                className="cursor-pointer drop-shadow-sm hover:text-secondaryMedium hover:transition-all"
+                            />
+                        </button>
 
                         <span className="text-md lg:text-lg">
                             {`${format(parseISO(weekDaysList[0]), 'dd/MM')} - ${format(
@@ -64,7 +89,13 @@ export default function DashboardHeader({
                             )}`}
                         </span>
 
-                        <ArrowCircleRightIcon color="bom" fontSize="large" className="cursor-pointer drop-shadow-sm" />
+                        <button onClick={handleAddWeek}>
+                            <ArrowCircleRightIcon
+                                color="bom"
+                                fontSize="large"
+                                className="cursor-pointer drop-shadow-sm hover:text-secondaryMedium hover:transition-all"
+                            />
+                        </button>
                     </div>
 
                     <Button

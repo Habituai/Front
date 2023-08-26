@@ -73,11 +73,8 @@ function Dashboard() {
     const { habitsHasUpdate, setHabitsHasUpdate } = useUpdateHabits();
     const { userHasUpdate, setUserHasUpdate } = useUpdateUser();
 
-    const weekDaysBaseList = getWeekDaysList(new Date());
-    const [weekDaysList, setWeekDaysList] = useState(weekDaysBaseList);
-
-    //avoid eslint
-    console.log(setWeekDaysList);
+    const [referenceDay, setReferenceDay] = useState(new Date());
+    const weekDaysList = getWeekDaysList(referenceDay);
 
     const [userData, setUserData] = useState<User>({ id: -1, name: '', email: '', experience: 0 });
     const [habitListFromServer, setHabitListFromServer] = useState<DayList[]>([]);
@@ -101,7 +98,7 @@ function Dashboard() {
 
     useEffect(() => {
         handleGetUserData().catch((error) => {
-            console.log(error);
+            console.error(error);
             console.error('Não foi possível pegar os dados do usuário.');
         });
 
@@ -114,7 +111,7 @@ function Dashboard() {
     useEffect(() => {
         if (userHasUpdate) {
             handleGetUserData().catch((error) => {
-                console.log(error);
+                console.error(error);
                 console.error('Não foi possível pegar os dados do usuário.');
             });
 
@@ -147,6 +144,8 @@ function Dashboard() {
                 weekDaysList={weekDaysList}
                 setOpenCreateHabitModal={setOpenCreateHabitModal}
                 setOpenEditUserModal={setOpenEditUserModal}
+                referenceDay={referenceDay}
+                setReferenceDay={setReferenceDay}
             />
 
             <div className="w-full pt-8 pb-6 flex justify-center">

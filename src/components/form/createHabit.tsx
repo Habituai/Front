@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { Button, Checkbox, FormControl, FormControlLabel, RadioGroup } from '@mui/material';
 import { formatISO } from 'date-fns';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { useState } from 'react';
@@ -9,6 +9,8 @@ import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 import HabitNameField, { habitNameYupValidations } from '../field/habitName';
 import FieldInput from '../layout/field';
+import { CategoryRadioButton } from '../radio/category';
+import { ClassificationRadioButton } from '../radio/classification';
 
 interface Values {
     name: string;
@@ -133,10 +135,28 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
         >
             {({ values, errors, isSubmitting, setFieldValue, handleChange }) => (
                 <Form className="w-full h-full flex justify-center items-center flex-col">
-                    <h4 className="w-full mb-8 text-4xl font-bold text-primaryDark">Criar novo hábito</h4>
+                    {/* <h4 className="w-full mb-8 text-4xl font-bold text-primaryDark">Criar novo hábito</h4> */}
 
                     <div className="w-full h-full flex justify-center items-center flex-col lg:flex-row gap-10 lg:gap-32">
                         <div className="w-full h-full flex flex-1 flex-col justify-center gap-10">
+                            <div className="w-full flex justify-center items-center gap-2 flex-col">
+                                <label className="w-full text-4xl font-bold text-primaryDark">Você gostaria de</label>
+
+                                <RadioGroup
+                                    row
+                                    name="classification"
+                                    value={values.classification}
+                                    defaultValue="bom"
+                                    onChange={(event) => {
+                                        setFieldValue('classification', event.currentTarget.value);
+                                    }}
+                                    className="h-full w-full"
+                                >
+                                    <ClassificationRadioButton value="bom" label="criar um novo hábito" />
+                                    <ClassificationRadioButton value="ruim" label="parar com um hábito ruim" />
+                                </RadioGroup>
+                            </div>
+
                             <FieldInput
                                 name="name"
                                 type="text"
@@ -146,45 +166,29 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
 
                             <div className="w-full flex gap-2 flex-col">
                                 <div className="flex gap-4">
-                                    <label className="font-bold">Classificação*:</label>
-
-                                    <span className="text-red-600">
-                                        <ErrorMessage name="classification" />
-                                    </span>
-                                </div>
-
-                                <RadioGroup
-                                    row
-                                    name="classification"
-                                    value={values.classification}
-                                    onChange={(event) => {
-                                        setFieldValue('classification', event.currentTarget.value);
-                                    }}
-                                >
-                                    <FormControlLabel value="bom" label="Bom" control={<Radio />} />
-                                    <FormControlLabel value="ruim" label="Ruim" control={<Radio />} />
-                                </RadioGroup>
-                            </div>
-
-                            <div className="w-full flex gap-2 flex-col">
-                                <div className="flex gap-4">
                                     <label className="font-bold">Categoria*:</label>
 
                                     <span className="text-red-600">
                                         <ErrorMessage name="category" />
                                     </span>
                                 </div>
+
                                 <RadioGroup
                                     row
                                     value={values.category}
                                     onChange={(event) => {
                                         setFieldValue('category', event.currentTarget.value);
                                     }}
+                                    className="h-full w-full"
                                 >
-                                    <FormControlLabel value={1} label="Saúde" control={<Radio />} />
+                                    {/* <FormControlLabel value={1} label="Saúde" control={<Radio />} />
                                     <FormControlLabel value={2} label="Educação" control={<Radio />} />
                                     <FormControlLabel value={3} label="Lazer" control={<Radio />} />
-                                    <FormControlLabel value={4} label="Outro" control={<Radio />} />
+                                    <FormControlLabel value={4} label="Outro" control={<Radio />} /> */}
+                                    <CategoryRadioButton value={1} label="Saúde" />
+                                    <CategoryRadioButton value={2} label="Educação" />
+                                    <CategoryRadioButton value={3} label="Lazer" />
+                                    <CategoryRadioButton value={4} label="Outro" />
                                 </RadioGroup>
                             </div>
                         </div>
@@ -201,7 +205,12 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
                                         name={weekDay}
                                         label={weekDay}
                                         onChange={handleChange}
-                                        control={<Checkbox checked={values[weekDay]} />}
+                                        disabled={values.classification === 'ruim'}
+                                        control={
+                                            <Checkbox
+                                                checked={values.classification === 'ruim' ? true : values[weekDay]}
+                                            />
+                                        }
                                     />
                                 ))}
                             </FormControl>

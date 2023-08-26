@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import toDoImage from '../assets/images/todo.svg';
+import HomeCard from '../components/card/home';
 import HomeHeader from '../components/header/home';
 import { paths } from '../paths';
 
@@ -40,34 +41,22 @@ function Home() {
             </div>
 
             <div className="w-full flex gap-12 bg-primaryDark px-32">
-                <div className="bg-secondaryExtraLight flex flex-col gap-2 p-4 max-w-[380px] mt-[-24px] shadow-2xl rounded-t-xl">
-                    <h4 className="text-white shadow-sm font-bold text-xl">Organização</h4>
-                    <p className="text-gray-800 text-md">
-                        Com o Habituaí você tem o controle dos seus hábitos em uma semana completa.
-                    </p>
-                </div>
-
-                <div className="bg-secondaryExtraLight flex flex-col gap-2 p-4 max-w-[380px] mt-[-24px] shadow-2xl rounded-t-xl">
-                    <h4 className="text-white shadow-sm font-bold text-xl">Gerenciamento</h4>
-                    <p className="text-gray-800 text-md">
-                        Com o Habituaí você pode gerenciar e customizar seus hábitos da maneira que quiser.
-                    </p>
-                </div>
-
-                <div className="bg-secondaryExtraLight flex flex-col gap-2 p-4 max-w-[380px] mt-[-24px] shadow-2xl rounded-t-xl">
-                    <h4 className="text-white shadow-sm font-bold text-xl">Gamificação</h4>
-                    <p className="text-gray-800 text-md">
-                        Com o Habituaí você ganha pontos e sobe de nível com suas vitórias.
-                    </p>
-                </div>
-
-                <div className="bg-secondaryExtraLight flex flex-col gap-2 p-4 max-w-[380px] mt-[-24px] shadow-2xl rounded-t-xl">
-                    <h4 className="text-white shadow-sm font-bold text-xl">Progresso</h4>
-                    <p className="text-gray-800 text-md">
-                        Com o Habituaí você evolui todo dia para ser uma pessoa melhor, aquela que você sempre sonhou em
-                        ser.
-                    </p>
-                </div>
+                <HomeCard
+                    title="Organização"
+                    description="Com o Habituaí você tem o controle dos seus hábitos em uma semana completa."
+                />
+                <HomeCard
+                    title="Gerenciamento"
+                    description="Com o Habituaí você pode gerenciar e customizar seus hábitos da maneira que quiser."
+                />
+                <HomeCard
+                    title="Gamificação"
+                    description="Com o Habituaí você ganha pontos e sobe de nível com suas vitórias."
+                />
+                <HomeCard
+                    title="Progresso"
+                    description=" Com o Habituaí você evolui todo dia para ser uma pessoa melhor, aquela que você sempre sonhou em ser."
+                />
             </div>
         </section>
     );

@@ -15,7 +15,7 @@
 -   Separar área de habitos ruins
 -   Responsivo
 -   Dark mode
--   Gamificação
+-   Mais coisas de gamificação
     -   perfil
 
 ### Não-funcionais:

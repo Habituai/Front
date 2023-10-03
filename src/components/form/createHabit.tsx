@@ -72,13 +72,13 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
         setSubmitting(true);
         try {
             const dayWeekList = weekDaysLabels.reduce((list: number[], weekDayLabel) => {
-                if (values[weekDayLabel]) {
+                if (values.classification === 'ruim' || values[weekDayLabel]) {
                     list.push(WeekDayLabelToNumber[weekDayLabel]);
                 }
                 return list;
             }, []);
 
-            if (dayWeekList.length === 0) {
+            if (values.classification === 'bom' && dayWeekList.length === 0) {
                 setWeekDaysHasError(true);
                 return;
             }
@@ -89,6 +89,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
                     name: values.name,
                     classification: values.classification,
                     category: { id: Number(values.category) },
+                    weightExperience: values.weightExperience,
                 },
                 dayWeekList,
             };
@@ -116,13 +117,15 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
         'Sexta-feira': false,
         Sábado: false,
         Domingo: false,
-        //weightExperience: "10"  feature futura
+        weightExperience: 10,
     };
 
     const handleValidationSchema = Yup.object().shape({
         ...habitNameYupValidations,
-        classification: Yup.string().required('*Obrigatório*'),
-        category: Yup.number().required('*Obrigatório*'),
+        classification: Yup.string().required('*Obrigatório'),
+        category: Yup.number()
+            .required('*Obrigatório*')
+            .test('', '*Obrigatório', (value) => value > 0),
     });
 
     return (
@@ -135,28 +138,31 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
         >
             {({ values, errors, isSubmitting, setFieldValue, handleChange }) => (
                 <Form className="w-full h-full flex justify-center items-center flex-col">
-                    {/* <h4 className="w-full mb-8 text-4xl font-bold text-primaryDark">Criar novo hábito</h4> */}
+                    <div className="w-full flex justify-center items-center flex-col mb-8">
+                        <label className="w-full flex justify-center items-center flex-col text-4xl font-bold text-primaryDark">
+                            Você gostaria de
+                        </label>
+
+                        <span className="text-red-600">
+                            <ErrorMessage name="classification" />
+                        </span>
+
+                        <RadioGroup
+                            row
+                            name="classification"
+                            value={values.classification}
+                            onChange={(event) => {
+                                setFieldValue('classification', event.currentTarget.value);
+                            }}
+                            className="h-full w-full flex justify-center items-center flex-col"
+                        >
+                            <ClassificationRadioButton value="bom" label="criar um novo hábito" />
+                            <ClassificationRadioButton value="ruim" label="parar com um hábito ruim" />
+                        </RadioGroup>
+                    </div>
 
                     <div className="w-full h-full flex justify-center items-center flex-col lg:flex-row gap-10 lg:gap-32">
                         <div className="w-full h-full flex flex-1 flex-col justify-center gap-10">
-                            <div className="w-full flex justify-center items-center gap-2 flex-col">
-                                <label className="w-full text-4xl font-bold text-primaryDark">Você gostaria de</label>
-
-                                <RadioGroup
-                                    row
-                                    name="classification"
-                                    value={values.classification}
-                                    defaultValue="bom"
-                                    onChange={(event) => {
-                                        setFieldValue('classification', event.currentTarget.value);
-                                    }}
-                                    className="h-full w-full"
-                                >
-                                    <ClassificationRadioButton value="bom" label="criar um novo hábito" />
-                                    <ClassificationRadioButton value="ruim" label="parar com um hábito ruim" />
-                                </RadioGroup>
-                            </div>
-
                             <FieldInput
                                 name="name"
                                 type="text"
@@ -164,9 +170,9 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
                                 hasError={!!errors.name}
                             />
 
-                            <div className="w-full flex gap-2 flex-col">
+                            <div className="w-full flex gap-2 flex-col justify-center items-center">
                                 <div className="flex gap-4">
-                                    <label className="font-bold">Categoria*:</label>
+                                    <label className="font-bold">Categoria</label>
 
                                     <span className="text-red-600">
                                         <ErrorMessage name="category" />
@@ -175,16 +181,13 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
 
                                 <RadioGroup
                                     row
+                                    name="category"
                                     value={values.category}
                                     onChange={(event) => {
                                         setFieldValue('category', event.currentTarget.value);
                                     }}
-                                    className="h-full w-full"
+                                    className="h-full w-full flex flex-wrap justify-center items-center"
                                 >
-                                    {/* <FormControlLabel value={1} label="Saúde" control={<Radio />} />
-                                    <FormControlLabel value={2} label="Educação" control={<Radio />} />
-                                    <FormControlLabel value={3} label="Lazer" control={<Radio />} />
-                                    <FormControlLabel value={4} label="Outro" control={<Radio />} /> */}
                                     <CategoryRadioButton value={1} label="Saúde" />
                                     <CategoryRadioButton value={2} label="Educação" />
                                     <CategoryRadioButton value={3} label="Lazer" />
@@ -194,9 +197,9 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
                         </div>
 
                         <div className="w-full flex flex-1 flex-col">
-                            <div className="flex gap-4 flex-wrap">
-                                <label className="font-bold">Dias da semana que serão feitos*:</label>
-                                {weekDaysHasError && <p className="text-red-600">*Obrigatório*</p>}
+                            <div className="flex flex-col">
+                                {weekDaysHasError && <p className="text-red-600">*Obrigatório</p>}
+                                <label className="font-bold gap-4">Dias da semana que serão feitos</label>
                             </div>
                             <FormControl>
                                 {weekDaysLabels.map((weekDay) => (

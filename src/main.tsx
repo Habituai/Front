@@ -14,6 +14,7 @@ interface ColorOverrides {
     educacao: true;
     lazer: true;
     outro: true;
+    white: true;
 }
 
 declare module '@mui/material' {

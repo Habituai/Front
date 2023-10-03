@@ -18,41 +18,48 @@ interface CategoryRadioButtonProps {
 }
 
 export const CategoryRadioButton = ({ value, label }: CategoryRadioButtonProps) => {
-    const baseStyle = 'w-full h-full p-2 flex justify-center items-center flex-col rounded-lg bg-gray-800';
+    const baseStyle = 'lg:w-[140px] w-[100px] h-full p-2 rounded-lg flex justify-center items-center flex-col';
 
     const checkedStyles: StyleOptions = {
-        1: 'bg-primaryDark',
-        2: '',
-        3: '',
-        4: '',
+        1: 'bg-secondaryDark',
+        2: 'bg-purple-900',
+        3: 'bg-blue-900',
+        4: 'bg-gray-900',
         default: 'font-bold text-white',
     };
 
     const uncheckedStyle: StyleOptions = {
-        1: 'bg-primaryDark',
-        2: '',
-        3: '',
-        4: '',
-        default: '',
+        1: 'border-secondaryDark',
+        2: 'border-purple-900',
+        3: 'border-blue-900',
+        4: 'border-gray-900',
+        default: 'border-2 bg-white text-black',
     };
 
-    const icon = {
+    const baseIcon = {
         1: <HealthAndSafetyIcon color="saude" fontSize="large" />,
         2: <MenuBookIcon color="educacao" fontSize="large" />,
         3: <WeekendIcon color="lazer" fontSize="large" />,
         4: <MoreIcon color="outro" fontSize="large" />,
     };
 
+    const checkedIcon = {
+        1: <HealthAndSafetyIcon color="white" fontSize="large" />,
+        2: <MenuBookIcon color="white" fontSize="large" />,
+        3: <WeekendIcon color="white" fontSize="large" />,
+        4: <MoreIcon color="white" fontSize="large" />,
+    };
+
     const BaseButton = () => (
         <button className={`${baseStyle} ${uncheckedStyle.default} ${uncheckedStyle[value]}`}>
-            {icon[value]}
+            {baseIcon[value]}
             {label}
         </button>
     );
 
     const CheckedButton = () => (
         <button className={`${baseStyle} ${checkedStyles.default} ${checkedStyles[value]}`}>
-            {icon[value]}
+            {checkedIcon[value]}
             {label}
         </button>
     );

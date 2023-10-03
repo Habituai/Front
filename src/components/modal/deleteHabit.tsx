@@ -28,7 +28,7 @@ export default function DeleteHabitModal({ habitId, setHabitIdToBeDeleted }: Del
             };
 
             handleGetHabitByIdData().catch((error) => {
-                console.log(error);
+                console.error(error);
                 console.error('Não foi possível pegar os dados do hábito.');
             });
         }

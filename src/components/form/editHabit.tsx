@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { Button, Checkbox, FormControl, FormControlLabel, RadioGroup } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -9,6 +9,8 @@ import { Habit } from '../../pages/Dashboard';
 import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 import HabitNameField, { habitNameYupValidations } from '../field/habitName';
 import FieldInput from '../layout/field';
+import { CategoryRadioButton } from '../radio/category';
+import { ClassificationRadioButton } from '../radio/classification';
 
 interface Values {
     name?: string;
@@ -81,7 +83,7 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
             };
 
             handleGetHabitByIdData().catch((error) => {
-                console.log(error);
+                console.error(error);
                 console.error('Não foi possível pegar os dados do hábito.');
             });
         }
@@ -91,42 +93,18 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
 
     const [weekDaysHasError, setWeekDaysHasError] = useState(false);
 
-    const findDayOnDayWeekList = (day: PossibleDay): boolean =>
-        !!habitData?.dayWeekList.find((number) => number === WeekDayLabelToNumber[day]);
-    //TODO RETESTAR ESSES VALORES DE dayWeekList
-    const formInitialValues: Values = {
-        name: habitData?.name,
-        classification: habitData?.classification,
-        category: habitData?.category.id,
-        dateCreation: new Date().toISOString(),
-        'Segunda-feira': findDayOnDayWeekList('Segunda-feira'),
-        'Terça-feira': findDayOnDayWeekList('Terça-feira'),
-        'Quarta-feira': findDayOnDayWeekList('Quarta-feira'),
-        'Quinta-feira': findDayOnDayWeekList('Quinta-feira'),
-        'Sexta-feira': findDayOnDayWeekList('Sexta-feira'),
-        Sábado: findDayOnDayWeekList('Sábado'),
-        Domingo: findDayOnDayWeekList('Domingo'),
-        //weightExperience: "10"  feature futura
-    };
-
-    const handleValidationSchema = Yup.object().shape({
-        ...habitNameYupValidations,
-        classification: Yup.string().required('*Obrigatório*'),
-        category: Yup.number().required('*Obrigatório*'),
-    });
-
     const handleFormSubmit = async (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
         setWeekDaysHasError(false);
         setSubmitting(true);
         try {
             const dayWeekList = weekDaysLabels.reduce((list: number[], weekDayLabel) => {
-                if (values[weekDayLabel]) {
+                if (values.classification === 'ruim' || values[weekDayLabel]) {
                     list.push(WeekDayLabelToNumber[weekDayLabel]);
                 }
                 return list;
             }, []);
 
-            if (dayWeekList.length === 0) {
+            if (values.classification === 'bom' && dayWeekList.length === 0) {
                 setWeekDaysHasError(true);
                 return;
             }
@@ -150,7 +128,6 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
             await makeRequestWithAuthorization('PUT', `${host}/${habitData?.id}`, { data });
 
             setHabitIdToBeUpdated(null);
-
             toast.success('Hábito atualizado!');
             setHabitsHasUpdate(true);
         } catch (error) {
@@ -158,6 +135,32 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
             console.error(error);
         }
     };
+
+    const findDayOnDayWeekList = (day: PossibleDay): boolean =>
+        !!habitData?.dayWeekList.find((number) => number === WeekDayLabelToNumber[day]);
+
+    const formInitialValues: Values = {
+        name: habitData?.name,
+        classification: habitData?.classification,
+        category: habitData?.category.id,
+        dateCreation: new Date().toISOString(),
+        'Segunda-feira': findDayOnDayWeekList('Segunda-feira'),
+        'Terça-feira': findDayOnDayWeekList('Terça-feira'),
+        'Quarta-feira': findDayOnDayWeekList('Quarta-feira'),
+        'Quinta-feira': findDayOnDayWeekList('Quinta-feira'),
+        'Sexta-feira': findDayOnDayWeekList('Sexta-feira'),
+        Sábado: findDayOnDayWeekList('Sábado'),
+        Domingo: findDayOnDayWeekList('Domingo'),
+        //weightExperience: "10"  feature futura
+    };
+
+    const handleValidationSchema = Yup.object().shape({
+        ...habitNameYupValidations,
+        classification: Yup.string().required('*Obrigatório'),
+        category: Yup.number()
+            .required('*Obrigatório*')
+            .test('', '*Obrigatório', (value) => value > 0),
+    });
 
     return (
         habitData && (
@@ -170,7 +173,28 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
             >
                 {({ values, errors, isSubmitting, setFieldValue, handleChange }) => (
                     <Form className="w-full h-full flex justify-center items-center flex-col">
-                        <h4 className="w-full mb-8 text-4xl font-bold text-primaryDark">Atualizar hábito</h4>
+                        <div className="w-full flex justify-center items-center flex-col mb-8">
+                            <label className="w-full flex justify-center items-center flex-col text-4xl font-bold text-primaryDark">
+                                Você gostaria de
+                            </label>
+
+                            <span className="text-red-600">
+                                <ErrorMessage name="classification" />
+                            </span>
+
+                            <RadioGroup
+                                row
+                                name="classification"
+                                value={values.classification}
+                                onChange={(event) => {
+                                    setFieldValue('classification', event.currentTarget.value);
+                                }}
+                                className="h-full w-full flex justify-center items-center flex-col"
+                            >
+                                <ClassificationRadioButton value="bom" label="criar um novo hábito" />
+                                <ClassificationRadioButton value="ruim" label="parar com um hábito ruim" />
+                            </RadioGroup>
+                        </div>
 
                         <div className="w-full h-full flex justify-center items-center flex-col lg:flex-row gap-10 lg:gap-32">
                             <div className="w-full h-full flex flex-1 flex-col justify-center gap-10">
@@ -181,31 +205,9 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                                     hasError={!!errors.name}
                                 />
 
-                                <div className="w-full flex gap-2 flex-col">
+                                <div className="w-full flex gap-2 flex-col justify-center items-center">
                                     <div className="flex gap-4">
-                                        <label className="font-bold">Classificação*:</label>
-
-                                        <span className="text-red-600">
-                                            <ErrorMessage name="classification" />
-                                        </span>
-                                    </div>
-
-                                    <RadioGroup
-                                        row
-                                        name="classification"
-                                        value={values.classification}
-                                        onChange={(event) => {
-                                            setFieldValue('classification', event.currentTarget.value);
-                                        }}
-                                    >
-                                        <FormControlLabel value="bom" label="Bom" control={<Radio />} />
-                                        <FormControlLabel value="ruim" label="Ruim" control={<Radio />} />
-                                    </RadioGroup>
-                                </div>
-
-                                <div className="w-full flex gap-2 flex-col">
-                                    <div className="flex gap-4">
-                                        <label className="font-bold">Categoria*:</label>
+                                        <label className="font-bold">Categoria</label>
 
                                         <span className="text-red-600">
                                             <ErrorMessage name="category" />
@@ -213,23 +215,25 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                                     </div>
                                     <RadioGroup
                                         row
+                                        name="category"
                                         value={values.category}
                                         onChange={(event) => {
                                             setFieldValue('category', event.currentTarget.value);
                                         }}
+                                        className="h-full w-full flex flex-wrap justify-center items-center"
                                     >
-                                        <FormControlLabel value={1} label="Saúde" control={<Radio />} />
-                                        <FormControlLabel value={2} label="Educação" control={<Radio />} />
-                                        <FormControlLabel value={3} label="Lazer" control={<Radio />} />
-                                        <FormControlLabel value={4} label="Outro" control={<Radio />} />
+                                        <CategoryRadioButton value={1} label="Saúde" />
+                                        <CategoryRadioButton value={2} label="Educação" />
+                                        <CategoryRadioButton value={3} label="Lazer" />
+                                        <CategoryRadioButton value={4} label="Outro" />
                                     </RadioGroup>
                                 </div>
                             </div>
 
                             <div className="w-full flex flex-1 flex-col">
-                                <div className="flex gap-4 flex-wrap">
-                                    <label className="font-bold">Dias da semana que serão feitos*:</label>
-                                    {weekDaysHasError && <p className="text-red-600">*Obrigatório*</p>}
+                                <div className="flex flex-col">
+                                    {weekDaysHasError && <p className="text-red-600">*Obrigatório</p>}
+                                    <label className="font-bold gap-4">Dias da semana que serão feitos*:</label>
                                 </div>
                                 <FormControl>
                                     {weekDaysLabels.map((weekDay) => (
@@ -238,7 +242,12 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                                             name={weekDay}
                                             label={weekDay}
                                             onChange={handleChange}
-                                            control={<Checkbox checked={values[weekDay]} />}
+                                            disabled={values.classification === 'ruim'}
+                                            control={
+                                                <Checkbox
+                                                    checked={values.classification === 'ruim' ? true : values[weekDay]}
+                                                />
+                                            }
                                         />
                                     ))}
                                 </FormControl>

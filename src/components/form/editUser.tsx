@@ -47,7 +47,6 @@ export default function EditUserForm({ setOpenEditUserModal, userData }: EditUse
                 name: values.name !== formInitialValues.name ? values.name : undefined,
                 password: values.password ? values.password : undefined,
             };
-            console.log(data);
 
             await makeRequestWithAuthorization('PUT', `${host}/${userData.id}`, { data });
 

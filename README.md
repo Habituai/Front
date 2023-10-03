@@ -11,15 +11,15 @@
 
 ### Features:
 
--   Mudar semana
+-   Mudar semana [X]
 -   Separar área de habitos ruins
 -   Responsivo
--   Dark mode
 -   Mais coisas de gamificação
     -   perfil
 
 ### Não-funcionais:
 
+-   Dark mode
 -   Mudar as rotas (colocar em portugues, fazer dashboard e botões de voltar pra Home)
 -   Remodelar design dos formulários de criação e edição de hábitos
 -   Mudar a proporção dos dias da semana

@@ -1,10 +1,10 @@
 import { Grid } from '@mui/material';
-import { addDays, formatISO, startOfWeek } from 'date-fns';
+import { formatISO } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import checkBoxIcon from '../assets/images/checkbox.svg';
 import HabitCard from '../components/card/habit';
 import DashboardHeader from '../components/header/dashboard';
-import DayHabitTableLayout from '../components/layout/dayHabitTable';
 import CreateHabitModal from '../components/modal/createHabit';
 import DeleteHabitModal from '../components/modal/deleteHabit';
 import EditHabitModal from '../components/modal/editHabit';
@@ -13,19 +13,6 @@ import { envs } from '../config';
 import { useUpdateHabits } from '../hooks/useUpdateHabits';
 import { useUpdateUser } from '../hooks/useUpdateUser';
 import { makeRequestWithAuthorization } from '../services/makeRequestWithAuthorization';
-
-const getWeekDaysList = (referenceDay: Date) => {
-    const firstDayOfWeek = startOfWeek(referenceDay, { weekStartsOn: 1 });
-
-    const list = [];
-    list.push(firstDayOfWeek);
-
-    for (let i = 1; i <= 6; i++) {
-        list.push(addDays(firstDayOfWeek, i));
-    }
-
-    return list.map((day) => formatISO(day));
-};
 
 export interface User {
     id: number;
@@ -66,6 +53,19 @@ interface DayList {
     listHabit: ListHabit[];
 }
 
+// const getWeekDaysList = (referenceDay: Date) => {
+//     const firstDayOfWeek = startOfWeek(referenceDay, { weekStartsOn: 1 });
+
+//     const list = [];
+//     list.push(firstDayOfWeek);
+
+//     for (let i = 1; i <= 6; i++) {
+//         list.push(addDays(firstDayOfWeek, i));
+//     }
+
+//     return list.map((day) => formatISO(day));
+// };
+
 function Dashboard() {
     const userHost = envs.userAccountPath;
     const habitsHost = envs.habitWeekPath;
@@ -73,8 +73,8 @@ function Dashboard() {
     const { habitsHasUpdate, setHabitsHasUpdate } = useUpdateHabits();
     const { userHasUpdate, setUserHasUpdate } = useUpdateUser();
 
-    const [referenceDay, setReferenceDay] = useState(new Date());
-    const weekDaysList = getWeekDaysList(referenceDay);
+    const [referenceDay, setReferenceDay] = useState(formatISO(new Date()));
+    const weekDaysList = [formatISO(new Date())];
 
     const [userData, setUserData] = useState<User>({ id: -1, name: '', email: '', experience: 0 });
     const [habitListFromServer, setHabitListFromServer] = useState<DayList[]>([]);
@@ -130,6 +130,8 @@ function Dashboard() {
         }
     }, [habitsHasUpdate]);
 
+    console.log(habitListFromServer);
+
     return (
         <>
             <Toaster position="top-center" reverseOrder={false} />
@@ -138,52 +140,63 @@ function Dashboard() {
             <EditHabitModal habitId={habitIdToBeUpdated} setHabitIdToBeUpdated={setHabitIdToBeUpdated} />
             <DeleteHabitModal habitId={habitIdToBeDeleted} setHabitIdToBeDeleted={setHabitIdToBeDeleted} />
 
-            <DashboardHeader
-                name={userData.name}
-                experience={userData.experience}
-                weekDaysList={weekDaysList}
-                setOpenCreateHabitModal={setOpenCreateHabitModal}
-                setOpenEditUserModal={setOpenEditUserModal}
-                referenceDay={referenceDay}
-                setReferenceDay={setReferenceDay}
-            />
+            <header className="w-full py-4 lg:px-9 flex justify-center items-center bg-primaryDark shadow-xl">
+                <span className="flex items-center gap-2 text-4xl text-secondaryExtraLight font-bold">
+                    <img src={checkBoxIcon} alt="logo" className="w-8 h-8" />
+                    Habituaí
+                </span>
+            </header>
 
-            <div className="w-full pt-8 pb-6 flex justify-center">
+            {/* <div className="w-full pt-8 pb-6 flex justify-center">
                 <h1 className="flex-none text-4xl lg:text-5xl font-bold text-primaryDark">Semana de Hábitos</h1>
+            </div> */}
+
+            <div className="w-full h-full flex">
+                <DashboardHeader
+                    name={userData.name}
+                    experience={userData.experience}
+                    weekDaysList={weekDaysList}
+                    setOpenCreateHabitModal={setOpenCreateHabitModal}
+                    setOpenEditUserModal={setOpenEditUserModal}
+                    referenceDay={referenceDay}
+                    setReferenceDay={setReferenceDay}
+                />
+
+                <div className="h-full w-1/5"></div>
+
+                <Grid container className="w-4/5 h-full pt-4 px-3 flex flex-wrap justify-end items-start">
+                    {!!habitListFromServer &&
+                        weekDaysList.map((date, index) => {
+                            const dayData =
+                                habitListFromServer.find((dayHabit) => dayHabit.date === date.split('T')[0])
+                                    ?.listHabit ?? [];
+
+                            return (
+                                <>
+                                    {dayData?.length > 0 ? (
+                                        dayData?.map(({ habit, concluded }) => (
+                                            <HabitCard
+                                                key={habit.id}
+                                                id={habit.id}
+                                                name={habit.name}
+                                                category={habit.category}
+                                                classification={habit.classification}
+                                                date={date}
+                                                weightExperience={habit.weightExperience}
+                                                weekDay={index + 1}
+                                                concluded={concluded}
+                                                setHabitIdToBeDeleted={setHabitIdToBeDeleted}
+                                                setHabitIdToBeUpdated={setHabitIdToBeUpdated}
+                                            />
+                                        ))
+                                    ) : (
+                                        <span>Não há nada neste dia!</span>
+                                    )}
+                                </>
+                            );
+                        })}
+                </Grid>
             </div>
-
-            <Grid container className="w-full h-full pt-4 px-3 flex flex-wrap justify-end items-start">
-                {!!habitListFromServer &&
-                    weekDaysList.map((date, index) => {
-                        const dayData =
-                            habitListFromServer.find((dayHabit) => dayHabit.date === date.split('T')[0])?.listHabit ??
-                            [];
-
-                        return (
-                            <DayHabitTableLayout key={date} date={date}>
-                                {dayData?.length > 0 ? (
-                                    dayData?.map(({ habit, concluded }) => (
-                                        <HabitCard
-                                            key={habit.id}
-                                            id={habit.id}
-                                            name={habit.name}
-                                            category={habit.category}
-                                            classification={habit.classification}
-                                            date={date}
-                                            weightExperience={habit.weightExperience}
-                                            weekDay={index + 1}
-                                            concluded={concluded}
-                                            setHabitIdToBeDeleted={setHabitIdToBeDeleted}
-                                            setHabitIdToBeUpdated={setHabitIdToBeUpdated}
-                                        />
-                                    ))
-                                ) : (
-                                    <span>Não há nada neste dia!</span>
-                                )}
-                            </DayHabitTableLayout>
-                        );
-                    })}
-            </Grid>
         </>
     );
 }

@@ -16,7 +16,14 @@ export default function DayHabitTableLayout({ children, date }: DayHabitTableLay
     const today = isToday(parseISO(date));
 
     return (
-        <Grid item xs={12} sm={6} md={4} lg={2} className={`p-6 rounded-3xl ${today ? 'bg-green-50' : ''}`}>
+        <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={1.71}
+            className={`p-3 ${today ? 'bg-green-50 border border-secondaryDark shadow-md rounded-md' : ''}`}
+        >
             <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between">
                     <span className={`${today ? 'text-secondaryDark' : 'text-primaryDark'} text-xl font-bold`}>

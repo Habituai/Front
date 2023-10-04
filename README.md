@@ -11,7 +11,7 @@
 
 ### Features:
 
--   [ ] Implementar Accordion
+-   [x] Implementar Accordion
 -   [ ] Separar área de habitos ruins
 -   [ ] Responsivo
 -   [ ] Dark mode

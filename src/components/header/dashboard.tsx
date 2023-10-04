@@ -65,8 +65,8 @@ export default function DashboardHeader({
     };
 
     return (
-        <header className="w-full py-4 lg:px-9 flex justify-center bg-primaryDark shadow-xl">
-            <nav className="w-full flex flex-col lg:flex-row items-center gap-4 lg:gap-0">
+        <header className="w-full py-4 xl:px-9 flex justify-center bg-primaryDark shadow-xl">
+            <nav className="w-full flex flex-col xl:flex-row items-center gap-4 xl:gap-0">
                 <span className="flex flex-1 items-center gap-2 text-4xl text-secondaryExtraLight font-bold">
                     <img src={checkBoxIcon} alt="logo" className="w-8 h-8" />
                     Habituaí
@@ -82,7 +82,7 @@ export default function DashboardHeader({
                             />
                         </button>
 
-                        <span className="text-md lg:text-lg">
+                        <span className="text-md xl:text-lg">
                             {`${format(parseISO(weekDaysList[0]), 'dd/MM')} - ${format(
                                 parseISO(weekDaysList[weekDaysList.length - 1]),
                                 'dd/MM',
@@ -109,14 +109,14 @@ export default function DashboardHeader({
                 </div>
 
                 <div className="flex flex-1 justify-end items-center gap-6 text-white text-xl">
-                    <span className="py-2 px-4 text-sm lg:text-xl bg-primaryExtraLight text-white rounded-lg shadow-md">
+                    <span className="py-2 px-4 text-sm xl:text-xl bg-primaryExtraLight text-white rounded-lg shadow-md">
                         {`${experience} `}
                         <span className="text-secondaryExtraLight font-bold">xp</span>
                     </span>
-                    <span className="py-2 px-4 text-sm lg:text-xl bg-primaryExtraLight text-white rounded-lg shadow-md">
+                    <span className="py-2 px-4 text-sm xl:text-xl bg-primaryExtraLight text-white rounded-lg shadow-md">
                         {`Nível ${getLevelByXP()}`}
                     </span>
-                    <button onClick={handleOpenMenu} className="flex items-center font-bold text-lg lg:text-2xl gap-2">
+                    <button onClick={handleOpenMenu} className="flex items-center font-bold text-lg xl:text-2xl gap-2">
                         <AccountCircleIcon />
                         <div>
                             {name.toUpperCase()}

@@ -21,7 +21,8 @@ export default function DayHabitTableLayout({ children, date }: DayHabitTableLay
             xs={12}
             sm={6}
             md={4}
-            lg={1.71}
+            lg={3}
+            xl={1.714}
             className={`p-3 ${today ? 'bg-green-50 border border-secondaryDark shadow-md rounded-md' : ''}`}
         >
             <div className="flex flex-col gap-1">
@@ -33,7 +34,7 @@ export default function DayHabitTableLayout({ children, date }: DayHabitTableLay
                         {dateName}
                     </span>
                 </div>
-                <div className={`w-full ${today ? 'bg-secondaryDark' : 'bg-primaryDark'}  h-1 rounded-full mb-3`} />
+                <div className={`w-full ${today ? 'bg-secondaryDark' : 'bg-primaryDark'} h-1 rounded-full mb-3`} />
                 <div className="flex flex-col items-center gap-4">{children}</div>
             </div>
         </Grid>

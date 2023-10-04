@@ -71,10 +71,10 @@ export default function EditUserForm({ setOpenEditUserModal, userData }: EditUse
             validateOnBlur={false}
         >
             {({ values, errors, isSubmitting }) => (
-                <Form className="h-full w-full flex justify-center items-center flex-col gap-3 lg:gap-8 p-10">
+                <Form className="h-full w-full flex justify-center items-center flex-col gap-3 xl:gap-8 p-10">
                     <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">Dados de perfil</h4>
 
-                    <div className="w-full flex flex-col lg:flex-row gap-3 lg:gap-8">
+                    <div className="w-full flex flex-col xl:flex-row gap-3 xl:gap-8">
                         <FieldInput name="name" type="text" fieldComponent={NameField} hasError={!!errors.name} />
 
                         <FieldInput name="email" type="email" fieldComponent={EmailField} hasError={!!errors.email} />
@@ -87,7 +87,7 @@ export default function EditUserForm({ setOpenEditUserModal, userData }: EditUse
                         hasError={!!errors.password}
                     />
 
-                    <div className="w-full mt-8 flex lg:gap-10 gap-4 lg:flex-row flex-col">
+                    <div className="w-full mt-8 flex xl:gap-10 gap-4 xl:flex-row flex-col">
                         <Button
                             type="submit"
                             variant="contained"

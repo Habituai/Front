@@ -18,7 +18,7 @@ interface CategoryRadioButtonProps {
 }
 
 export const CategoryRadioButton = ({ value, label }: CategoryRadioButtonProps) => {
-    const baseStyle = 'lg:w-[140px] w-[100px] h-full p-2 rounded-lg flex justify-center items-center flex-col';
+    const baseStyle = 'xl:w-[140px] w-[100px] h-full p-2 rounded-lg flex justify-center items-center flex-col';
 
     const checkedStyles: StyleOptions = {
         1: 'bg-secondaryDark',

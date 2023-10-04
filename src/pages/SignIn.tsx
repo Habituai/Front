@@ -57,14 +57,14 @@ function SignIn() {
                 validateOnBlur={false}
             >
                 {({ errors, isSubmitting }) => (
-                    <div className="w-full h-full lg:h-screen flex flex-col lg:flex-row justify-center items-center lg:gap-28">
-                        <div className="h-full w-full flex flex-1 justify-center lg:justify-end items-center py-5 lg:p-0">
+                    <div className="w-full h-full xl:h-screen flex flex-col xl:flex-row justify-center items-center xl:gap-28">
+                        <div className="h-full w-full flex flex-1 justify-center xl:justify-end items-center py-5 xl:p-0">
                             <SignHeaderLayout imageSrc={studyImage} />
                         </div>
 
-                        <div className="h-full w-full flex flex-1 justify-center lg:justify-start items-center py-5 lg:p-0">
-                            <div className="max-w-3/4 lg:min-w-[480px] bg-white rounded-lg shadow-lg">
-                                <Form className="flex justify-center items-center flex-col gap-3 lg:gap-8 p-10">
+                        <div className="h-full w-full flex flex-1 justify-center xl:justify-start items-center py-5 xl:p-0">
+                            <div className="max-w-3/4 xl:min-w-[480px] bg-white rounded-lg shadow-lg">
+                                <Form className="flex justify-center items-center flex-col gap-3 xl:gap-8 p-10">
                                     <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">Faça seu login</h4>
 
                                     <FieldInput

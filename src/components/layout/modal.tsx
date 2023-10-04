@@ -12,7 +12,9 @@ export default function BaseModal({ children, open, setOpen }: BaseModalProps) {
 
     return (
         <Modal open={open} onClose={handleClose} className="flex flex-row justify-center items-center">
-            <Box className="w-11/12 lg:w-3/5 h-9/10 lg:h-2/3 bg-white rounded-2xl p-4 lg:p-12">{children}</Box>
+            <Box className="min-w-11/12 xl:min-w-3/5 min-h-9/10 xl:min-h-2/3 bg-white rounded-2xl p-4 xl:p-12">
+                {children}
+            </Box>
         </Modal>
     );
 }

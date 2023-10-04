@@ -44,7 +44,7 @@ export interface Habit {
     name: string;
     category: HabitCategory;
     classification: 'bom' | 'ruim';
-    weightExperience?: number;
+    weightExperience: 5 | 10 | 15 | 20 | 25;
     dateCreation: number;
     status: boolean;
     user?: {
@@ -149,10 +149,10 @@ function Dashboard() {
             />
 
             <div className="w-full pt-8 pb-6 flex justify-center">
-                <h1 className="flex-none text-4xl lg:text-5xl font-bold text-primaryDark">Semana de Hábitos</h1>
+                <h1 className="flex-none text-4xl xl:text-5xl font-bold text-primaryDark">Semana de Hábitos</h1>
             </div>
 
-            <Grid container className="w-full h-full pt-4 px-3 flex flex-wrap justify-end items-start">
+            <Grid container className="w-full h-full pt-4 flex flex-wrap items-start">
                 {!!habitListFromServer &&
                     weekDaysList.map((date, index) => {
                         const dayData =
@@ -170,7 +170,6 @@ function Dashboard() {
                                             category={habit.category}
                                             classification={habit.classification}
                                             date={date}
-                                            weightExperience={habit.weightExperience}
                                             weekDay={index + 1}
                                             concluded={concluded}
                                             setHabitIdToBeDeleted={setHabitIdToBeDeleted}

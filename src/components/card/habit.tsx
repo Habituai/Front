@@ -29,7 +29,6 @@ interface HabitCardProps {
     category: HabitCategory;
     date: string;
     weekDay: number;
-    weightExperience?: number;
     concluded: boolean;
     setHabitIdToBeDeleted: React.Dispatch<React.SetStateAction<number | null>>;
     setHabitIdToBeUpdated: React.Dispatch<React.SetStateAction<number | null>>;
@@ -41,14 +40,11 @@ export default function HabitCard({
     classification,
     category,
     date,
-    weightExperience,
     weekDay,
     concluded,
     setHabitIdToBeDeleted,
     setHabitIdToBeUpdated,
 }: HabitCardProps) {
-    //avoid eslint
-    console.log(weightExperience);
     const host = envs.progressPath;
 
     const { description: categoryDescription } = category;

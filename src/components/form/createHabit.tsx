@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormControl, FormControlLabel, RadioGroup } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, RadioGroup, Rating } from '@mui/material';
 import { formatISO } from 'date-fns';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ interface Values {
     classification: string;
     category: number;
     dateCreation: string;
-    weightExperience?: number;
+    weightExperience: number;
     'Segunda-feira': boolean;
     'Terça-feira': boolean;
     'Quarta-feira': boolean;
@@ -89,7 +89,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
                     name: values.name,
                     classification: values.classification,
                     category: { id: Number(values.category) },
-                    weightExperience: values.weightExperience,
+                    weightExperience: values.weightExperience * 5,
                 },
                 dayWeekList,
             };
@@ -117,7 +117,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
         'Sexta-feira': false,
         Sábado: false,
         Domingo: false,
-        weightExperience: 10,
+        weightExperience: 3,
     };
 
     const handleValidationSchema = Yup.object().shape({
@@ -127,6 +127,14 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
             .required('*Obrigatório*')
             .test('', '*Obrigatório', (value) => value > 0),
     });
+
+    const weightExperienceLabels: any = {
+        1: '5 xp',
+        2: '10 xp',
+        3: '15 xp',
+        4: '20 xp',
+        5: '25 xp',
+    };
 
     return (
         <Formik
@@ -161,7 +169,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
                         </RadioGroup>
                     </div>
 
-                    <div className="w-full h-full flex justify-center items-center flex-col lg:flex-row gap-10 lg:gap-32">
+                    <div className="w-full h-full flex justify-center items-center flex-col xl:flex-row gap-10 xl:gap-32">
                         <div className="w-full h-full flex flex-1 flex-col justify-center gap-10">
                             <FieldInput
                                 name="name"
@@ -170,13 +178,35 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
                                 hasError={!!errors.name}
                             />
 
-                            <div className="w-full flex gap-2 flex-col justify-center items-center">
-                                <div className="flex gap-4">
-                                    <label className="font-bold">Categoria</label>
+                            <div className="w-full flex flex-col gap-2 justify-center items-center">
+                                <div className="flex flex-col justify-center items-center">
+                                    <span className="text-red-600">
+                                        <ErrorMessage name="weightExperience" />
+                                    </span>
+                                    <label className="font-bold">Importância em XP</label>
+                                </div>
 
+                                <div className="w-full flex flex-col gap-2 justify-center items-center">
+                                    <Rating
+                                        name="weightExperience"
+                                        precision={1}
+                                        value={values.weightExperience}
+                                        size="large"
+                                        onChange={handleChange}
+                                    />
+                                    {values.weightExperience !== null && (
+                                        <Box ml={2}>{weightExperienceLabels[values.weightExperience]}</Box>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="w-full flex gap-2 flex-col justify-center items-center">
+                                <div className="flex flex-col justify-center items-center">
                                     <span className="text-red-600">
                                         <ErrorMessage name="category" />
                                     </span>
+
+                                    <label className="font-bold">Categoria</label>
                                 </div>
 
                                 <RadioGroup
@@ -220,7 +250,7 @@ export default function CreateHabitForm({ setOpenCreateHabitModal }: CreateHabit
                         </div>
                     </div>
 
-                    <div className="w-full mt-8 flex lg:gap-10 gap-4 lg:flex-row flex-col">
+                    <div className="w-full mt-8 flex xl:gap-10 gap-4 xl:flex-row flex-col">
                         <Button
                             variant="contained"
                             disabled={isSubmitting}

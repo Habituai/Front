@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormControl, FormControlLabel, RadioGroup } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, RadioGroup, Rating } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -17,7 +17,7 @@ interface Values {
     classification?: string;
     category?: number;
     dateCreation: string;
-    weightExperience?: number;
+    weightExperience: number;
     'Segunda-feira': boolean;
     'Terça-feira': boolean;
     'Quarta-feira': boolean;
@@ -120,6 +120,11 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                                   id: values.category,
                               }
                             : undefined,
+                    weightExperience:
+                        Number(values.weightExperience) !== formInitialValues.weightExperience
+                            ? values.weightExperience * 5
+                            : undefined,
+                    //TODO: entender pq vem como string
                 },
                 dayWeekList:
                     JSON.stringify(dayWeekList) !== JSON.stringify(habitData?.dayWeekList) ? dayWeekList : undefined,
@@ -139,6 +144,14 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
     const findDayOnDayWeekList = (day: PossibleDay): boolean =>
         !!habitData?.dayWeekList.find((number) => number === WeekDayLabelToNumber[day]);
 
+    const weightExperienceFormattingLabels = {
+        5: 1,
+        10: 2,
+        15: 3,
+        20: 4,
+        25: 5,
+    };
+
     const formInitialValues: Values = {
         name: habitData?.name,
         classification: habitData?.classification,
@@ -151,7 +164,7 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
         'Sexta-feira': findDayOnDayWeekList('Sexta-feira'),
         Sábado: findDayOnDayWeekList('Sábado'),
         Domingo: findDayOnDayWeekList('Domingo'),
-        //weightExperience: "10"  feature futura
+        weightExperience: weightExperienceFormattingLabels[habitData?.weightExperience || 15],
     };
 
     const handleValidationSchema = Yup.object().shape({
@@ -161,6 +174,14 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
             .required('*Obrigatório*')
             .test('', '*Obrigatório', (value) => value > 0),
     });
+
+    const weightExperienceLabels: any = {
+        1: '5 xp',
+        2: '10 xp',
+        3: '15 xp',
+        4: '20 xp',
+        5: '25 xp',
+    };
 
     return (
         habitData && (
@@ -196,7 +217,7 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                             </RadioGroup>
                         </div>
 
-                        <div className="w-full h-full flex justify-center items-center flex-col lg:flex-row gap-10 lg:gap-32">
+                        <div className="w-full h-full flex justify-center items-center flex-col xl:flex-row gap-10 xl:gap-32">
                             <div className="w-full h-full flex flex-1 flex-col justify-center gap-10">
                                 <FieldInput
                                     name="name"
@@ -205,13 +226,34 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                                     hasError={!!errors.name}
                                 />
 
-                                <div className="w-full flex gap-2 flex-col justify-center items-center">
-                                    <div className="flex gap-4">
-                                        <label className="font-bold">Categoria</label>
+                                <div className="w-full flex flex-col gap-2 justify-center items-center">
+                                    <div className="flex flex-col justify-center items-center">
+                                        <span className="text-red-600">
+                                            <ErrorMessage name="weightExperience" />
+                                        </span>
+                                        <label className="font-bold">Importância em XP</label>
+                                    </div>
 
+                                    <div className="w-full flex flex-col gap-2 justify-center items-center">
+                                        <Rating
+                                            name="weightExperience"
+                                            precision={1}
+                                            value={values.weightExperience}
+                                            size="large"
+                                            onChange={handleChange}
+                                        />
+
+                                        <Box ml={2}>{weightExperienceLabels[values.weightExperience]}</Box>
+                                    </div>
+                                </div>
+
+                                <div className="w-full flex gap-2 flex-col justify-center items-center">
+                                    <div className="flex flex-col justify-center items-center">
                                         <span className="text-red-600">
                                             <ErrorMessage name="category" />
                                         </span>
+
+                                        <label className="font-bold">Categoria</label>
                                     </div>
                                     <RadioGroup
                                         row
@@ -233,7 +275,7 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                             <div className="w-full flex flex-1 flex-col">
                                 <div className="flex flex-col">
                                     {weekDaysHasError && <p className="text-red-600">*Obrigatório</p>}
-                                    <label className="font-bold gap-4">Dias da semana que serão feitos*:</label>
+                                    <label className="font-bold gap-4">Dias da semana que serão feitos</label>
                                 </div>
                                 <FormControl>
                                     {weekDaysLabels.map((weekDay) => (
@@ -254,7 +296,7 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                             </div>
                         </div>
 
-                        <div className="w-full mt-8 flex lg:gap-10 gap-4 lg:flex-row flex-col">
+                        <div className="w-full mt-8 flex xl:gap-10 gap-4 xl:flex-row flex-col">
                             <Button
                                 variant="contained"
                                 disabled={isSubmitting || JSON.stringify(formInitialValues) === JSON.stringify(values)}

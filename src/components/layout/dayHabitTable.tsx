@@ -19,12 +19,12 @@ export default function DayHabitTableLayout({ children, date }: DayHabitTableLay
     const [isExpanded, setIsExpanded] = useState(today || !isMobile);
 
     return (
-        <Grid item xs={12} sm={6} md={4} lg={3} xl={1.714} className="p-1">
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={1.714} className="py-2 px-4 xl:p-1">
             <Accordion
-                className="flex flex-col"
                 sx={today ? { background: '#006d00', border: '2px solid #006d00' } : {}}
                 expanded={isExpanded}
                 onChange={() => setIsExpanded(!isExpanded)}
+                disableGutters
             >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon color={`${today ? 'white' : 'primary'}`} className="text-white" />}

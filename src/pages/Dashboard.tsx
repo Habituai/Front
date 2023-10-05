@@ -148,7 +148,7 @@ function Dashboard() {
                 setReferenceDay={setReferenceDay}
             />
 
-            <div className="w-full pt-8 pb-6 flex justify-center">
+            <div className="w-full pt-20 xl:pt-8 xl:pb-6 flex justify-center">
                 <h1 className="flex-none text-4xl xl:text-5xl font-bold text-primaryDark">Semana de Hábitos</h1>
             </div>
 

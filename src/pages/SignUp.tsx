@@ -4,6 +4,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import healthImage from '../assets/images/health.svg';
+import ConfirmationPasswordField, {
+    confirmationPasswordYupValidations,
+} from '../components/field/confirmationPassword';
 import EmailField, { emailYupValidations } from '../components/field/email';
 import NameField, { nameYupValidations } from '../components/field/name';
 import PasswordField, { passwordYupValidations } from '../components/field/password';
@@ -17,18 +20,20 @@ interface Values {
     name: string;
     email: string;
     password: string;
+    passwordConfirmation: string;
 }
 
 function SignUp() {
     const navigate = useNavigate();
     const host = envs.userPath;
 
-    const formInitialValues: Values = { name: '', password: '', email: '' };
+    const formInitialValues: Values = { name: '', email: '', password: '', passwordConfirmation: '' };
 
     const handleValidationSchema = Yup.object().shape({
         ...emailYupValidations,
         ...nameYupValidations,
         ...passwordYupValidations,
+        ...confirmationPasswordYupValidations,
     });
 
     const handleFormSubmit = async (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
@@ -62,7 +67,7 @@ function SignUp() {
                     <div className="w-full h-full xl:h-screen flex flex-col-reverse xl:flex-row justify-center items-center xl:gap-28">
                         <div className="h-full w-full flex flex-1 justify-center xl:justify-end items-center py-5 xl:p-0">
                             <div className="max-w-3/4 xl:min-w-[480px] bg-white rounded-lg shadow-lg">
-                                <Form className="flex justify-center items-center flex-col gap-3 xl:gap-8 p-10">
+                                <Form className="flex justify-center items-center flex-col gap-3 xl:gap-8 py-6 px-10 xl:p-10">
                                     <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">Crie sua conta</h4>
 
                                     <FieldInput
@@ -84,6 +89,13 @@ function SignUp() {
                                         type="password"
                                         fieldComponent={PasswordField}
                                         hasError={!!errors.password}
+                                    />
+
+                                    <FieldInput
+                                        name="passwordConfirmation"
+                                        type="password"
+                                        fieldComponent={ConfirmationPasswordField}
+                                        hasError={!!errors.passwordConfirmation}
                                     />
 
                                     <div className="w-full flex gap-4 items-center flex-col">

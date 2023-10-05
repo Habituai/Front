@@ -20,11 +20,11 @@ export default function SignHeaderLayout({ imageSrc }: SignHeaderLayoutProps) {
 
     return (
         <div className="w-3/4 flex flex-col justify-center items-center gap-6 xl:gap-10">
-            <h1 className="text-6xl text-secondaryLight font-bold drop-shadow-md">Habituaí</h1>
+            <h1 className="text-5xl xl:text-6xl text-secondaryLight font-bold drop-shadow-md">Habituaí</h1>
 
             <img src={imageSrc} className="w-3/4 drop-shadow-xl max-w-[400px] xl:max-w-[400px]" />
 
-            <span className="text-gray-900 text-lg xl:text-2xl text-center">"{messageList[randomIndex]}"</span>
+            <span className="text-gray-900 text-md xl:text-2xl text-center">"{messageList[randomIndex]}"</span>
         </div>
     );
 }

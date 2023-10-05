@@ -13,7 +13,8 @@ export default function ConfirmationPasswordField(props: PasswordFieldProps) {
 }
 
 export const confirmationPasswordYupValidations = {
-    passwordConfirmation: Yup.string()
-        .required('Campo obrigatório')
-        .oneOf([Yup.ref('password'), ''], 'Senhas não conferem'),
+    passwordConfirmation: Yup.string().when('password', {
+        is: (value: string) => value?.length,
+        then: (rule) => rule.oneOf([Yup.ref('password'), ''], 'Senhas não conferem').required('Campo obrigatório'),
+    }),
 };

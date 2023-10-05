@@ -13,5 +13,9 @@ export default function HabitNameField(props: HabitNameFieldProps) {
 }
 
 export const habitNameYupValidations = {
-    name: Yup.string().min(2, 'Nome inválido').required('Campo obrigatório').trim('Nome inválido'),
+    name: Yup.string()
+        .min(2, 'Nome inválido')
+        .max(18, 'Nome muito grande')
+        .required('Campo obrigatório')
+        .trim('Nome inválido'),
 };

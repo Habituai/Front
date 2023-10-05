@@ -12,9 +12,9 @@
 ### Features:
 
 -   [x] Implementar Accordion
+-   [ ] Campo de confirmar senha
 -   [ ] Separar área de habitos ruins
 -   [ ] Responsivo
--   [ ] Dark mode
 -   Mais coisas de gamificação
     -   [ ] foto de perfil
 

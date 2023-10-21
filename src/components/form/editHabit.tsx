@@ -1,6 +1,7 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, RadioGroup, Rating } from '@mui/material';
+import { Button, Checkbox, FormControl, RadioGroup, Rating } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import { toast } from 'react-hot-toast';
 import * as Yup from 'yup';
 import { envs } from '../../config';
@@ -8,9 +9,14 @@ import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { Habit } from '../../pages/Dashboard';
 import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 import HabitNameField, { habitNameYupValidations } from '../field/habitName';
+import { CategoryRadioButton } from '../inputs/category';
+import { ClassificationRadioButton } from '../inputs/classification';
+import {
+    WeekDayCheckBoxBaseButton,
+    WeekDayCheckBoxCheckedButton,
+    WeekDayCheckBoxDisabledButton,
+} from '../inputs/weekDays';
 import FieldInput from '../layout/field';
-import { CategoryRadioButton } from '../radio/category';
-import { ClassificationRadioButton } from '../radio/classification';
 
 interface Values {
     name?: string;
@@ -175,14 +181,6 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
             .test('', '*Obrigatório', (value) => value > 0),
     });
 
-    const weightExperienceLabels: any = {
-        1: '5 xp',
-        2: '10 xp',
-        3: '15 xp',
-        4: '20 xp',
-        5: '25 xp',
-    };
-
     return (
         habitData && (
             <Formik
@@ -195,7 +193,7 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                 {({ values, errors, isSubmitting, setFieldValue, handleChange }) => (
                     <Form className="w-full h-full flex justify-center items-center flex-col">
                         <div className="w-full flex justify-center items-center flex-col mb-8">
-                            <label className="w-full flex justify-center items-center flex-col text-4xl font-bold text-primaryDark">
+                            <label className="w-full flex justify-center items-center flex-col text-3xl xl:text-4xl font-bold text-primaryDark">
                                 Você gostaria de
                             </label>
 
@@ -210,7 +208,7 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                                 onChange={(event) => {
                                     setFieldValue('classification', event.currentTarget.value);
                                 }}
-                                className="h-full w-full flex justify-center items-center flex-col"
+                                className="h-full w-full flex justify-center items-center xl:flex-col"
                             >
                                 <ClassificationRadioButton value="bom" label="criar um novo hábito" />
                                 <ClassificationRadioButton value="ruim" label="parar com um hábito ruim" />
@@ -218,7 +216,7 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                         </div>
 
                         <div className="w-full h-full flex justify-center items-center flex-col xl:flex-row gap-10 xl:gap-32">
-                            <div className="w-full h-full flex flex-1 flex-col justify-center gap-10">
+                            <div className="w-full h-full flex flex-1 flex-col justify-center gap-6 xl:gap-10">
                                 <FieldInput
                                     name="name"
                                     type="text"
@@ -226,34 +224,13 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                                     hasError={!!errors.name}
                                 />
 
-                                <div className="w-full flex flex-col gap-2 justify-center items-center">
-                                    <div className="flex flex-col justify-center items-center">
-                                        <span className="text-red-600">
-                                            <ErrorMessage name="weightExperience" />
-                                        </span>
-                                        <label className="font-bold">Importância em XP</label>
-                                    </div>
-
-                                    <div className="w-full flex flex-col gap-2 justify-center items-center">
-                                        <Rating
-                                            name="weightExperience"
-                                            precision={1}
-                                            value={values.weightExperience}
-                                            size="large"
-                                            onChange={handleChange}
-                                        />
-
-                                        <Box ml={2}>{weightExperienceLabels[values.weightExperience]}</Box>
-                                    </div>
-                                </div>
-
                                 <div className="w-full flex gap-2 flex-col justify-center items-center">
                                     <div className="flex flex-col justify-center items-center">
                                         <span className="text-red-600">
                                             <ErrorMessage name="category" />
                                         </span>
 
-                                        <label className="font-bold">Categoria</label>
+                                        <label className="font-bold text-lg xl:text-xl">Categoria</label>
                                     </div>
                                     <RadioGroup
                                         row
@@ -272,31 +249,69 @@ export default function EditHabitForm({ habitId, setHabitIdToBeUpdated }: EditHa
                                 </div>
                             </div>
 
-                            <div className="w-full flex flex-1 flex-col">
-                                <div className="flex flex-col">
-                                    {weekDaysHasError && <p className="text-red-600">*Obrigatório</p>}
-                                    <label className="font-bold gap-4">Dias da semana que serão feitos</label>
-                                </div>
-                                <FormControl>
-                                    {weekDaysLabels.map((weekDay) => (
-                                        <FormControlLabel
-                                            key={weekDay}
-                                            name={weekDay}
-                                            label={weekDay}
+                            <div className="w-full h-full flex flex-1 flex-col justify-center gap-6 xl:gap-10">
+                                <div className="w-full flex flex-col gap-2 justify-center items-center">
+                                    <div className="flex flex-col justify-center items-center">
+                                        <span className="text-red-600">
+                                            <ErrorMessage name="weightExperience" />
+                                        </span>
+                                        <label className="font-bold text-lg xl:text-xl">Importância em XP</label>
+                                    </div>
+
+                                    <div className="w-full flex flex-col gap-2 justify-center items-center">
+                                        <Rating
+                                            name="weightExperience"
+                                            precision={1}
+                                            value={values.weightExperience}
                                             onChange={handleChange}
-                                            disabled={values.classification === 'ruim'}
-                                            control={
-                                                <Checkbox
-                                                    checked={values.classification === 'ruim' ? true : values[weekDay]}
-                                                />
-                                            }
+                                            sx={isMobile ? { fontSize: '3rem' } : { fontSize: '4rem' }}
                                         />
-                                    ))}
-                                </FormControl>
+                                    </div>
+                                </div>
+
+                                <div className="w-full flex flex-col gap-2 justify-center items-center">
+                                    <div className="flex flex-col">
+                                        {weekDaysHasError && <p className="text-red-600">*Obrigatório</p>}
+                                        <label className="font-bold text-lg xl:text-xl">
+                                            Dias da semana que serão feitos
+                                        </label>
+                                    </div>
+
+                                    <FormControl>
+                                        <div className="flex justify-center items-center flex-wrap">
+                                            {weekDaysLabels.map((weekDay) => (
+                                                <Checkbox
+                                                    key={weekDay}
+                                                    name={weekDay}
+                                                    onChange={handleChange}
+                                                    disabled={values.classification === 'ruim'}
+                                                    disableRipple
+                                                    checked={values.classification === 'ruim' ? true : values[weekDay]}
+                                                    icon={
+                                                        <WeekDayCheckBoxBaseButton>
+                                                            {weekDay[0]}
+                                                        </WeekDayCheckBoxBaseButton>
+                                                    }
+                                                    checkedIcon={
+                                                        values.classification === 'ruim' ? (
+                                                            <WeekDayCheckBoxDisabledButton>
+                                                                {weekDay[0]}
+                                                            </WeekDayCheckBoxDisabledButton>
+                                                        ) : (
+                                                            <WeekDayCheckBoxCheckedButton>
+                                                                {weekDay[0]}
+                                                            </WeekDayCheckBoxCheckedButton>
+                                                        )
+                                                    }
+                                                />
+                                            ))}
+                                        </div>
+                                    </FormControl>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="w-full mt-8 flex xl:gap-10 gap-4 xl:flex-row flex-col">
+                        <div className="w-full mt-8 xl:mt-16 flex xl:gap-10 gap-4 xl:flex-row flex-col">
                             <Button
                                 variant="contained"
                                 disabled={isSubmitting || JSON.stringify(formInitialValues) === JSON.stringify(values)}

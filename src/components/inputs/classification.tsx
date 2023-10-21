@@ -7,18 +7,18 @@ interface StyleOptions {
 }
 
 export const ClassificationRadioButton = ({ value, label }: { value: 'bom' | 'ruim'; label: string }) => {
-    const baseStyle = 'w-full p-2 h-12 rounded-lg';
+    const baseStyle = 'w-full p-2 xl:h-12 rounded-lg text-md xl:text-xl border-2';
 
     const checkedStyles: StyleOptions = {
-        bom: 'bg-primaryDark',
-        ruim: 'bg-red-800',
+        bom: 'bg-primaryDark border-primaryDark',
+        ruim: 'bg-red-800 border-red-800',
         default: 'font-bold text-white',
     };
 
     const uncheckedStyle: StyleOptions = {
         bom: 'border-primaryDark text-primaryDark',
         ruim: 'border-red-800 text-red-800',
-        default: 'border-2 bg-white',
+        default: 'bg-white',
     };
 
     const BaseButton = () => (

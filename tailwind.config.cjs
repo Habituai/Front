@@ -16,6 +16,10 @@ module.exports = {
             },
             fontFamily: {
                 poppins: ['Poppins', 'sans-serif'],
+                reemKufi: ['Reem Kufi Fun', 'sans-serif'],
+            },
+            maxHeight: {
+                '9/10': '90%',
             },
         },
     },

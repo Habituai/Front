@@ -15,6 +15,7 @@ import checkBoxIcon from '../../assets/images/checkbox.svg';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { paths } from '../../paths';
 import LevelCard from '../card/level';
+import ExperienceCard from '../card/xp';
 
 interface DashboardHeaderProps {
     name: string;
@@ -112,10 +113,7 @@ export default function DashboardHeader({
                 </div>
 
                 <div className="flex flex-1 justify-end items-center gap-6 text-white text-xl">
-                    <span className="py-2 px-4 text-sm xl:text-xl bg-primaryExtraLight text-white rounded-lg shadow-md">
-                        {`${experience} `}
-                        <span className="text-secondaryExtraLight font-bold">xp</span>
-                    </span>
+                    <ExperienceCard experience={experience} />
 
                     <LevelCard experience={experience} />
 
@@ -199,10 +197,7 @@ export default function DashboardHeader({
                         </div>
 
                         <div className="mt-16 w-full flex justify-center items-center gap-4">
-                            <span className="py-2 px-4 text-2xl bg-primaryExtraLight text-white rounded-lg shadow-md">
-                                {`${experience} `}
-                                <span className="text-secondaryExtraLight font-bold">xp</span>
-                            </span>
+                            <ExperienceCard experience={experience} />
 
                             <LevelCard experience={experience} />
                         </div>

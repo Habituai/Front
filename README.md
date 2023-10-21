@@ -12,7 +12,7 @@
 ### Features:
 
 -   [x] Implementar Accordion
--   [ ] Campo de confirmar senha
+-   [x] Campo de confirmar senha
 -   [ ] Separar área de habitos ruins
 -   [ ] Responsivo
 -   Mais coisas de gamificação
@@ -22,6 +22,6 @@
 
 -   [x] Mudar as rotas (colocar em português)
 -   [ ] Botões de voltar pra Home
--   [+-x] Remodelar design dos formulários de criação e edição de hábitos
--   Teste unitário
--   Teste E2E Cypress
+-   [x] Remodelar design dos formulários de criação e edição de hábitos
+-   [ ] Teste unitário
+-   [ ] Teste E2E Cypress

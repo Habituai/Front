@@ -9,13 +9,13 @@ import { envs } from '../../config';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 import HabitNameField, { habitNameYupValidations } from '../field/habitName';
-import { CategoryRadioButton } from '../inputs/category';
-import { ClassificationRadioButton } from '../inputs/classification';
+import { CategoryRadioButton } from '../input/category';
+import { ClassificationRadioButton } from '../input/classification';
 import {
     WeekDayCheckBoxBaseButton,
     WeekDayCheckBoxCheckedButton,
     WeekDayCheckBoxDisabledButton,
-} from '../inputs/weekDays';
+} from '../input/weekDays';
 import FieldInput from '../layout/field';
 
 interface Values {

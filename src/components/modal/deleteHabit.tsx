@@ -53,7 +53,7 @@ export default function DeleteHabitModal({ habitId, setHabitIdToBeDeleted }: Del
 
     return (
         <BaseModal open={!!habitId} setOpen={setHabitIdToBeDeleted}>
-            <div className="w-full h-full flex flex-col gap-24 justify-center items-center">
+            <div className="w-full h-full flex flex-col gap-8 xl:gap-24 justify-center items-center">
                 <div className="text-3xl xl:text-5xl leading-relaxed font-bold text-center">
                     <h1>Tem certeza que deseja excluir permanentemente o hábito</h1>
                     <h1>
@@ -61,10 +61,10 @@ export default function DeleteHabitModal({ habitId, setHabitIdToBeDeleted }: Del
                     </h1>
                 </div>
 
-                <div className="w-full mt-8 flex xl:gap-10 gap-4 xl:flex-row flex-col">
+                <div className="w-full flex xl:gap-10 gap-4 xl:flex-row flex-col">
                     <Button
                         variant="contained"
-                        color="bom"
+                        color="ruim"
                         disabled={isLoading}
                         sx={{ width: '100%' }}
                         size="large"

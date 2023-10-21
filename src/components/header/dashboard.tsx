@@ -1,20 +1,14 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArticleIcon from '@mui/icons-material/Article';
-import CancelIcon from '@mui/icons-material/Cancel';
-import PersonIcon from '@mui/icons-material/Person';
-import { Accordion, AccordionDetails, AccordionSummary, Button, Menu, MenuItem } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Button } from '@mui/material';
 import { addDays, subDays } from 'date-fns';
 import Hamburger from 'hamburger-react';
-import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import checkBoxIcon from '../../assets/images/checkbox.svg';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
-import { paths } from '../../paths';
 import LevelCard from '../card/level';
 import WeekSelectorCard from '../card/week';
 import ExperienceCard from '../card/xp';
+import UserMenu from '../input/user';
 
 interface DashboardHeaderProps {
     name: string;
@@ -38,22 +32,6 @@ export default function DashboardHeader({
     const { setHabitsHasUpdate } = useUpdateHabits();
 
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-
-    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
-    const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => setAnchorEl(event.currentTarget);
-
-    const handleCloseMenu = () => setAnchorEl(null);
-
-    const handleLogout = () => {
-        Cookies.remove('token');
-        window.location.href = paths.home;
-    };
-
-    const handleAccountData = () => {
-        setOpenEditUserModal(true);
-        handleCloseMenu();
-    };
 
     const handleSubWeek = () => {
         const newReferenceDay = subDays(referenceDay, 7);
@@ -97,27 +75,7 @@ export default function DashboardHeader({
 
                     <LevelCard experience={experience} />
 
-                    <button onClick={handleOpenMenu} className="flex items-center font-bold text-lg xl:text-2xl gap-2">
-                        <AccountCircleIcon />
-                        <div>
-                            {name.toUpperCase()}
-                            <ArrowDropDownIcon />
-                        </div>
-                    </button>
-                    <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={handleCloseMenu}>
-                        <MenuItem onClick={handleCloseMenu} className="flex items-center gap-2">
-                            <ArticleIcon />
-                            Gerar relatório de progresso
-                        </MenuItem>
-                        <MenuItem onClick={handleAccountData} className="flex items-center gap-2">
-                            <PersonIcon />
-                            Meus dados
-                        </MenuItem>
-                        <MenuItem onClick={handleLogout} className="flex items-center gap-2">
-                            <CancelIcon />
-                            Sair da plataforma
-                        </MenuItem>
-                    </Menu>
+                    <UserMenu name={name} setOpenEditUserModal={setOpenEditUserModal} />
                 </div>
             </nav>
         </header>
@@ -164,27 +122,7 @@ export default function DashboardHeader({
                         </div>
 
                         <div className="flex justify-end items-center text-white text-xl">
-                            <button onClick={handleOpenMenu} className="flex items-center font-bold text-4xl gap-2">
-                                <AccountCircleIcon fontSize="large" />
-                                <div>
-                                    {name.toUpperCase()}
-                                    <ArrowDropDownIcon />
-                                </div>
-                            </button>
-                            <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={handleCloseMenu}>
-                                <MenuItem onClick={handleCloseMenu} className="flex items-center gap-2">
-                                    <ArticleIcon />
-                                    Gerar relatório de progresso
-                                </MenuItem>
-                                <MenuItem onClick={handleAccountData} className="flex items-center gap-2">
-                                    <PersonIcon />
-                                    Meus dados
-                                </MenuItem>
-                                <MenuItem onClick={handleLogout} className="flex items-center gap-2">
-                                    <CancelIcon />
-                                    Sair da plataforma
-                                </MenuItem>
-                            </Menu>
+                            <UserMenu name={name} setOpenEditUserModal={setOpenEditUserModal} />
                         </div>
                     </div>
                 </AccordionDetails>

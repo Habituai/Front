@@ -9,7 +9,7 @@ interface PasswordFieldProps {
 }
 
 export default function ConfirmationPasswordField(props: PasswordFieldProps) {
-    return <TextField id="password" label="Confirme sua senha" variant="outlined" {...props} />;
+    return <TextField id="passwordConfirmation" label="Confirme sua senha" variant="outlined" {...props} />;
 }
 
 export const confirmationPasswordYupValidations = {

@@ -1,12 +1,10 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArticleIcon from '@mui/icons-material/Article';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PersonIcon from '@mui/icons-material/Person';
 import { Accordion, AccordionDetails, AccordionSummary, Button, Menu, MenuItem } from '@mui/material';
-import { addDays, format, parseISO, subDays } from 'date-fns';
+import { addDays, subDays } from 'date-fns';
 import Hamburger from 'hamburger-react';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
@@ -15,6 +13,7 @@ import checkBoxIcon from '../../assets/images/checkbox.svg';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { paths } from '../../paths';
 import LevelCard from '../card/level';
+import WeekSelectorCard from '../card/week';
 import ExperienceCard from '../card/xp';
 
 interface DashboardHeaderProps {
@@ -77,30 +76,11 @@ export default function DashboardHeader({
                 </span>
 
                 <div className="flex flex-none justify-center items-center gap-8">
-                    <div className="flex items-center justify-center gap-2 text-white py-2 px-4 bg-primaryExtraLight rounded-xl shadow-md">
-                        <button onClick={handleSubWeek}>
-                            <ArrowCircleLeftIcon
-                                color="bom"
-                                fontSize="large"
-                                className="cursor-pointer drop-shadow-sm hover:text-secondaryMedium hover:transition-all"
-                            />
-                        </button>
-
-                        <span className="text-md xl:text-lg">
-                            {`${format(parseISO(weekDaysList[0]), 'dd/MM')} - ${format(
-                                parseISO(weekDaysList[weekDaysList.length - 1]),
-                                'dd/MM',
-                            )}`}
-                        </span>
-
-                        <button onClick={handleAddWeek}>
-                            <ArrowCircleRightIcon
-                                color="bom"
-                                fontSize="large"
-                                className="cursor-pointer drop-shadow-sm hover:text-secondaryMedium hover:transition-all"
-                            />
-                        </button>
-                    </div>
+                    <WeekSelectorCard
+                        weekDaysList={weekDaysList}
+                        handleAddWeek={handleAddWeek}
+                        handleSubWeek={handleSubWeek}
+                    />
 
                     <Button
                         variant="contained"
@@ -171,30 +151,11 @@ export default function DashboardHeader({
                             CRIAR NOVO HÁBITO
                         </Button>
 
-                        <div className="w-full flex items-center justify-between gap-2 text-white py-2 px-4 bg-primaryExtraLight rounded-xl shadow-md">
-                            <button onClick={handleSubWeek}>
-                                <ArrowCircleLeftIcon
-                                    color="bom"
-                                    fontSize="large"
-                                    className="cursor-pointer drop-shadow-sm hover:text-secondaryMedium hover:transition-all"
-                                />
-                            </button>
-
-                            <span className="text-xl">
-                                {`${format(parseISO(weekDaysList[0]), 'dd/MM')} - ${format(
-                                    parseISO(weekDaysList[weekDaysList.length - 1]),
-                                    'dd/MM',
-                                )}`}
-                            </span>
-
-                            <button onClick={handleAddWeek}>
-                                <ArrowCircleRightIcon
-                                    color="bom"
-                                    fontSize="large"
-                                    className="cursor-pointer drop-shadow-sm hover:text-secondaryMedium hover:transition-all"
-                                />
-                            </button>
-                        </div>
+                        <WeekSelectorCard
+                            weekDaysList={weekDaysList}
+                            handleAddWeek={handleAddWeek}
+                            handleSubWeek={handleSubWeek}
+                        />
 
                         <div className="mt-16 w-full flex justify-center items-center gap-4">
                             <ExperienceCard experience={experience} />

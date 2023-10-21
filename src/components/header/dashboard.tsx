@@ -14,6 +14,7 @@ import { isMobile } from 'react-device-detect';
 import checkBoxIcon from '../../assets/images/checkbox.svg';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { paths } from '../../paths';
+import LevelCard from '../card/level';
 
 interface DashboardHeaderProps {
     name: string;
@@ -48,8 +49,6 @@ export default function DashboardHeader({
         Cookies.remove('token');
         window.location.href = paths.home;
     };
-
-    const getLevelByXP = () => (experience ? Math.ceil(experience / 100) : 1);
 
     const handleAccountData = () => {
         setOpenEditUserModal(true);
@@ -118,9 +117,7 @@ export default function DashboardHeader({
                         <span className="text-secondaryExtraLight font-bold">xp</span>
                     </span>
 
-                    <span className="py-2 px-4 text-sm xl:text-xl bg-primaryExtraLight text-white rounded-lg shadow-md">
-                        {`Nível ${getLevelByXP()}`}
-                    </span>
+                    <LevelCard experience={experience} />
 
                     <button onClick={handleOpenMenu} className="flex items-center font-bold text-lg xl:text-2xl gap-2">
                         <AccountCircleIcon />
@@ -207,9 +204,7 @@ export default function DashboardHeader({
                                 <span className="text-secondaryExtraLight font-bold">xp</span>
                             </span>
 
-                            <span className="py-2 px-4 text-2xl bg-primaryExtraLight text-white rounded-lg shadow-md">
-                                {`Nível ${getLevelByXP()}`}
-                            </span>
+                            <LevelCard experience={experience} />
                         </div>
 
                         <div className="flex justify-end items-center text-white text-xl">

@@ -8,6 +8,7 @@ import WeekendIcon from '@mui/icons-material/Weekend';
 import { Checkbox, IconButton, Menu, MenuItem } from '@mui/material';
 import { isToday, parseISO } from 'date-fns';
 import { ReactElement, useState } from 'react';
+import fireIcon from '../../assets/icons/fire.png';
 import { envs } from '../../config';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { useUpdateUser } from '../../hooks/useUpdateUser';
@@ -30,6 +31,7 @@ interface HabitCardProps {
     date: string;
     weekDay: number;
     concluded: boolean;
+    streak: number;
     setHabitIdToBeDeleted: React.Dispatch<React.SetStateAction<number | null>>;
     setHabitIdToBeUpdated: React.Dispatch<React.SetStateAction<number | null>>;
 }
@@ -42,6 +44,7 @@ export default function HabitCard({
     date,
     weekDay,
     concluded,
+    streak,
     setHabitIdToBeDeleted,
     setHabitIdToBeUpdated,
 }: HabitCardProps) {
@@ -114,11 +117,7 @@ export default function HabitCard({
     const changeCheckbox = async () => {
         setIsLoading(true);
         try {
-            if (concluded) {
-                await handleUncheck();
-            } else {
-                await handleCheck();
-            }
+            concluded ? await handleUncheck() : await handleCheck();
 
             setUserHasUpdate(true);
             setHabitsHasUpdate(true);
@@ -129,13 +128,24 @@ export default function HabitCard({
         }
     };
 
+    const today = isToday(parseISO(date));
+
     return (
-        <div className={`w-full rounded-lg p-2 border-2 bg-white shadow-md ${mapStyleAttributes().border} `}>
+        <div className={`relative w-full rounded-lg p-2 border-2 bg-white shadow-md ${mapStyleAttributes().border}`}>
+            {today && concluded && streak >= 1 ? (
+                <div className="absolute bottom-3/4 left-[-7px]">
+                    <div className="relative">
+                        <img src={fireIcon} alt="fire icon" className="h-[27px]" />
+                        <span className="absolute top-1/3 left-1/3 text-sm font-bold font-sans ">{streak + 1}</span>
+                    </div>
+                </div>
+            ) : null}
+
             <div className="flex items-center justify-between gap-1">
                 <div className="flex items-center">
                     <Checkbox
                         checked={concluded}
-                        disabled={!isToday(parseISO(date)) || isLoading}
+                        disabled={!today || isLoading}
                         size="small"
                         onChange={changeCheckbox}
                         color={mapStyleAttributes().color}

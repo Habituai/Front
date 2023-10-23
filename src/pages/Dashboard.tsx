@@ -110,6 +110,7 @@ function Dashboard() {
                 date={date}
                 weekDay={index + 1}
                 concluded={concluded}
+                streak={habit.streak}
                 setHabitIdToBeDeleted={setHabitIdToBeDeleted}
                 setHabitIdToBeUpdated={setHabitIdToBeUpdated}
             />

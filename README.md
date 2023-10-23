@@ -13,15 +13,18 @@
 
 -   [x] Implementar Accordion
 -   [x] Campo de confirmar senha
--   [ ] Separar área de habitos ruins
--   [ ] Responsivo
--   Mais coisas de gamificação
-    -   [ ] foto de perfil
+-   [x] Separar área de habitos ruins
+-   [ ] Lixeira de hábitos deletados
+-   [ ] Gerar relatório
+-   [ ] Home detalhada + responsivo
+-   Mais coisas de gamificação:
+    -   [ ] Streak
+    -   [ ] Foto de perfil
 
 ### Não-funcionais:
 
 -   [x] Mudar as rotas (colocar em português)
--   [ ] Botões de voltar pra Home
 -   [x] Remodelar design dos formulários de criação e edição de hábitos
+-   [ ] Botões de voltar pra Home
 -   [ ] Teste unitário
 -   [ ] Teste E2E Cypress

@@ -134,7 +134,7 @@ export default function HabitCard({
             <div className="flex items-center justify-between gap-1">
                 <div className="flex items-center">
                     <Checkbox
-                        defaultChecked={concluded}
+                        checked={concluded}
                         disabled={!isToday(parseISO(date)) || isLoading}
                         size="small"
                         onChange={changeCheckbox}

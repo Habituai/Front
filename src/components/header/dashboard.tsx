@@ -8,6 +8,7 @@ import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import LevelCard from '../card/level';
 import WeekSelectorCard from '../card/week';
 import ExperienceCard from '../card/xp';
+import BadHabitToggle from '../input/badHabit';
 import UserMenu from '../input/user';
 
 interface DashboardHeaderProps {
@@ -18,6 +19,8 @@ interface DashboardHeaderProps {
     setOpenEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
     referenceDay: Date;
     setReferenceDay: React.Dispatch<React.SetStateAction<Date>>;
+    isBadHabitsVisible: boolean;
+    setIsBadHabitsVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function DashboardHeader({
@@ -28,6 +31,8 @@ export default function DashboardHeader({
     setOpenEditUserModal,
     referenceDay,
     setReferenceDay,
+    isBadHabitsVisible,
+    setIsBadHabitsVisible,
 }: DashboardHeaderProps) {
     const { setHabitsHasUpdate } = useUpdateHabits();
 
@@ -47,19 +52,13 @@ export default function DashboardHeader({
 
     return !isMobile ? (
         <header className="w-full py-4 xl:px-9 flex justify-center bg-primaryDark shadow-xl">
-            <nav className="w-full flex flex-col xl:flex-row items-center gap-4 xl:gap-0">
-                <span className="flex flex-1 items-center gap-2 text-4xl text-secondaryExtraLight font-bold">
+            <nav className="w-full flex flex-col xl:flex-row items-center justify-between gap-4 xl:gap-0">
+                <span className="flex items-center gap-2 text-4xl text-secondaryExtraLight font-bold">
                     <img src={checkBoxIcon} alt="logo" className="w-8 h-8" />
                     Habituaí
                 </span>
 
-                <div className="flex flex-none justify-center items-center gap-8">
-                    <WeekSelectorCard
-                        weekDaysList={weekDaysList}
-                        handleAddWeek={handleAddWeek}
-                        handleSubWeek={handleSubWeek}
-                    />
-
+                <div className="flex justify-end items-center gap-6 text-white text-xl">
                     <Button
                         variant="contained"
                         color="secondary"
@@ -68,9 +67,18 @@ export default function DashboardHeader({
                     >
                         CRIAR NOVO HÁBITO
                     </Button>
-                </div>
 
-                <div className="flex flex-1 justify-end items-center gap-6 text-white text-xl">
+                    <WeekSelectorCard
+                        weekDaysList={weekDaysList}
+                        handleAddWeek={handleAddWeek}
+                        handleSubWeek={handleSubWeek}
+                    />
+
+                    <BadHabitToggle
+                        isBadHabitsVisible={isBadHabitsVisible}
+                        setIsBadHabitsVisible={setIsBadHabitsVisible}
+                    />
+
                     <ExperienceCard experience={experience} />
 
                     <LevelCard experience={experience} />
@@ -97,8 +105,16 @@ export default function DashboardHeader({
                         Habituaí
                     </span>
                 </AccordionSummary>
-                <AccordionDetails sx={{ height: '100vh', marginTop: '-55px' }}>
-                    <div className="w-full h-full flex flex-col justify-center items-center gap-6">
+                <AccordionDetails
+                    sx={{
+                        width: '100%',
+                        height: '100vh',
+                        marginTop: '-55px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <div className="w-10/12 h-full flex flex-col justify-center items-center gap-6">
                         <Button
                             variant="contained"
                             color="secondary"
@@ -115,7 +131,12 @@ export default function DashboardHeader({
                             handleSubWeek={handleSubWeek}
                         />
 
-                        <div className="mt-16 w-full flex justify-center items-center gap-4">
+                        <BadHabitToggle
+                            isBadHabitsVisible={isBadHabitsVisible}
+                            setIsBadHabitsVisible={setIsBadHabitsVisible}
+                        />
+
+                        <div className="mt-8 w-full flex justify-center items-center gap-4">
                             <ExperienceCard experience={experience} />
 
                             <LevelCard experience={experience} />

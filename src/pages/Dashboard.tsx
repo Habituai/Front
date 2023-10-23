@@ -47,13 +47,7 @@ export interface Habit {
     weightExperience: 5 | 10 | 15 | 20 | 25;
     dateCreation: number;
     status: boolean;
-    user?: {
-        id: number;
-        name: string;
-        email: string;
-        password: string;
-        experience: number;
-    };
+    streak: number;
 }
 
 interface ListHabit {
@@ -64,6 +58,7 @@ interface ListHabit {
 interface DayList {
     date: string;
     listHabit: ListHabit[];
+    listBadHabit: ListHabit[];
 }
 
 function Dashboard() {
@@ -79,6 +74,7 @@ function Dashboard() {
     const [userData, setUserData] = useState<User>({ id: -1, name: '', email: '', experience: 0 });
     const [habitListFromServer, setHabitListFromServer] = useState<DayList[]>([]);
 
+    const [isBadHabitsVisible, setIsBadHabitsVisible] = useState(false);
     const [openCreateHabitModal, setOpenCreateHabitModal] = useState<boolean>(false);
     const [openEditUserModal, setOpenEditUserModal] = useState(false);
     const [habitIdToBeUpdated, setHabitIdToBeUpdated] = useState<number | null>(null);
@@ -93,8 +89,61 @@ function Dashboard() {
         const data = await makeRequestWithAuthorization('POST', habitsHost, {
             data: weekDaysList,
         });
-        setHabitListFromServer(data.dayList);
+
+        const habits: DayList[] = data.dayList.map((day: DayList) => ({
+            date: day.date,
+            listHabit: day.listHabit.filter((habit: ListHabit) => habit.habit.classification === 'bom'),
+            listBadHabit: day.listHabit.filter((habit: ListHabit) => habit.habit.classification !== 'bom'),
+        }));
+
+        setHabitListFromServer(habits);
     };
+
+    const renderHabitCards = (habitData: ListHabit[], date: string, index: number) =>
+        habitData?.map(({ habit, concluded }) => (
+            <HabitCard
+                key={habit.id}
+                id={habit.id}
+                name={habit.name}
+                category={habit.category}
+                classification={habit.classification}
+                date={date}
+                weekDay={index + 1}
+                concluded={concluded}
+                setHabitIdToBeDeleted={setHabitIdToBeDeleted}
+                setHabitIdToBeUpdated={setHabitIdToBeUpdated}
+            />
+        ));
+
+    const showAllHabits = weekDaysList.map((date, index) => {
+        const dayGoodHabits =
+            habitListFromServer.find((dayHabit) => dayHabit.date === date.split('T')[0])?.listHabit ?? [];
+
+        const dayBadHabits =
+            habitListFromServer.find((dayHabit) => dayHabit.date === date.split('T')[0])?.listBadHabit ?? [];
+
+        return (
+            <DayHabitTableLayout key={date} date={date}>
+                <>
+                    {dayGoodHabits?.length > 0 ? (
+                        renderHabitCards(dayGoodHabits, date, index)
+                    ) : (
+                        <span>Não há nada neste dia!</span>
+                    )}
+                </>
+                <>
+                    {isBadHabitsVisible && dayBadHabits.length > 0 ? (
+                        <>
+                            <div className="w-full bg-red-600 h-1 rounded-full mt-2" />
+                            {renderHabitCards(dayBadHabits, date, index)}
+                        </>
+                    ) : (
+                        ''
+                    )}
+                </>
+            </DayHabitTableLayout>
+        );
+    });
 
     useEffect(() => {
         handleGetUserData().catch((error) => {
@@ -146,6 +195,8 @@ function Dashboard() {
                 setOpenEditUserModal={setOpenEditUserModal}
                 referenceDay={referenceDay}
                 setReferenceDay={setReferenceDay}
+                isBadHabitsVisible={isBadHabitsVisible}
+                setIsBadHabitsVisible={setIsBadHabitsVisible}
             />
 
             <div className="w-full pt-20 xl:pt-8 xl:pb-6 flex justify-center">
@@ -153,35 +204,7 @@ function Dashboard() {
             </div>
 
             <Grid container className="w-full h-full pt-4 flex flex-wrap items-start">
-                {!!habitListFromServer &&
-                    weekDaysList.map((date, index) => {
-                        const dayData =
-                            habitListFromServer.find((dayHabit) => dayHabit.date === date.split('T')[0])?.listHabit ??
-                            [];
-
-                        return (
-                            <DayHabitTableLayout key={date} date={date}>
-                                {dayData?.length > 0 ? (
-                                    dayData?.map(({ habit, concluded }) => (
-                                        <HabitCard
-                                            key={habit.id}
-                                            id={habit.id}
-                                            name={habit.name}
-                                            category={habit.category}
-                                            classification={habit.classification}
-                                            date={date}
-                                            weekDay={index + 1}
-                                            concluded={concluded}
-                                            setHabitIdToBeDeleted={setHabitIdToBeDeleted}
-                                            setHabitIdToBeUpdated={setHabitIdToBeUpdated}
-                                        />
-                                    ))
-                                ) : (
-                                    <span>Não há nada neste dia!</span>
-                                )}
-                            </DayHabitTableLayout>
-                        );
-                    })}
+                {!!habitListFromServer && showAllHabits}
             </Grid>
         </>
     );

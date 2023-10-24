@@ -1,0 +1,115 @@
+import { Button } from '@mui/material';
+import { Form, Formik, FormikHelpers } from 'formik';
+import Cookies from 'js-cookie';
+import toast, { Toaster } from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import studyImage from '../assets/images/study.svg';
+import EmailField, { emailYupValidations } from '../components/field/email';
+import PasswordField, { passwordYupValidations } from '../components/field/password';
+import FieldInput from '../components/layout/field';
+import SignHeaderLayout from '../components/layout/signHeader';
+import { envs } from '../config';
+import { useAuth } from '../hooks/useAuth';
+import { paths } from '../paths';
+import { makeRequest } from '../services/makeRequest';
+
+interface Values {
+    email: string;
+    password: string;
+}
+
+function SignIn() {
+    const host = envs.loginPath;
+    const navigate = useNavigate();
+    const { setAuth } = useAuth();
+
+    const formInitialValues: Values = { email: '', password: '' };
+
+    const handleValidationSchema = Yup.object().shape({
+        ...emailYupValidations,
+        ...passwordYupValidations,
+    });
+
+    const handleFormSubmit = async (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
+        setSubmitting(true);
+        try {
+            const data = await makeRequest('POST', host, { data: values });
+            Cookies.set('token', data.token);
+            setAuth(true);
+            navigate(paths.dashboard);
+        } catch (error) {
+            toast.error('Email ou senha incorretos');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    return (
+        <>
+            <Toaster position="top-center" reverseOrder={false} />
+
+            <Formik
+                initialValues={formInitialValues}
+                validationSchema={handleValidationSchema}
+                onSubmit={handleFormSubmit}
+                validateOnChange={false}
+                validateOnBlur={false}
+            >
+                {({ errors, isSubmitting }) => (
+                    <div className="w-full h-full xl:h-screen flex flex-col xl:flex-row justify-center items-center xl:gap-28">
+                        <div className="h-full w-full flex flex-1 justify-center xl:justify-end items-center py-5 xl:p-0">
+                            <SignHeaderLayout imageSrc={studyImage} />
+                        </div>
+
+                        <div className="h-full w-full flex flex-1 justify-center xl:justify-start items-center py-5 xl:p-0">
+                            <div className="max-w-3/4 xl:min-w-[480px] bg-white rounded-lg shadow-lg">
+                                <Form className="flex justify-center items-center flex-col gap-3 xl:gap-8 p-10">
+                                    <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">Faça seu login</h4>
+
+                                    <FieldInput
+                                        name="email"
+                                        type="email"
+                                        fieldComponent={EmailField}
+                                        hasError={!!errors.email}
+                                    />
+
+                                    <FieldInput
+                                        name="password"
+                                        type="password"
+                                        fieldComponent={PasswordField}
+                                        hasError={!!errors.password}
+                                    />
+
+                                    <div className="w-full flex gap-4 items-center flex-col">
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            size="large"
+                                            disabled={isSubmitting}
+                                            sx={{ width: '100%' }}
+                                        >
+                                            Entrar
+                                        </Button>
+
+                                        <span>
+                                            {`Não possui conta? `}
+                                            <Link
+                                                className="text-primaryMedium hover:text-primaryExtraLight font-semibold underline"
+                                                to={paths.signUp}
+                                            >
+                                                Cadastrar
+                                            </Link>
+                                        </span>
+                                    </div>
+                                </Form>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </Formik>
+        </>
+    );
+}
+
+export default SignIn;

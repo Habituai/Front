@@ -43,7 +43,7 @@ export default function UserMenu({ name, setOpenEditUserModal }: UserMenuProps) 
             <button onClick={handleOpenMenu} className="flex items-center font-bold text-4xl xl:text-2xl gap-2">
                 <AccountCircleIcon sx={isMobile ? { fontSize: '2rem' } : { fontSize: '1.5rem' }} />
                 <div>
-                    {name.toUpperCase()}
+                    {name?.toUpperCase()}
                     <ArrowDropDownIcon />
                 </div>
             </button>

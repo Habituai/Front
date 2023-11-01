@@ -18,7 +18,7 @@
 -   [ ] Gerar relatório
 -   [ ] Home detalhada + responsivo
 -   Mais coisas de gamificação:
-    -   [ ] Streak
+    -   [x] Streak
     -   [ ] Foto de perfil
 
 ### Não-funcionais:

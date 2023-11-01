@@ -58,6 +58,8 @@ export default function HabitCard({
     const [isLoading, setIsLoading] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
+    const today = isToday(parseISO(date));
+
     const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => setAnchorEl(event.currentTarget);
     const handleCloseMenu = () => setAnchorEl(null);
 
@@ -128,18 +130,19 @@ export default function HabitCard({
         }
     };
 
-    const today = isToday(parseISO(date));
+    const renderStreak =
+        today && concluded && streak >= 1 && classification === 'bom' ? (
+            <div className="absolute bottom-3/4 left-[-7px]">
+                <div className="relative">
+                    <img src={fireIcon} alt="fire icon" className="h-[27px]" />
+                    <span className="absolute top-1/3 left-1/3 text-sm font-bold font-sans ">{streak + 1}</span>
+                </div>
+            </div>
+        ) : null;
 
     return (
         <div className={`relative w-full rounded-lg p-2 border-2 bg-white shadow-md ${mapStyleAttributes().border}`}>
-            {today && concluded && streak >= 1 ? (
-                <div className="absolute bottom-3/4 left-[-7px]">
-                    <div className="relative">
-                        <img src={fireIcon} alt="fire icon" className="h-[27px]" />
-                        <span className="absolute top-1/3 left-1/3 text-sm font-bold font-sans ">{streak + 1}</span>
-                    </div>
-                </div>
-            ) : null}
+            {renderStreak}
 
             <div className="flex items-center justify-between gap-1">
                 <div className="flex items-center">

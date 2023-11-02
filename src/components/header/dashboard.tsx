@@ -17,6 +17,7 @@ interface DashboardHeaderProps {
     weekDaysList: string[];
     setOpenCreateHabitModal: React.Dispatch<React.SetStateAction<boolean>>;
     setOpenEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpenHabitDumpModal: React.Dispatch<React.SetStateAction<boolean>>;
     referenceDay: Date;
     setReferenceDay: React.Dispatch<React.SetStateAction<Date>>;
     isBadHabitsVisible: boolean;
@@ -29,6 +30,7 @@ export default function DashboardHeader({
     weekDaysList,
     setOpenCreateHabitModal,
     setOpenEditUserModal,
+    setOpenHabitDumpModal,
     referenceDay,
     setReferenceDay,
     isBadHabitsVisible,
@@ -83,7 +85,11 @@ export default function DashboardHeader({
 
                     <LevelCard experience={experience} />
 
-                    <UserMenu name={name} setOpenEditUserModal={setOpenEditUserModal} />
+                    <UserMenu
+                        name={name}
+                        setOpenEditUserModal={setOpenEditUserModal}
+                        setOpenHabitDumpModal={setOpenHabitDumpModal}
+                    />
                 </div>
             </nav>
         </header>
@@ -143,7 +149,11 @@ export default function DashboardHeader({
                         </div>
 
                         <div className="flex justify-end items-center text-white text-xl">
-                            <UserMenu name={name} setOpenEditUserModal={setOpenEditUserModal} />
+                            <UserMenu
+                                name={name}
+                                setOpenEditUserModal={setOpenEditUserModal}
+                                setOpenHabitDumpModal={setOpenHabitDumpModal}
+                            />
                         </div>
                     </div>
                 </AccordionDetails>

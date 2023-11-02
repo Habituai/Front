@@ -77,7 +77,7 @@ export default function EditUserForm({ setOpenEditUserModal, userData }: EditUse
         >
             {({ values, errors, isSubmitting }) => (
                 <Form className="h-full w-full flex justify-center items-center flex-col gap-3 xl:gap-8 p-10">
-                    <h4 className="w-full mb-4 text-3xl font-bold text-primaryDark">Dados de perfil</h4>
+                    <h1 className="w-full mb-4 text-3xl font-bold text-primaryDark">Dados de perfil</h1>
 
                     <FieldInput name="name" type="text" fieldComponent={NameField} hasError={!!errors.name} />
 

@@ -1,7 +1,8 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArticleIcon from '@mui/icons-material/Article';
-import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
+import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { Menu, MenuItem } from '@mui/material';
 import Cookies from 'js-cookie';
@@ -12,9 +13,10 @@ import { paths } from '../../paths';
 interface UserMenuProps {
     name: string;
     setOpenEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpenHabitDumpModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function UserMenu({ name, setOpenEditUserModal }: UserMenuProps) {
+export default function UserMenu({ name, setOpenEditUserModal, setOpenHabitDumpModal }: UserMenuProps) {
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
     const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => setAnchorEl(event.currentTarget);
@@ -28,6 +30,11 @@ export default function UserMenu({ name, setOpenEditUserModal }: UserMenuProps) 
 
     const handleAccountData = () => {
         setOpenEditUserModal(true);
+        handleCloseMenu();
+    };
+
+    const handleHabitDumpData = () => {
+        setOpenHabitDumpModal(true);
         handleCloseMenu();
     };
 
@@ -54,7 +61,8 @@ export default function UserMenu({ name, setOpenEditUserModal }: UserMenuProps) 
                     handleFn={handleCloseMenu}
                 />
                 <CustomMenuItem title="Meus dados" icon={<PersonIcon />} handleFn={handleAccountData} />
-                <CustomMenuItem title="Sair da plataforma" icon={<CancelIcon />} handleFn={handleLogout} />
+                <CustomMenuItem title="Lixeira de hábitos" icon={<DeleteIcon />} handleFn={handleHabitDumpData} />
+                <CustomMenuItem title="Sair da conta" icon={<LogoutIcon />} handleFn={handleLogout} />
             </Menu>
         </>
     );

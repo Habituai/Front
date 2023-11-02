@@ -9,6 +9,7 @@ import CreateHabitModal from '../components/modal/createHabit';
 import DeleteHabitModal from '../components/modal/deleteHabit';
 import EditHabitModal from '../components/modal/editHabit';
 import EditUserModal from '../components/modal/editUser';
+import HabitDumpModal from '../components/modal/habitDump';
 import { envs } from '../config';
 import { useUpdateHabits } from '../hooks/useUpdateHabits';
 import { useUpdateUser } from '../hooks/useUpdateUser';
@@ -77,6 +78,7 @@ function Dashboard() {
     const [isBadHabitsVisible, setIsBadHabitsVisible] = useState(false);
     const [openCreateHabitModal, setOpenCreateHabitModal] = useState<boolean>(false);
     const [openEditUserModal, setOpenEditUserModal] = useState(false);
+    const [openHabitDumpModal, setOpenHabitDumpModal] = useState(false);
     const [habitIdToBeUpdated, setHabitIdToBeUpdated] = useState<number | null>(null);
     const [habitIdToBeDeleted, setHabitIdToBeDeleted] = useState<number | null>(null);
 
@@ -184,6 +186,7 @@ function Dashboard() {
         <>
             <Toaster position="top-center" reverseOrder={false} />
             <EditUserModal openModal={openEditUserModal} setOpenModal={setOpenEditUserModal} userData={userData} />
+            <HabitDumpModal openModal={openHabitDumpModal} setOpenModal={setOpenHabitDumpModal} />
             <CreateHabitModal openModal={openCreateHabitModal} setOpenModal={setOpenCreateHabitModal} />
             <EditHabitModal habitId={habitIdToBeUpdated} setHabitIdToBeUpdated={setHabitIdToBeUpdated} />
             <DeleteHabitModal habitId={habitIdToBeDeleted} setHabitIdToBeDeleted={setHabitIdToBeDeleted} />
@@ -194,6 +197,7 @@ function Dashboard() {
                 weekDaysList={weekDaysList}
                 setOpenCreateHabitModal={setOpenCreateHabitModal}
                 setOpenEditUserModal={setOpenEditUserModal}
+                setOpenHabitDumpModal={setOpenHabitDumpModal}
                 referenceDay={referenceDay}
                 setReferenceDay={setReferenceDay}
                 isBadHabitsVisible={isBadHabitsVisible}

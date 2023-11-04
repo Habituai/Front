@@ -1,9 +1,21 @@
-import { Button, Paper, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
+import UndoIcon from '@mui/icons-material/Undo';
+import {
+    Button,
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Tooltip,
+} from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { envs } from '../../config';
+import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { Habit } from '../../pages/Dashboard';
 import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 
@@ -21,6 +33,7 @@ enum CategoryTranslation {
 export default function HabitDumpGrid({ setOpenHabitDumpModal }: HabitDumpGridProps) {
     const habitsHost = envs.habitPath;
 
+    const { habitsHasUpdate, setHabitsHasUpdate } = useUpdateHabits();
     const [habits, setHabits] = useState<[Habit]>();
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -45,18 +58,23 @@ export default function HabitDumpGrid({ setOpenHabitDumpModal }: HabitDumpGridPr
         },
     }));
 
-    const createData = (name: string, classification: string, category: string, dateCreation: string) => {
-        return { name, classification, category, dateCreation };
-    };
+    const habitRows =
+        habits?.map((habit) => {
+            const { id, name, classification } = habit;
 
-    const rows = habits?.map((habit) => {
-        return createData(
-            habit.name,
-            habit.classification.toUpperCase(),
-            CategoryTranslation[habit.category.id],
-            format(new Date(habit.dateCreation), 'dd/MM/yyyy'),
-        );
-    });
+            return {
+                id,
+                name,
+                classification: classification.toUpperCase(),
+                category: CategoryTranslation[habit.category.id],
+                dateCreation: format(new Date(habit.dateCreation), 'dd/MM/yyyy'),
+            };
+        }) || [];
+
+    const handleRestoreHabit = async (id: number) => {
+        await makeRequestWithAuthorization('PATCH', `${habitsHost}/${id}`);
+        setHabitsHasUpdate(true);
+    };
 
     const handleGetHabitsData = async () => {
         const habits: [Habit] = await makeRequestWithAuthorization('GET', habitsHost, { params: { status: false } });
@@ -68,38 +86,51 @@ export default function HabitDumpGrid({ setOpenHabitDumpModal }: HabitDumpGridPr
             console.error(error);
             console.error('Erro em buscar os hábitos');
         });
-    }, []);
+    }, [habitsHasUpdate]);
 
     return (
         <div className="w-full h-full flex flex-col justify-center gap-12">
             <h1 className="w-full mb-4 text-3xl font-bold text-primaryDark">Lixeira de hábitos</h1>
 
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableHead>
-                        <TableRow className="text-bold">
-                            <StyledTableCell className="text-bold">Nome</StyledTableCell>
-                            <StyledTableCell>Classificação</StyledTableCell>
-                            <StyledTableCell>Categoria</StyledTableCell>
-                            <StyledTableCell>Data de criação</StyledTableCell>
-                            <StyledTableCell></StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows?.map((row) => (
-                            <StyledTableRow key={row.name}>
-                                <StyledTableCell component="th" scope="row">
-                                    {row.name}
-                                </StyledTableCell>
-                                <StyledTableCell>{row.classification}</StyledTableCell>
-                                <StyledTableCell>{row.category}</StyledTableCell>
-                                <StyledTableCell>{row.dateCreation}</StyledTableCell>
-                                <StyledTableCell></StyledTableCell>
-                            </StyledTableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            {habitRows?.length > 0 ? (
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableHead>
+                            <TableRow className="text-bold">
+                                <StyledTableCell className="text-bold">Nome</StyledTableCell>
+                                <StyledTableCell>Classificação</StyledTableCell>
+                                <StyledTableCell>Categoria</StyledTableCell>
+                                <StyledTableCell>Data de criação</StyledTableCell>
+                                <StyledTableCell align="center">Retomar</StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {habitRows?.map((row) => (
+                                <StyledTableRow key={row.name}>
+                                    <StyledTableCell component="th" scope="row">
+                                        {row.name}
+                                    </StyledTableCell>
+                                    <StyledTableCell>{row.classification}</StyledTableCell>
+                                    <StyledTableCell>{row.category}</StyledTableCell>
+                                    <StyledTableCell>{row.dateCreation}</StyledTableCell>
+                                    <StyledTableCell align="center">
+                                        <Tooltip title="Retomar o hábito">
+                                            <IconButton
+                                                onClick={async () => await handleRestoreHabit(row.id)}
+                                                size="small"
+                                            >
+                                                <UndoIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </StyledTableCell>
+                                </StyledTableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            ) : (
+                <div className="w-full flex justify-center items-center">Não há nenhum hábito na lixeira.</div>
+            )}
 
             <div className="w-full flex justify-end">
                 <Button

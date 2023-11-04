@@ -8,7 +8,10 @@ import { Menu, MenuItem } from '@mui/material';
 import Cookies from 'js-cookie';
 import { ReactElement, useState } from 'react';
 import { isMobile } from 'react-device-detect';
+import toast from 'react-hot-toast';
+import { envs } from '../../config';
 import { paths } from '../../paths';
+import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
 
 interface UserMenuProps {
     name: string;
@@ -17,11 +20,23 @@ interface UserMenuProps {
 }
 
 export default function UserMenu({ name, setOpenEditUserModal, setOpenHabitDumpModal }: UserMenuProps) {
+    const { reportPath } = envs;
+
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
     const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => setAnchorEl(event.currentTarget);
 
     const handleCloseMenu = () => setAnchorEl(null);
+
+    const handleGenerateReport = async () => {
+        await toast.promise(makeRequestWithAuthorization('GET', reportPath), {
+            loading: 'Enviando...',
+            success: <p>Enviado para seu email!</p>,
+            error: <p>Não foi possível enviar.</p>,
+        });
+
+        handleCloseMenu();
+    };
 
     const handleLogout = () => {
         Cookies.remove('token');
@@ -58,7 +73,7 @@ export default function UserMenu({ name, setOpenEditUserModal, setOpenHabitDumpM
                 <CustomMenuItem
                     title="Gerar relatório de progresso"
                     icon={<ArticleIcon />}
-                    handleFn={handleCloseMenu}
+                    handleFn={handleGenerateReport}
                 />
                 <CustomMenuItem title="Meus dados" icon={<PersonIcon />} handleFn={handleAccountData} />
                 <CustomMenuItem title="Lixeira de hábitos" icon={<DeleteIcon />} handleFn={handleHabitDumpData} />

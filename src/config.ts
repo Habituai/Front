@@ -6,4 +6,5 @@ export const envs = {
     habitWeekPath: import.meta.env.VITE_HABIT_WEEK_PATH || '/api/v1/habit/week',
     progressPath: import.meta.env.VITE_PROGRESS_PATH || '/api/v1/progress',
     userAccountPath: import.meta.env.VITE_USER_ACCOUNT_PATH || '/api/v1/user/account',
+    reportPath: import.meta.env.VITE_REPORT_PATH || '/api/v1/report',
 };

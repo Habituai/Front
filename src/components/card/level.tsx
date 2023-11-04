@@ -18,7 +18,7 @@ export default function LevelCard({ experience }: LevelCardProps) {
         '#ffdd00',
     ];
 
-    const level = experience ? Math.ceil(experience / 100) : 1;
+    const level = experience > 0 ? Math.ceil(experience / 100) : 1;
     const levelColor = level < 11 ? starColors[level - 1] : starColors.at(-1);
 
     return (

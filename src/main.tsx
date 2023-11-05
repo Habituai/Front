@@ -44,6 +44,7 @@ const theme = createTheme({
         educacao: createColor('#430054'),
         lazer: createColor('#081fca'),
         outro: createColor('#222'),
+        white: createColor('#FFF'),
     } as PaletteOptions,
 });
 

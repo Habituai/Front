@@ -14,12 +14,13 @@
 -   [x] Implementar Accordion
 -   [x] Campo de confirmar senha
 -   [x] Separar área de habitos ruins
--   [ ] Lixeira de hábitos deletados
--   [ ] Gerar relatório
+-   [x] Lixeira de hábitos deletados
+-   [x] Gerar relatório
 -   [ ] Home detalhada + responsivo
 -   Mais coisas de gamificação:
     -   [x] Streak
     -   [ ] Foto de perfil
+    -   [ ] Conquistas
 
 ### Não-funcionais:
 

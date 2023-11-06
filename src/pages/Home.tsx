@@ -36,11 +36,11 @@ function Home() {
                 <div className="w-full h-full flex justify-center items-center px-32">
                     <div className="w-full flex flex-1 flex-col gap-8">
                         <h1 className="text-primaryDark font-bold text-5xl drop-shadow-md">
-                            Planeje e acompanhe seus hábitos com um sistema de gamificado
+                            Planeje e acompanhe seus hábitos com um sistema gamificado
                         </h1>
 
                         <h2 className="text-secondaryDark font-bold text-2xl mb-12">
-                            Ganhe XP e upe de level ao concluir hábitos todos os dias
+                            Ganhe XP e upe de Level ao concluir hábitos todos os dias
                         </h2>
 
                         <div className="text-gray-800 flex flex-col gap-2">
@@ -48,7 +48,7 @@ function Home() {
                                 O Habituaí é um sistema que te ajuda a criar e manter hábitos saudáveis, produtivos e
                                 divertidos.
                             </p>
-                            <p>Você pode escolher entre vários hábitos pré-definidos ou criar os seus próprios.</p>
+                            <p>Você pode escolher entre categorias pré-definidas ou gerais.</p>
                             <p>
                                 A cada dia que você completar um hábito, você ganha pontos de experiência (XP) que te
                                 permitem subir de nível e desbloquear novas recompensas.
@@ -136,11 +136,11 @@ function Home() {
                 <div className="w-full h-full flex flex-col md:flex-row justify-center items-center px-8 md:px-32 pt-24">
                     <div className="w-full flex flex-1 flex-col gap-8">
                         <h1 className="text-primaryDark font-bold text-4xl drop-shadow-md text-center">
-                            Planeje e acompanhe seus hábitos com um sistema de gamificado
+                            Planeje e acompanhe seus hábitos com um sistema gamificado
                         </h1>
 
                         <h2 className="text-secondaryDark font-bold text-xl mb-4 text-center">
-                            Ganhe XP e upe de level ao concluir hábitos todos os dias
+                            Ganhe XP e upe de Level ao concluir hábitos todos os dias
                         </h2>
 
                         <div className="text-gray-800 flex flex-col gap-2">
@@ -148,7 +148,7 @@ function Home() {
                                 O Habituaí é um sistema que te ajuda a criar e manter hábitos saudáveis, produtivos e
                                 divertidos.
                             </p>
-                            <p>Você pode escolher entre vários hábitos pré-definidos ou criar os seus próprios.</p>
+                            <p>Você pode escolher entre categorias pré-definidas ou gerais.</p>
                             <p>
                                 A cada dia que você completar um hábito, você ganha pontos de experiência (XP) que te
                                 permitem subir de nível e desbloquear novas recompensas.

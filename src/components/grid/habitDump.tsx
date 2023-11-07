@@ -14,10 +14,19 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { envs } from '../../config';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
 import { Habit } from '../../pages/Dashboard';
 import { makeRequestWithAuthorization } from '../../services/makeRequestWithAuthorization';
+
+interface HabitRow {
+    id: number;
+    name: string;
+    classification: string;
+    category: string;
+    dateCreation: string;
+}
 
 interface HabitDumpGridProps {
     setOpenHabitDumpModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -71,9 +80,10 @@ export default function HabitDumpGrid({ setOpenHabitDumpModal }: HabitDumpGridPr
             };
         }) || [];
 
-    const handleRestoreHabit = async (id: number) => {
-        await makeRequestWithAuthorization('PATCH', `${habitsHost}/${id}`);
+    const handleRestoreHabit = async (row: HabitRow) => {
+        await makeRequestWithAuthorization('PATCH', `${habitsHost}/${row.id}`);
         setHabitsHasUpdate(true);
+        toast.success(`Hábito ${row.name} restaurado!`);
     };
 
     const handleGetHabitsData = async () => {
@@ -116,7 +126,7 @@ export default function HabitDumpGrid({ setOpenHabitDumpModal }: HabitDumpGridPr
                                     <StyledTableCell align="center">
                                         <Tooltip title="Retomar o hábito">
                                             <IconButton
-                                                onClick={async () => await handleRestoreHabit(row.id)}
+                                                onClick={async () => await handleRestoreHabit(row)}
                                                 size="small"
                                             >
                                                 <UndoIcon />

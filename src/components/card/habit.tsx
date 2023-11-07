@@ -8,6 +8,7 @@ import WeekendIcon from '@mui/icons-material/Weekend';
 import { Checkbox, IconButton, Menu, MenuItem } from '@mui/material';
 import { isToday, parseISO } from 'date-fns';
 import { ReactElement, useState } from 'react';
+import toast from 'react-hot-toast';
 import fireIcon from '../../assets/icons/fire.png';
 import { envs } from '../../config';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
@@ -109,11 +110,21 @@ export default function HabitCard({
 
     const handleCheck = async () => {
         const data = { habit: { id }, dayWeek: weekDay };
-        await makeRequestWithAuthorization('POST', host, { data });
+        try {
+            await makeRequestWithAuthorization('POST', host, { data });
+        } catch {
+            toast.error('Não foi possível marcar este hábito.');
+            console.error('Não é possível marcar como concluido.');
+        }
     };
 
     const handleUncheck = async () => {
-        await makeRequestWithAuthorization('DELETE', `${host}/${id}`);
+        try {
+            await makeRequestWithAuthorization('DELETE', `${host}/${id}`);
+        } catch {
+            toast.error('Não foi possível desmarcar este hábito.');
+            console.error('Não é possível desmarcar como concluido.');
+        }
     };
 
     const changeCheckbox = async () => {
@@ -131,11 +142,11 @@ export default function HabitCard({
     };
 
     const renderStreak =
-        today && concluded && streak >= 1 && classification === 'bom' ? (
+        today && concluded && streak >= 2 && classification === 'bom' ? (
             <div className="absolute bottom-3/4 left-[-7px]">
                 <div className="relative">
                     <img src={fireIcon} alt="fire icon" className="h-[27px]" />
-                    <span className="absolute top-1/3 left-1/3 text-sm font-bold font-sans ">{streak + 1}</span>
+                    <span className="absolute top-1/3 left-1/3 text-sm font-bold font-sans ">{streak}</span>
                 </div>
             </div>
         ) : null;

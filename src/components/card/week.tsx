@@ -14,7 +14,7 @@ export default function WeekSelectorCard({ weekDaysList, handleSubWeek, handleAd
             <button onClick={handleSubWeek}>
                 <ArrowCircleLeftIcon
                     color="bom"
-                    fontSize="large"
+                    style={{ fontSize: '2rem' }}
                     className="cursor-pointer drop-shadow-sm hover:text-secondaryMedium hover:transition-all"
                 />
             </button>
@@ -29,7 +29,7 @@ export default function WeekSelectorCard({ weekDaysList, handleSubWeek, handleAd
             <button onClick={handleAddWeek}>
                 <ArrowCircleRightIcon
                     color="bom"
-                    fontSize="large"
+                    style={{ fontSize: '2rem' }}
                     className="cursor-pointer drop-shadow-sm hover:text-secondaryMedium hover:transition-all"
                 />
             </button>

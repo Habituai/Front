@@ -22,7 +22,7 @@ export default function LevelCard({ experience }: LevelCardProps) {
     const levelColor = level < 11 ? starColors[level - 1] : starColors.at(-1);
 
     return (
-        <span className="flex justify-center items-center gap-1 py-2 px-4 text-2xl bg-primaryExtraLight text-white rounded-lg shadow-md">
+        <span className="flex justify-center items-center gap-1 py-2 px-4 text-xl bg-primaryExtraLight text-white rounded-lg shadow-md">
             <StarIcon sx={{ color: levelColor }} className="shadow-xl" />
             {`Nível ${level}`}
         </span>

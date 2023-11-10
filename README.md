@@ -16,11 +16,11 @@
 -   [x] Separar área de habitos ruins
 -   [x] Lixeira de hábitos deletados
 -   [x] Gerar relatório
--   [ ] Home detalhada + responsivo
+-   [x] Home detalhada + responsivo
 -   Mais coisas de gamificação:
     -   [x] Streak
-    -   [ ] Foto de perfil
-    -   [ ] Conquistas
+    -   [x] Foto de perfil
+    -   [x] Conquistas
 
 ### Não-funcionais:
 

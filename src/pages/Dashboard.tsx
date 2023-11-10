@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import HabitCard from '../components/card/habit';
 import DashboardHeader from '../components/header/dashboard';
 import DayHabitTableLayout from '../components/layout/dayHabitTable';
+import AchievementMuralModal from '../components/modal/achievementMural';
 import CreateHabitModal from '../components/modal/createHabit';
 import DeleteHabitModal from '../components/modal/deleteHabit';
 import EditHabitModal from '../components/modal/editHabit';
@@ -33,6 +34,7 @@ export interface User {
     name: string;
     email: string;
     experience: number;
+    idAvatar: number;
 }
 
 export interface HabitCategory {
@@ -72,13 +74,14 @@ function Dashboard() {
     const [referenceDay, setReferenceDay] = useState(new Date());
     const weekDaysList = getWeekDaysList(referenceDay);
 
-    const [userData, setUserData] = useState<User>({ id: -1, name: '', email: '', experience: 0 });
+    const [userData, setUserData] = useState<User>({ id: -1, name: '', email: '', experience: 0, idAvatar: 1 });
     const [habitListFromServer, setHabitListFromServer] = useState<DayList[]>([]);
 
     const [isBadHabitsVisible, setIsBadHabitsVisible] = useState(false);
     const [openCreateHabitModal, setOpenCreateHabitModal] = useState<boolean>(false);
     const [openEditUserModal, setOpenEditUserModal] = useState(false);
     const [openHabitDumpModal, setOpenHabitDumpModal] = useState(false);
+    const [openAchievementMural, setOpenAchievementMural] = useState(false);
     const [habitIdToBeUpdated, setHabitIdToBeUpdated] = useState<number | null>(null);
     const [habitIdToBeDeleted, setHabitIdToBeDeleted] = useState<number | null>(null);
 
@@ -187,17 +190,19 @@ function Dashboard() {
             <Toaster position="top-center" reverseOrder={false} />
             <EditUserModal openModal={openEditUserModal} setOpenModal={setOpenEditUserModal} userData={userData} />
             <HabitDumpModal openModal={openHabitDumpModal} setOpenModal={setOpenHabitDumpModal} />
+            <AchievementMuralModal openModal={openAchievementMural} setOpenModal={setOpenAchievementMural} />
             <CreateHabitModal openModal={openCreateHabitModal} setOpenModal={setOpenCreateHabitModal} />
             <EditHabitModal habitId={habitIdToBeUpdated} setHabitIdToBeUpdated={setHabitIdToBeUpdated} />
             <DeleteHabitModal habitId={habitIdToBeDeleted} setHabitIdToBeDeleted={setHabitIdToBeDeleted} />
 
             <DashboardHeader
-                name={userData.name}
+                userData={userData}
                 experience={userData.experience}
                 weekDaysList={weekDaysList}
                 setOpenCreateHabitModal={setOpenCreateHabitModal}
                 setOpenEditUserModal={setOpenEditUserModal}
                 setOpenHabitDumpModal={setOpenHabitDumpModal}
+                setOpenAchievementMural={setOpenAchievementMural}
                 referenceDay={referenceDay}
                 setReferenceDay={setReferenceDay}
                 isBadHabitsVisible={isBadHabitsVisible}

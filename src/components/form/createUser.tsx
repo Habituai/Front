@@ -17,13 +17,14 @@ interface Values {
     email: string;
     password: string;
     passwordConfirmation: string;
+    idAvatar: number;
 }
 
 export default function CreateUserForm() {
     const navigate = useNavigate();
     const host = envs.userPath;
 
-    const formInitialValues: Values = { name: '', email: '', password: '', passwordConfirmation: '' };
+    const formInitialValues: Values = { name: '', email: '', password: '', passwordConfirmation: '', idAvatar: 1 };
 
     const handleValidationSchema = Yup.object().shape({
         ...emailYupValidations,

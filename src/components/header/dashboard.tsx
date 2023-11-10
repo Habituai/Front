@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import checkBoxIcon from '../../assets/images/checkbox.svg';
 import { useUpdateHabits } from '../../hooks/useUpdateHabits';
+import { User } from '../../pages/Dashboard';
 import LevelCard from '../card/level';
 import WeekSelectorCard from '../card/week';
 import ExperienceCard from '../card/xp';
@@ -12,12 +13,13 @@ import BadHabitToggle from '../input/badHabit';
 import UserMenu from '../input/user';
 
 interface DashboardHeaderProps {
-    name: string;
+    userData: User;
     experience: number;
     weekDaysList: string[];
     setOpenCreateHabitModal: React.Dispatch<React.SetStateAction<boolean>>;
     setOpenEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
     setOpenHabitDumpModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpenAchievementMural: React.Dispatch<React.SetStateAction<boolean>>;
     referenceDay: Date;
     setReferenceDay: React.Dispatch<React.SetStateAction<Date>>;
     isBadHabitsVisible: boolean;
@@ -25,12 +27,13 @@ interface DashboardHeaderProps {
 }
 
 export default function DashboardHeader({
-    name,
+    userData,
     experience,
     weekDaysList,
     setOpenCreateHabitModal,
     setOpenEditUserModal,
     setOpenHabitDumpModal,
+    setOpenAchievementMural,
     referenceDay,
     setReferenceDay,
     isBadHabitsVisible,
@@ -86,9 +89,10 @@ export default function DashboardHeader({
                     <LevelCard experience={experience} />
 
                     <UserMenu
-                        name={name}
+                        userData={userData}
                         setOpenEditUserModal={setOpenEditUserModal}
                         setOpenHabitDumpModal={setOpenHabitDumpModal}
+                        setOpenAchievementMural={setOpenAchievementMural}
                     />
                 </div>
             </nav>
@@ -150,9 +154,10 @@ export default function DashboardHeader({
 
                         <div className="flex justify-end items-center text-white text-xl">
                             <UserMenu
-                                name={name}
+                                userData={userData}
                                 setOpenEditUserModal={setOpenEditUserModal}
                                 setOpenHabitDumpModal={setOpenHabitDumpModal}
+                                setOpenAchievementMural={setOpenAchievementMural}
                             />
                         </div>
                     </div>

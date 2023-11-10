@@ -7,4 +7,5 @@ export const envs = {
     progressPath: import.meta.env.VITE_PROGRESS_PATH || '/api/v1/progress',
     userAccountPath: import.meta.env.VITE_USER_ACCOUNT_PATH || '/api/v1/user/account',
     reportPath: import.meta.env.VITE_REPORT_PATH || '/api/v1/report',
+    achievementPath: import.meta.env.VITE_REPORT_PATH || '/api/v1/userAchievement/achievements',
 };

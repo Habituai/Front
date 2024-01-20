@@ -1,31 +1,59 @@
-# Habituaí - front
+<h1 align="center">
+    Habituaí
+</h1>
 
-### Como rodar local:
+<h1 align="center">
+    <img src="https://ibb.co/nmgfPxT" alt="Habituai" />
+</h1>
 
--   Instalar Node versão 18 (qualquer LTS)
--   Clonar o repositório
--   Rodar o comando `npm install` para baixar as dependências
--   Criar arquivo na raiz `.env.local` e colocar as variveis que o Bruno passar (as utilizadas no arquivo src/config.ts)
--   Rodar o comando `npm run dev` para rodar localmente a aplicação (_localhost:3000_)
--   Lembrar de subir o back-end ou mockserver
+<br>
 
-### Features:
+## 🧪 Tecnologias
 
--   [x] Implementar Accordion
--   [x] Campo de confirmar senha
--   [x] Separar área de habitos ruins
--   [x] Lixeira de hábitos deletados
--   [x] Gerar relatório
--   [x] Home detalhada + responsivo
--   Mais coisas de gamificação:
-    -   [x] Streak
-    -   [x] Foto de perfil
-    -   [x] Conquistas
+Esse projeto foi desenvolvido com as seguintes tecnologias:
 
-### Não-funcionais:
+-   [TypeScript](https://www.typescriptlang.org/)
+-   [React](https://reactjs.org)
+-   [Material UI](https://mui.com/material-ui/)
+-   [Tailwind](https://tailwindcss.com/)
+-   [Husky](https://typicode.github.io/husky/)
+-   [Jest](https://jestjs.io/pt-BR/)
+-   [Axios](https://axios-http.com/ptbr/docs/intro)
+-   [date-fn](https://date-fns.org/)
+-   [Formik](https://formik.org/)
+-   [Yup](https://www.npmjs.com/package/yup)
+-   [hamburger-react](https://www.npmjs.com/package/hamburger-react)
+-   [js-cookie](https://www.npmjs.com/package/js-cookie)
+-   [ESLint](https://eslint.org/)
+-   [Prettier](https://prettier.io/)
 
--   [x] Mudar as rotas (colocar em português)
--   [x] Remodelar design dos formulários de criação e edição de hábitos
--   [ ] Botões de voltar pra Home
--   [ ] Teste unitário
--   [ ] Teste E2E Cypress
+## 🚀 Como executar
+
+Clone o projeto e acesse a pasta do mesmo.
+
+```bash
+$ git clone https://github.com/Habituai/Front habituai-front
+$ cd habituai-front
+```
+
+Para iniciá-lo, siga os passos abaixo:
+
+```bash
+# Instalar as dependências
+$ npm install
+
+# Iniciar o projeto
+$ npm run dev
+```
+
+O app estará disponível no seu browser pelo endereço http://localhost:3000.
+
+## 💻 Projeto
+
+O Habituaí é um sistema que te ajuda a criar e manter hábitos saudáveis, produtivos e divertidos.
+Você pode escolher entre categorias pré-definidas ou gerais.
+A cada dia que você completar um hábito, você ganha pontos de experiência (XP) que te permitem subir de nível e desbloquear novas recompensas.
+
+---
+
+Feito com 💚 por Bruno, Daniel, Mateus e Murilo 👋🏻

@@ -3,7 +3,7 @@
 </h1>
 
 <h1 align="center">
-    <img src="https://ibb.co/nmgfPxT" alt="Habituai" />
+    <img src="https://i.ibb.co/XL2pYc9/Screenshot-1.png" alt="Habituai" />
 </h1>
 
 <br>

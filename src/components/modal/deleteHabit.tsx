@@ -56,7 +56,7 @@ export default function DeleteHabitModal({ habitId, setHabitIdToBeDeleted }: Del
             <div className="w-full h-full flex flex-col gap-8 xl:gap-24 justify-center items-center">
                 <div className="flex flex-col gap-8 justify-center items-center">
                     <div className="text-3xl xl:text-5xl leading-relaxed font-bold text-center">
-                        <h1>Tem certeza que deseja excluir permanentemente o hábito</h1>
+                        <h1>Tem certeza que deseja excluir o hábito</h1>
                         <h1>
                             "<span className="text-primaryDark">{habitData?.name}</span>"?
                         </h1>
